@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Threads</title>
+    <link rel="stylesheet" href="styles/dist/personalposts.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+    integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+    <h1>Post<span class="white">It</span></h1>
+    <a class="link" href="personalposts.html">Back to Your Posts</a>
+    <div class="search--wrapper">
+    <label>Search Posts By:</label>
+    <label>Title:</label>
+    <input class="search" type="search" name="search" id="searching-title">
+    <label>Tags:</label>
+    <input class="search" type="search" name="search" id="searching-tags">
+    <label>Username:</label>
+    <input class="search" type="search" name="search" id="searching-username">
+    <label>All:</label>
+    <input class="search" type="search" name="search" id="searching-all">
+</div>
+
+    <div class="button--wrapper">
+    <button class="newest">Newest</button>
+    <button class="most-viewed">Most Viewed</button>
+    <button class="most-liked">Most Liked</button>
+    <button class="most-comment">Most Commented</button>
+</div>
+
+
+    <div class="postholder"></div>
+
+    
+</body>
+<script src="scripts/publicposts.js"></script>
+</html>

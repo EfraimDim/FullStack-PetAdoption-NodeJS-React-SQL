@@ -1,0 +1,1 @@
+"use strict";exports.login=function(e,s){try{var r=e.token;s.send(r)}catch(e){console.log(e),s.status(400).send({error:e.message})}},exports.addPublicUser=function(e,s){try{var r=e.body;users.addUser(new User(r.username,r.email,r.password,r.role)),s.send("Register Succesful!")}catch(e){console.log(e),s.status(400).send({error:e.message})}};
