@@ -2,21 +2,24 @@ const express = require('express');
 const router = express.Router();
 const usersController = require('../controllers/usersController');
 const {
-    checkPassword,
-    checkEmailAndUsernameValid,
+    authorization,
+    checkPasswordsMatch,
+    checkEmailValidSignUp,
     encryptPwd,
     createToken,
-    decryptPwd
+    decryptPwd,
+    checkOldPasswordCorrect,
+    checkEmailValidProfileUpdate
 } = require('../middleware/middleware');
 
 const {query} = require('../models/queryModel')
-
+ 
 query(
     `CREATE TABLE IF NOT EXISTS users (
         id INT(200) AUTO_INCREMENT,
-        user_ID VARCHAR(30) NOT NULL,
+        user_ID VARCHAR(50) NOT NULL,
         email VARCHAR(30) NOT NULL,
-        password VARCHAR(30) NOT NULL,
+        password VARCHAR(100) NOT NULL,
         first_name VARCHAR(30) NOT NULL,
         last_name VARCHAR(30) NOT NULL,
         phone INT(10) NOT NULL,
@@ -28,7 +31,7 @@ query(
 .catch((err) => console.log(err))
 
 const Schemas = require('../schemas/allSchemas');
-
+ 
 router.post(
     '/login',
     // validateBody(Schemas.loginSchemaAJV),
@@ -37,14 +40,31 @@ router.post(
     usersController.login
 )
 
-
 router.post(
     '/signUp',
     // validateBody(Schemas.registerSchemaAJV),
-    checkEmailAndUsernameValid,
-    checkPassword,
+    checkEmailValidSignUp,
+    checkPasswordsMatch,
     encryptPwd,
-    usersController.addPublicUser
+    usersController.signUpPublicUser
+)
+
+router.put(
+    '/updateProfile',
+    // validateBody(Schemas.registerSchemaAJV),
+    authorization,
+    checkEmailValidProfileUpdate,
+    usersController.updateUserProfile
+)
+
+router.put(
+    '/updatePassword',
+    // validateBody(Schemas.registerSchemaAJV),
+    authorization,
+    checkPasswordsMatch,
+    encryptPwd,
+    checkOldPasswordCorrect,
+    usersController.updateUserPassword
 )
 
 

@@ -5,6 +5,7 @@ addFormats(ajv);
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv').config();
+const {query} = require('../models/queryModel')
 
 
 
@@ -18,6 +19,35 @@ exports.validateBody = (schema) => {
     }
     next();
   };
+};
+
+exports.checkEmailValidSignUp = async(req, res, next) => {
+  try {
+
+    const { email } = req.body;
+    const emailValidation = await query(`SELECT * FROM users WHERE email = '${email.toLowerCase()}'`)
+    emailValidation.push('not found')
+    if (emailValidation[0] === 'not found') {
+      next()
+    } else {
+      res.status(400).send('email already taken');
+    }
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+exports.checkPasswordsMatch = (req, res, next) => {  
+  try {
+    const { password, rePassword } = req.body;
+    if (password === rePassword) {
+      next();
+    } else {
+      res.status(400).send("passwords don't match!");
+    }
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 
@@ -38,22 +68,40 @@ exports.encryptPwd = (req, res, next) => {
 }
 };
 
-exports.decryptPwd = (req, res, next) => {
+exports.decryptPwd = async(req, res, next) => {
   try {
     const { email, password } = req.body;
-    const user = users.users.find((user) => user.email === email);
-    bcrypt.compare(password, user.password, (err, result) => {
+    const emailValidation = await query(`SELECT * FROM users WHERE email = '${email.toLowerCase()}'`)
+    emailValidation.push('not found')
+    if(emailValidation[0] === 'not found'){
+      res.status(400).send("email not found!");
+    }else{
+    bcrypt.compare(password, emailValidation[0].password, (err, result) => {
       if (err) {
         throw new Error('Incorrect password');
       }
       if (result) {
+        req.body.user = emailValidation[0]
         next();
       }
     });
-  } catch (err) {
+  }} catch (err) {
     res.status(400).send(err);
   }
 };
+
+exports.createToken = (req, res, next) => {
+  try {
+    const {user} = req.body
+    const token = jwt.sign({ userID: user.user_ID }, process.env.SECRET_KEY, { expiresIn: '1h' });
+    req.token = token;
+    next();
+    
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 
 exports.authorization = (req, res, next) => {
   try{
@@ -76,80 +124,58 @@ exports.authorization = (req, res, next) => {
 }
 };
 
-
-exports.authorizeEdit = (req, res, next) => {
-  try{
-    const {userID} = req.decoded
-    const {postID} = req.body
-    const user = users.findUser(userID)
-    const post = allPosts.findPost(postID)
-    if(user.username === post.poster){
-    next();}
-    else{
-      res.status(400).send('You are not authroized to do that!');
-    }
-  }
-catch (e) {
-  console.error(e)
-}}
-
-
-exports.authorizeDelete = (req, res, next) => {
-  try{
-    const {userID} = req.decoded
-    const { postID } = req.params
-    const user = users.findUser(userID)
-    const post = allPosts.findPost(postID)
-    if(user.username === post.poster){
-    next();}
-    else{
-      res.status(400).send('You are not authroized to do that!');
-    }
-  }
-catch (e) {
-  console.error(e)
-}}
-;
-
-
-exports.createToken = (req, res, next) => {
+exports.checkOldPasswordCorrect = async(req, res, next) => {
   try {
-    const user = users.users.find((user) => req.body.email === user.email);
-    const token = jwt.sign({ userID: user.userID }, process.env.SECRET_KEY, { expiresIn: '1h' });
-    req.token = token;
-    next();
-    
-  } catch (e) {
-    console.error(e);
+    const { oldPassword } = req.body;
+    const userID = req.decoded
+    const userIDValidation = await query(`SELECT * FROM users WHERE user_ID = '${userID.userID}'`)
+    userIDValidation.push('not found')
+    if(userIDValidation[0] === 'not found'){
+      res.status(400).send("user not found!");
+    }else{
+    bcrypt.compare(oldPassword, userIDValidation[0].password, (err, result) => {
+      if (err) {
+        throw new Error('Incorrect password');
+      }
+      if (result) {
+        next();
+      }
+    });
+  }} catch (err) {
+    res.status(400).send(err);
   }
 };
-exports.checkPassword = (req, res, next) => {  
+
+exports.checkEmailValidProfileUpdate = async(req, res, next) => {
   try {
-    const { password, repassword } = req.body;
-    if (password === repassword) {
-      next();
+    const { email } = req.body;
+    const userID = req.decoded
+    const userIDValidation = await query(`SELECT * FROM users WHERE user_ID = '${userID.userID}'`)
+    if(userIDValidation[0].email === email){
+      next()
+    }else{
+    const emailValidation = await query(`SELECT * FROM users WHERE email = '${email.toLowerCase()}'`)
+    emailValidation.push('not found')
+    if (emailValidation[0] === 'not found') {
+      next()
     } else {
-      res.status(400).send("passwords don't match!");
-    }
-  } catch (e) {
-    console.error(e);
-  }
-};
-
-exports.checkEmailAndUsernameValid = (req, res, next) => {
-  try {
-    const { email, username } = req.body;
-    const emailValidation = users.users.find(user => user.email === email);
-    const usernameValidation = users.users.find(user => user.username === username);
-    if (emailValidation || usernameValidation) {
       res.status(400).send('email already taken');
-    } else {
-      next();
     }
-  } catch (e) {
+  } }catch (e) {
     console.error(e);
   }
 };
+
+
+
+
+
+
+
+
+
+
+
 
 
 
