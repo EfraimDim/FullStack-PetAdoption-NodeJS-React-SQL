@@ -17,6 +17,12 @@ function App() {
     const allPets = await axios.get('/pets/allPets')
     setAllPetsArray(allPets.data)
   }
+  const tokenFromLocalforage = async() => {
+    const tokenString = await localforage.getItem('token');
+    const token = JSON.parse(tokenString)
+    const headers = {Authorization: `Bearer ${token}`}
+    return headers
+}
 
  
   
@@ -44,7 +50,8 @@ function App() {
       savedPetsArray,
       setSavedPetsArray,
       allPetsArray,
-      setAllPetsArray
+      setAllPetsArray,
+      tokenFromLocalforage
     }}>
     
     <div>

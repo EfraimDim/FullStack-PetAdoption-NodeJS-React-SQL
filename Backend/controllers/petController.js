@@ -1,4 +1,3 @@
-const { searchTitleWithRegExp} = require('../models/searchmodel')
 const {query} = require('../models/queryModel')
 
 
@@ -94,11 +93,21 @@ exports.fosterPet  = async(req, res) => {
     console.error(e)
 }}
 
-exports.searchPostTitle = (req, res) =>{
+exports.basicSearch = async(req, res) =>{
     try {
-        const {body} = req
-        const {searchTerm} = body
-        const searchResults = searchTitleWithRegExp(searchTerm)
+        const {type} = req.query
+        const searchResults = await query(`SELECT * FROM pets WHERE type = "${type}"`)
+        res.send(searchResults)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+exports.advanceSearch = async(req, res) =>{
+    try {
+        const {type, adoptionStatus, minHeight, maxHeight, minWeight, maxWeight} = req.params
+        const {name} = req.query
+        const searchResults = await query(`SELECT * FROM pets WHERE type = "${type}" AND adoption_status = "${adoptionStatus}" AND weight >= ${minWeight} AND weight <= ${maxWeight} AND height >= ${minHeight} AND height <= ${maxHeight} AND name LIKE '%${name}%'`)
         res.send(searchResults)
     } catch (error) {
         console.log(error)

@@ -1,10 +1,7 @@
 "use strict";
 
-var _require = require('../models/searchmodel'),
-    searchTitleWithRegExp = _require.searchTitleWithRegExp;
-
-var _require2 = require('../models/queryModel'),
-    query = _require2.query;
+var _require = require('../models/queryModel'),
+    query = _require.query;
 
 exports.getSavedPetsArray = function _callee(req, res) {
   var userID, savedPetsArray;
@@ -295,13 +292,64 @@ exports.fosterPet = function _callee9(req, res) {
   }, null, null, [[0, 12]]);
 };
 
-exports.searchPostTitle = function (req, res) {
-  try {
-    var body = req.body;
-    var searchTerm = body.searchTerm;
-    var searchResults = searchTitleWithRegExp(searchTerm);
-    res.send(searchResults);
-  } catch (error) {
-    console.log(error);
-  }
+exports.basicSearch = function _callee10(req, res) {
+  var type, searchResults;
+  return regeneratorRuntime.async(function _callee10$(_context10) {
+    while (1) {
+      switch (_context10.prev = _context10.next) {
+        case 0:
+          _context10.prev = 0;
+          type = req.query.type;
+          _context10.next = 4;
+          return regeneratorRuntime.awrap(query("SELECT * FROM pets WHERE type = \"".concat(type, "\"")));
+
+        case 4:
+          searchResults = _context10.sent;
+          res.send(searchResults);
+          _context10.next = 11;
+          break;
+
+        case 8:
+          _context10.prev = 8;
+          _context10.t0 = _context10["catch"](0);
+          console.log(_context10.t0);
+
+        case 11:
+        case "end":
+          return _context10.stop();
+      }
+    }
+  }, null, null, [[0, 8]]);
+};
+
+exports.advanceSearch = function _callee11(req, res) {
+  var _req$params, type, adoptionStatus, minHeight, maxHeight, minWeight, maxWeight, name, searchResults;
+
+  return regeneratorRuntime.async(function _callee11$(_context11) {
+    while (1) {
+      switch (_context11.prev = _context11.next) {
+        case 0:
+          _context11.prev = 0;
+          _req$params = req.params, type = _req$params.type, adoptionStatus = _req$params.adoptionStatus, minHeight = _req$params.minHeight, maxHeight = _req$params.maxHeight, minWeight = _req$params.minWeight, maxWeight = _req$params.maxWeight;
+          name = req.query.name;
+          _context11.next = 5;
+          return regeneratorRuntime.awrap(query("SELECT * FROM pets WHERE type = \"".concat(type, "\" AND adoption_status = \"").concat(adoptionStatus, "\" AND weight >= ").concat(minWeight, " AND weight <= ").concat(maxWeight, " AND height >= ").concat(minHeight, " AND height <= ").concat(maxHeight, " AND name LIKE '%").concat(name, "%'")));
+
+        case 5:
+          searchResults = _context11.sent;
+          res.send(searchResults);
+          _context11.next = 12;
+          break;
+
+        case 9:
+          _context11.prev = 9;
+          _context11.t0 = _context11["catch"](0);
+          console.log(_context11.t0);
+
+        case 12:
+        case "end":
+          return _context11.stop();
+      }
+    }
+  }, null, null, [[0, 9]]);
 };

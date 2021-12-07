@@ -8,14 +8,9 @@ import localforage from 'localforage'
 
 function DisplayPet({pet, index, myPets, savedPets, allPets}) {
 
-    const { setSavedPetsArray, setMyPetsArray, myPetsArray, savedPetsArray, allPetsArray, setAllPetsArray } = useContext(AppContext);
+    const { setSavedPetsArray, setMyPetsArray, myPetsArray, savedPetsArray, allPetsArray, setAllPetsArray, tokenFromLocalforage } = useContext(AppContext);
 
-    const tokenFromLocalforage = async() => {
-        const tokenString = await localforage.getItem('token');
-        const token = JSON.parse(tokenString)
-        const headers = {Authorization: `Bearer ${token}`}
-        return headers
-    }
+
 
     const returnForAdoption = async(petID, index) => {
         const headers = await tokenFromLocalforage()

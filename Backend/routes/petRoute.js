@@ -103,49 +103,16 @@ router.post(
     checkIfStillAvailable,
     petController.fosterPet
 )
-// router.get(
-//     '/getPrivatePostToEdit',
-//     authorization,
-//     petController.getPrivatePostToEdit
-// )
-// router.put(
-//     '/editPost',
-//     validateBody(Schemas.editPostSchemaAJV),
-//     authorization,
-//     authorizeEdit,
-//     petController.editPost
-// )
-// router.get(
-//     '/getAllPosts',
-//     petController.getAllPosts
-// )
-// router.post(
-//     '/addPost',
-//     validateBody(Schemas.postSubmitSchemaAJV),
-//     authorization,
-//     petController.addPost
-// )
-
-// router.post(
-//     '/searchPostTitle',
-//     validateBody(Schemas.searchTermSchemaAJV),
-//     petController.searchPostTitle
-// )
-
-// router.get('/getPostToView',
-//     authorization,
-//     checkIfViewed,
-//     petController.getPostToView
-// )
-
-
-
-
-// router.get('/getPrivatePostID',
-//     authorization,
-//     petController.getPrivatePostID
-//     )
-
+router.get(
+    '/basicSearch',
+    authorization,
+    petController.basicSearch
+)
+router.get(
+    '/advanceSearch/:type/:adoptionStatus/:minHeight/:maxHeight/:minWeight/:maxWeight',
+    authorization,
+    petController.advanceSearch
+)
 
 
 

@@ -40,41 +40,7 @@ router.put('/fosterToAdopt', authorization, petController.fosterToAdopt);
 router["delete"]('/unsavePet/:petID', authorization, petController.unsavePet);
 router.post('/savePet', authorization, petController.savePet);
 router.post('/adoptPet', authorization, checkIfStillAvailable, petController.adoptPet);
-router.post('/fosterPet', authorization, checkIfStillAvailable, petController.fosterPet); // router.get(
-//     '/getPrivatePostToEdit',
-//     authorization,
-//     petController.getPrivatePostToEdit
-// )
-// router.put(
-//     '/editPost',
-//     validateBody(Schemas.editPostSchemaAJV),
-//     authorization,
-//     authorizeEdit,
-//     petController.editPost
-// )
-// router.get(
-//     '/getAllPosts',
-//     petController.getAllPosts
-// )
-// router.post(
-//     '/addPost',
-//     validateBody(Schemas.postSubmitSchemaAJV),
-//     authorization,
-//     petController.addPost
-// )
-// router.post(
-//     '/searchPostTitle',
-//     validateBody(Schemas.searchTermSchemaAJV),
-//     petController.searchPostTitle
-// )
-// router.get('/getPostToView',
-//     authorization,
-//     checkIfViewed,
-//     petController.getPostToView
-// )
-// router.get('/getPrivatePostID',
-//     authorization,
-//     petController.getPrivatePostID
-//     )
-
+router.post('/fosterPet', authorization, checkIfStillAvailable, petController.fosterPet);
+router.get('/basicSearch', authorization, petController.basicSearch);
+router.get('/advanceSearch/:type/:adoptionStatus/:minHeight/:maxHeight/:minWeight/:maxWeight', authorization, petController.advanceSearch);
 module.exports = router;
