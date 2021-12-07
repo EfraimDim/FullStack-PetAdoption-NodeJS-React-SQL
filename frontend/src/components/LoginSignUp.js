@@ -98,10 +98,10 @@ function ModalLoginSignUp() {
          
           })
         if(loginUser.data.message === "Login Success!"){
-            alert(loginUser.data.message)
-            setLoggedInInfo(loginUser.data.userInfo)
-            setModalIsOpen(false)
             const tokenSet = await localforage.setItem('token', JSON.stringify(loginUser.data.token));
+            alert(loginUser.data.message)
+            setModalIsOpen(false)
+            setLoggedInInfo(loginUser.data.userInfo)
             setPasswordLogin('')
             setEmailLogin('')
         }

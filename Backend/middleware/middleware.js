@@ -166,6 +166,20 @@ exports.checkEmailValidProfileUpdate = async(req, res, next) => {
   }
 };
 
+exports.checkIfStillAvailable = async(req, res, next) => {
+  try {
+    const { petID } = req.body;
+    const availabilityCheck = await query(`SELECT availability FROM pets WHERE pet_ID = '${petID}'`)
+    if(availabilityCheck[0].availability === 1){
+      next()
+    }else{
+      res.send("Sorry this pet is no longer available")
+    }
+  }catch (e) {
+    console.error(e);
+  }
+};
+
 
 
 

@@ -46,5 +46,7 @@
     left: 20%;
     z-index: 8;
     align-content: center;
+    width: fit-content;
+    height: fit-content;
     
 }

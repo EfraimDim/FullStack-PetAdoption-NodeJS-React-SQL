@@ -61,7 +61,6 @@ function Profile() {
 
     const updatedProfile = async(e) => {
         e.preventDefault()
-        console.log(email)
         const tokenString = await localforage.getItem('token');
         const token = JSON.parse(tokenString)
         const headers = {Authorization: `Bearer ${token}`}

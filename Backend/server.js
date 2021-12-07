@@ -9,7 +9,7 @@ const petRoute = require('./routes/petRoute')
 
 
 app.use('/users', usersRoute);
-app.use('/pet', petRoute);
+app.use('/pets', petRoute);
 
 
 app.listen(port, () => {

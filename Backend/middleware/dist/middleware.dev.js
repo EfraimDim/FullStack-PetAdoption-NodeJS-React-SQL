@@ -287,3 +287,39 @@ exports.checkEmailValidProfileUpdate = function _callee4(req, res, next) {
     }
   }, null, null, [[0, 17]]);
 };
+
+exports.checkIfStillAvailable = function _callee5(req, res, next) {
+  var petID, availabilityCheck;
+  return regeneratorRuntime.async(function _callee5$(_context5) {
+    while (1) {
+      switch (_context5.prev = _context5.next) {
+        case 0:
+          _context5.prev = 0;
+          petID = req.body.petID;
+          _context5.next = 4;
+          return regeneratorRuntime.awrap(query("SELECT availability FROM pets WHERE pet_ID = '".concat(petID, "'")));
+
+        case 4:
+          availabilityCheck = _context5.sent;
+
+          if (availabilityCheck[0].availability === 1) {
+            next();
+          } else {
+            res.send("Sorry this pet is no longer available");
+          }
+
+          _context5.next = 11;
+          break;
+
+        case 8:
+          _context5.prev = 8;
+          _context5.t0 = _context5["catch"](0);
+          console.error(_context5.t0);
+
+        case 11:
+        case "end":
+          return _context5.stop();
+      }
+    }
+  }, null, null, [[0, 8]]);
+};

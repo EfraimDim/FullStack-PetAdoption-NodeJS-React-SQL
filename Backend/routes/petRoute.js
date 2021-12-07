@@ -3,8 +3,7 @@ const router = express.Router();
 const petController = require('../controllers/petController');
 const {
     authorization,
-    authorizeEdit,
-    authorizeDelete,
+    checkIfStillAvailable,
     validateBody
 } = require('../middleware/middleware');
 
@@ -34,8 +33,8 @@ query(
 query(
     `CREATE TABLE IF NOT EXISTS savedPets (
         id INT(200) AUTO_INCREMENT,
-        user_ID VARCHAR(30) NOT NULL,
-        pet_ID VARCHAR(30) NOT NULL,
+        user_ID VARCHAR(50) NOT NULL,
+        pet_ID VARCHAR(50) NOT NULL,
         PRIMARY KEY (id))`
 ).then(() => console.log("Table Created"))
 .catch((err) => console.log(err))
@@ -43,8 +42,8 @@ query(
 query(
     `CREATE TABLE IF NOT EXISTS adoptedPets (
         id INT(200) AUTO_INCREMENT,
-        user_ID VARCHAR(30) NOT NULL,
-        pet_ID VARCHAR(30) NOT NULL,
+        user_ID VARCHAR(50) NOT NULL,
+        pet_ID VARCHAR(50) NOT NULL,
         PRIMARY KEY (id))`
 ).then(() => console.log("Table Created"))
 .catch((err) => console.log(err))
@@ -52,17 +51,58 @@ query(
 
 const Schemas = require('../schemas/allSchemas');
 
-// router.delete(
-//     '/deletePost/:postID',
-//     authorization,
-//     authorizeDelete,
-//     petController.deletePost
-// )
-// router.get(
-//     '/getAllPrivatePosts',
-//     authorization,
-//     petController.getAllPrivatePosts
-// )
+
+router.get(
+    '/savedPets',
+    authorization,
+    petController.getSavedPetsArray
+)
+
+router.get(
+    '/adoptedPets',
+    authorization,
+    petController.getAdoptedPetsArray
+)
+router.get(
+    '/allPets',
+    petController.getAllPetsArray
+)
+router.delete(
+    '/returnForAdoption/:petID',
+    authorization,
+    petController.returnForAdoption
+)
+router.put(
+    '/fosterToAdopt',
+    authorization,
+    petController.fosterToAdopt
+)
+
+router.delete(
+    '/unsavePet/:petID',
+    authorization,
+    petController.unsavePet
+)
+
+router.post(
+    '/savePet',
+    authorization,
+    petController.savePet
+)
+
+router.post(
+    '/adoptPet',
+    authorization,
+    checkIfStillAvailable,
+    petController.adoptPet
+)
+
+router.post(
+    '/fosterPet',
+    authorization,
+    checkIfStillAvailable,
+    petController.fosterPet
+)
 // router.get(
 //     '/getPrivatePostToEdit',
 //     authorization,

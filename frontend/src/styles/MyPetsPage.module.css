@@ -1,0 +1,20 @@
+.index{
+    width: 100%;
+    margin: auto;
+    align-content: center;
+    text-align: center;
+    align-self: center;
+    margin-left: 8rem;
+ } 
+.toggleButton{
+    cursor: pointer;
+    border: 1px solid black;
+}
+.wrapper{
+    display: flex;
+    justify-content: space-around;
+    margin:auto
+}
+.petHolder {
+    margin: 1rem
+}

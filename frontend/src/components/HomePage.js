@@ -1,10 +1,10 @@
-import {useContext, useState} from 'react'
+import {useContext, useState, useEffect} from 'react'
 import {AppContext} from './AppContext'
 import styles from '../styles/HomePage.module.css'
 import axios from "axios"
 import localforage from 'localforage'
 import Sidebar from "react-sidebar";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, useLocation } from "react-router-dom";
 import Profile from './Profile'
 import MyPetsPage from './MyPetsPage'
 import SearchPets from './SearchPets'
@@ -12,10 +12,42 @@ import SearchPets from './SearchPets'
 
 
 
+
 function HomePage() {
 
    const [sideBarOpen, setSideBarOpen] = useState(false)
-    const { loggedInInfo, setLoggedInInfo } = useContext(AppContext);
+
+    const { loggedInInfo, setLoggedInInfo, setSavedPetsArray, setMyPetsArray } = useContext(AppContext);
+    const location = useLocation()
+
+  
+    const getSavedPets = async() => {
+      const tokenString = await localforage.getItem('token');
+      const token = JSON.parse(tokenString)
+      const headers = {Authorization: `Bearer ${token}`}
+      const savedPets = await axios.get('/pets/savedPets', {headers:headers})
+      setSavedPetsArray(savedPets.data)
+    }
+  
+    const getMyPets = async() => {
+      const tokenString = await localforage.getItem('token');
+      const token = JSON.parse(tokenString)
+      const headers = {Authorization: `Bearer ${token}`}
+      const myPets = await axios.get('/pets/adoptedPets', {headers:headers})
+      setMyPetsArray(myPets.data)
+    }
+
+    useEffect(()=>{
+      location.pathname = "/"
+    },[])
+
+    useEffect(()=>{
+      getSavedPets()
+    },[])
+  
+    useEffect(()=>{
+      getMyPets()
+    },[])
 
     const signOut = () => {
         setLoggedInInfo(null)
@@ -44,7 +76,7 @@ function HomePage() {
         styles={{ sidebar: { background: "rgb(44, 44, 198)"} }}
       >
         <div className={styles.sideBarOpen} onClick={() => onSetSidebarOpen(true)}>
-          More
+          Menu
         </div>
       </Sidebar>
       </div>

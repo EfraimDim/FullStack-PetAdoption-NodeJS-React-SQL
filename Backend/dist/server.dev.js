@@ -12,7 +12,7 @@ var usersRoute = require('./routes/usersRoute');
 var petRoute = require('./routes/petRoute');
 
 app.use('/users', usersRoute);
-app.use('/pet', petRoute);
+app.use('/pets', petRoute);
 app.listen(port, function () {
   console.log("Listening on port ".concat(port, "..."));
 });

@@ -1,0 +1,16 @@
+.wrapper{
+    display: flex;
+    flex-direction: column;
+}
+.reduceMargin{
+    margin-top: -18px;
+    margin-left: 5px
+}
+.field{
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 15px;
+}
+.info {
+    margin:5px
+}

@@ -8,8 +8,7 @@ var petController = require('../controllers/petController');
 
 var _require = require('../middleware/middleware'),
     authorization = _require.authorization,
-    authorizeEdit = _require.authorizeEdit,
-    authorizeDelete = _require.authorizeDelete,
+    checkIfStillAvailable = _require.checkIfStillAvailable,
     validateBody = _require.validateBody;
 
 var _require2 = require('../models/queryModel'),
@@ -20,29 +19,28 @@ query("CREATE TABLE IF NOT EXISTS pets (\n        id INT(200) AUTO_INCREMENT,\n 
 })["catch"](function (err) {
   return console.log(err);
 });
-query("CREATE TABLE IF NOT EXISTS savedPets (\n        id INT(200) AUTO_INCREMENT,\n        user_ID VARCHAR(30) NOT NULL,\n        pet_ID VARCHAR(30) NOT NULL,\n        PRIMARY KEY (id))").then(function () {
+query("CREATE TABLE IF NOT EXISTS savedPets (\n        id INT(200) AUTO_INCREMENT,\n        user_ID VARCHAR(50) NOT NULL,\n        pet_ID VARCHAR(50) NOT NULL,\n        PRIMARY KEY (id))").then(function () {
   return console.log("Table Created");
 })["catch"](function (err) {
   return console.log(err);
 });
-query("CREATE TABLE IF NOT EXISTS adoptedPets (\n        id INT(200) AUTO_INCREMENT,\n        user_ID VARCHAR(30) NOT NULL,\n        pet_ID VARCHAR(30) NOT NULL,\n        PRIMARY KEY (id))").then(function () {
+query("CREATE TABLE IF NOT EXISTS adoptedPets (\n        id INT(200) AUTO_INCREMENT,\n        user_ID VARCHAR(50) NOT NULL,\n        pet_ID VARCHAR(50) NOT NULL,\n        PRIMARY KEY (id))").then(function () {
   return console.log("Table Created");
 })["catch"](function (err) {
   return console.log(err);
 });
 
-var Schemas = require('../schemas/allSchemas'); // router.delete(
-//     '/deletePost/:postID',
-//     authorization,
-//     authorizeDelete,
-//     petController.deletePost
-// )
-// router.get(
-//     '/getAllPrivatePosts',
-//     authorization,
-//     petController.getAllPrivatePosts
-// )
-// router.get(
+var Schemas = require('../schemas/allSchemas');
+
+router.get('/savedPets', authorization, petController.getSavedPetsArray);
+router.get('/adoptedPets', authorization, petController.getAdoptedPetsArray);
+router.get('/allPets', petController.getAllPetsArray);
+router["delete"]('/returnForAdoption/:petID', authorization, petController.returnForAdoption);
+router.put('/fosterToAdopt', authorization, petController.fosterToAdopt);
+router["delete"]('/unsavePet/:petID', authorization, petController.unsavePet);
+router.post('/savePet', authorization, petController.savePet);
+router.post('/adoptPet', authorization, checkIfStillAvailable, petController.adoptPet);
+router.post('/fosterPet', authorization, checkIfStillAvailable, petController.fosterPet); // router.get(
 //     '/getPrivatePostToEdit',
 //     authorization,
 //     petController.getPrivatePostToEdit
@@ -78,6 +76,5 @@ var Schemas = require('../schemas/allSchemas'); // router.delete(
 //     authorization,
 //     petController.getPrivatePostID
 //     )
-
 
 module.exports = router;
