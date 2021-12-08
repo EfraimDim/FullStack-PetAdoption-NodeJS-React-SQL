@@ -9,10 +9,13 @@ const {
     createToken,
     decryptPwd,
     checkOldPasswordCorrect,
-    checkEmailValidProfileUpdate
+    checkEmailValidProfileUpdate,
+    checkAdminAccountCreated
 } = require('../middleware/middleware');
 
 const {query} = require('../models/queryModel')
+
+
  
 query(
     `CREATE TABLE IF NOT EXISTS users (
@@ -46,8 +49,10 @@ router.post(
     checkEmailValidSignUp,
     checkPasswordsMatch,
     encryptPwd,
-    usersController.signUpPublicUser
+    checkAdminAccountCreated,
+    usersController.signUpUser
 )
+
 
 router.put(
     '/updateProfile',

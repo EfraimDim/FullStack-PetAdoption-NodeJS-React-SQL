@@ -40,7 +40,7 @@ function ModalLoginSignUp() {
     const [phoneNumberAdmin, setPhoneNumberAdmin] = useState('');
     const [adminCode, setAdminCode] = useState('')
 
-    const { modalIsOpen, setModalIsOpen, setLoggedInInfo } = useContext(AppContext);
+    const { modalIsOpen, setModalIsOpen, setLoggedInInfo, setAdminInfo, setAdminLoggedIn } = useContext(AppContext);
 
 
     const handleEmail = (e) => {
@@ -137,7 +137,6 @@ function ModalLoginSignUp() {
             admin: true,
             adminCode: adminCode
           })
-          if(addUser.data === "Register Succesful!"){
           alert(addUser.data)
           setEmailAdmin('')
           setPasswordAdmin('')
@@ -145,11 +144,8 @@ function ModalLoginSignUp() {
           setFirstNameAdmin('')
           setLastNameAdmin('')
           setPhoneNumberAdmin('')
-        }
-          else{
-              alert("Something went wrong, please try again")
-          }
-
+          setAdminCode('')
+    
     }
     const login = async(e) => {
         e.preventDefault();
@@ -162,7 +158,13 @@ function ModalLoginSignUp() {
             const tokenSet = await localforage.setItem('token', JSON.stringify(loginUser.data.token));
             alert(loginUser.data.message)
             setModalIsOpen(false)
+            console.log(loginUser.data.userInfo)
+            if(loginUser.data.userInfo.admin_status === 1){
+            setAdminInfo(loginUser.data.userInfo)
+            setAdminLoggedIn(true)}
+            else{
             setLoggedInInfo(loginUser.data.userInfo)
+            }
             setPasswordLogin('')
             setEmailLogin('')
         }

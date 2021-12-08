@@ -6,9 +6,12 @@ import axios from 'axios'
 import localforage from 'localforage'
 
 
+
+
+
 function DisplayPet({pet, index, myPets, savedPets, allPets}) {
 
-    const { setSavedPetsArray, setMyPetsArray, myPetsArray, savedPetsArray, allPetsArray, setAllPetsArray, tokenFromLocalforage } = useContext(AppContext);
+    const { petImages, setSavedPetsArray, setMyPetsArray, myPetsArray, savedPetsArray, allPetsArray, setAllPetsArray, tokenFromLocalforage } = useContext(AppContext);
 
 
 
@@ -79,7 +82,7 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
     
     return < >  
     <div id={pet.pet_ID} className={styles.petInfo}>
-        <img src={pet.picture_path} />
+        <img className={styles.image} src={petImages[`${pet.picture_path}`].default} />
         <div className={styles.info}><span className={styles.field}>Name:</span> {pet.name}</div>
         <div className={styles.info}><span className={styles.field}>Status:</span> {pet.adoption_status}</div>
     <ShowMore
@@ -93,7 +96,7 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
                 <div className={styles.info}><span className={styles.field}>Breed:</span> {pet.breed}</div>
                 <div className={styles.info}><span className={styles.field}>Height:</span> {pet.height}cm</div>
                 <div className={styles.info}><span className={styles.field}>Weigth:</span> {pet.weight}kg</div>
-                <div className={styles.info}><span className={styles.field}>Colour:</span> {pet.colour}</div>
+                <div className={styles.info}><span className={styles.field}>Colour:</span> {pet.color}</div>
                 <div className={styles.info}><span className={styles.field}>Bio:</span> {pet.bio}</div>
                 <div className={styles.info}><span className={styles.field}>Hypoallergenic:</span> {pet.hypoallergenic === 1 ? <span>yes</span> : <span>no</span>}</div>
                 <div className={styles.info}><span className={styles.field}>Availability:</span> {pet.availability === 1 ? <span>Available</span> : <span>Unavailable</span>}</div>

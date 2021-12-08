@@ -193,9 +193,9 @@ exports.checkOldPasswordCorrect = function _callee3(req, res, next) {
         case 0:
           _context3.prev = 0;
           oldPassword = req.body.oldPassword;
-          userID = req.decoded;
+          userID = req.decoded.userID;
           _context3.next = 5;
-          return regeneratorRuntime.awrap(query("SELECT * FROM users WHERE user_ID = '".concat(userID.userID, "'")));
+          return regeneratorRuntime.awrap(query("SELECT * FROM users WHERE user_ID = '".concat(userID, "'")));
 
         case 5:
           userIDValidation = _context3.sent;
@@ -238,9 +238,9 @@ exports.checkEmailValidProfileUpdate = function _callee4(req, res, next) {
         case 0:
           _context4.prev = 0;
           email = req.body.email;
-          userID = req.decoded;
+          userID = req.decoded.userID;
           _context4.next = 5;
-          return regeneratorRuntime.awrap(query("SELECT * FROM users WHERE user_ID = '".concat(userID.userID, "'")));
+          return regeneratorRuntime.awrap(query("SELECT * FROM users WHERE user_ID = '".concat(userID, "'")));
 
         case 5:
           userIDValidation = _context4.sent;
@@ -315,6 +315,61 @@ exports.checkIfStillAvailable = function _callee5(req, res, next) {
         case 11:
         case "end":
           return _context5.stop();
+      }
+    }
+  }, null, null, [[0, 8]]);
+};
+
+exports.checkAdminAccountCreated = function (req, res, next) {
+  try {
+    var adminCode = req.body.adminCode;
+
+    if (adminCode) {
+      if (adminCode === process.env.ADMIN_CODE) {
+        next();
+      } else {
+        res.status(400).send('admin code not correct');
+        return;
+      }
+    } else {
+      next();
+    }
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+exports.checkAdminForAllReq = function _callee6(req, res, next) {
+  var userID, userIDValidation;
+  return regeneratorRuntime.async(function _callee6$(_context6) {
+    while (1) {
+      switch (_context6.prev = _context6.next) {
+        case 0:
+          _context6.prev = 0;
+          userID = req.decoded.userID;
+          _context6.next = 4;
+          return regeneratorRuntime.awrap(query("SELECT * FROM users WHERE user_ID = '".concat(userID, "'")));
+
+        case 4:
+          userIDValidation = _context6.sent;
+
+          if (userIDValidation[0].admin_status === 1) {
+            next();
+          } else {
+            res.status(400).send('you are not authorised to do that!!');
+          }
+
+          _context6.next = 11;
+          break;
+
+        case 8:
+          _context6.prev = 8;
+          _context6.t0 = _context6["catch"](0);
+          console.error(_context6.t0);
+
+        case 11:
+        case "end":
+          return _context6.stop();
       }
     }
   }, null, null, [[0, 8]]);

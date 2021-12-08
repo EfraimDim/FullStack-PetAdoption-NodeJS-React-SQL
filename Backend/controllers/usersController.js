@@ -15,7 +15,7 @@ exports.login = (req, res) => {
 
 }
 
-exports.signUpPublicUser = async(req, res) => {
+exports.signUpUser = async(req, res) => {
     try {
         const {email, password, firstName, lastName, phoneNumber, admin} = req.body;
         const date = new Date().toISOString().slice(0, 19).replace('T', ' ')
@@ -30,11 +30,12 @@ exports.signUpPublicUser = async(req, res) => {
     }
 }
 
+
 exports.updateUserPassword = async(req, res) => {
     try {
         const {password} = req.body;
-        const userID = req.decoded
-        await query(`UPDATE users SET password = "${password}" WHERE user_ID = "${userID.userID}"`)
+        const {userID } = req.decoded
+        await query(`UPDATE users SET password = "${password}" WHERE user_ID = "${userID}"`)
         res.send("Updated Password Succesfully!")
     } catch (e) {
         console.log(e)
@@ -47,8 +48,8 @@ exports.updateUserPassword = async(req, res) => {
 exports.updateUserProfile = async(req, res) => {
     try {
         const {email, firstName, lastName, phoneNumber, bio} = req.body;
-        const userID = req.decoded
-        const updateQuery = await query(`UPDATE users SET email = "${email}", first_name = "${firstName}", last_name = "${lastName}", phone = ${phoneNumber}, bio = "${bio}" WHERE user_ID = "${userID.userID}"`)
+        const {userID} = req.decoded
+        const updateQuery = await query(`UPDATE users SET email = "${email}", first_name = "${firstName}", last_name = "${lastName}", phone = ${phoneNumber}, bio = "${bio}" WHERE user_ID = "${userID}"`)
         res.send("Updated Profile Succesfully!")
     } catch (e) {
         console.log(e)

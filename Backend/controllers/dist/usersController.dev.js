@@ -22,7 +22,7 @@ exports.login = function (req, res) {
   }
 };
 
-exports.signUpPublicUser = function _callee(req, res) {
+exports.signUpUser = function _callee(req, res) {
   var _req$body, email, password, firstName, lastName, phoneNumber, admin, date, userID;
 
   return regeneratorRuntime.async(function _callee$(_context) {
@@ -65,9 +65,9 @@ exports.updateUserPassword = function _callee2(req, res) {
         case 0:
           _context2.prev = 0;
           password = req.body.password;
-          userID = req.decoded;
+          userID = req.decoded.userID;
           _context2.next = 5;
-          return regeneratorRuntime.awrap(query("UPDATE users SET password = \"".concat(password, "\" WHERE user_ID = \"").concat(userID.userID, "\"")));
+          return regeneratorRuntime.awrap(query("UPDATE users SET password = \"".concat(password, "\" WHERE user_ID = \"").concat(userID, "\"")));
 
         case 5:
           res.send("Updated Password Succesfully!");
@@ -99,9 +99,9 @@ exports.updateUserProfile = function _callee3(req, res) {
         case 0:
           _context3.prev = 0;
           _req$body2 = req.body, email = _req$body2.email, firstName = _req$body2.firstName, lastName = _req$body2.lastName, phoneNumber = _req$body2.phoneNumber, bio = _req$body2.bio;
-          userID = req.decoded;
+          userID = req.decoded.userID;
           _context3.next = 5;
-          return regeneratorRuntime.awrap(query("UPDATE users SET email = \"".concat(email, "\", first_name = \"").concat(firstName, "\", last_name = \"").concat(lastName, "\", phone = ").concat(phoneNumber, ", bio = \"").concat(bio, "\" WHERE user_ID = \"").concat(userID.userID, "\"")));
+          return regeneratorRuntime.awrap(query("UPDATE users SET email = \"".concat(email, "\", first_name = \"").concat(firstName, "\", last_name = \"").concat(lastName, "\", phone = ").concat(phoneNumber, ", bio = \"").concat(bio, "\" WHERE user_ID = \"").concat(userID, "\"")));
 
         case 5:
           updateQuery = _context3.sent;

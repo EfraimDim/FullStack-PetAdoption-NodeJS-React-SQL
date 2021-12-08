@@ -1,0 +1,1 @@
+"use strict";var multer=require("multer"),path=require("path"),storage=multer.diskStorage({destination:"../frontend/src/images",filename:function(e,t,a){a(null,"".concat(t.originalname,"-").concat(Date.now()).concat(path.extname(t.originalname)))}});module.exports={storage:storage};

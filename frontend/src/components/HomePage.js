@@ -15,9 +15,9 @@ import SearchPets from './SearchPets'
 
 function HomePage() {
 
-   const [sideBarOpen, setSideBarOpen] = useState(false)
+  
 
-    const { loggedInInfo, setLoggedInInfo, setSavedPetsArray, setMyPetsArray } = useContext(AppContext);
+    const { loggedInInfo, sideBarOpen,  onSetSidebarOpen, setSavedPetsArray, setMyPetsArray, signOut } = useContext(AppContext);
     const location = useLocation()
 
   
@@ -49,14 +49,9 @@ function HomePage() {
       getMyPets()
     },[])
 
-    const signOut = () => {
-        setLoggedInInfo(null)
-        localforage.setItem('token', '');
-    }
 
-    const onSetSidebarOpen = (open) => {
-        setSideBarOpen(open);
-      }
+
+ 
 
 
     return <div >

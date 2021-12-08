@@ -1,4 +1,5 @@
 const {query} = require('../models/queryModel')
+const { v4: uuidv4 } = require('uuid');
 
 
 
@@ -114,6 +115,27 @@ exports.advanceSearch = async(req, res) =>{
     }
 }
 
+
+
+exports.addPet = async(req, res) =>{
+    try {
+        const { filename } = req.file
+        const { type, adoptionStatus, name, colour, height, weight, bio, dietryRestrictions, hypoallergenic, breed } = req.body
+        const parseHeight = JSON.parse(height)
+        const parseWeight = JSON.parse(weight)
+        const parseHypoallergenic = JSON.parse(hypoallergenic)
+        let availability = false
+        if(adoptionStatus === "available"){
+            availability = true
+        }
+        const petID = uuidv4()
+        const date = new Date().toISOString().slice(0, 19).replace('T', ' ')
+        await query(`INSERT INTO pets (pet_ID, type, name, adoption_status, picture_path, height, weight, color, bio, hypoallergenic, availability, dietry_restrictions, breed, date_created) VALUES ('${petID}', '${type}', '${name}', '${adoptionStatus}', '${filename}', ${parseHeight}, ${parseWeight}, '${colour}', '${bio}', ${parseHypoallergenic}, ${availability}, '${dietryRestrictions}', '${breed}', '${date}')`)
+        res.send("Added Successfully!")
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 
 

@@ -3,6 +3,9 @@
 var _require = require('../models/queryModel'),
     query = _require.query;
 
+var _require2 = require('uuid'),
+    uuidv4 = _require2.v4;
+
 exports.getSavedPetsArray = function _callee(req, res) {
   var userID, savedPetsArray;
   return regeneratorRuntime.async(function _callee$(_context) {
@@ -352,4 +355,46 @@ exports.advanceSearch = function _callee11(req, res) {
       }
     }
   }, null, null, [[0, 9]]);
+};
+
+exports.addPet = function _callee12(req, res) {
+  var filename, _req$body, type, adoptionStatus, name, colour, height, weight, bio, dietryRestrictions, hypoallergenic, breed, parseHeight, parseWeight, parseHypoallergenic, availability, petID, date;
+
+  return regeneratorRuntime.async(function _callee12$(_context12) {
+    while (1) {
+      switch (_context12.prev = _context12.next) {
+        case 0:
+          _context12.prev = 0;
+          filename = req.file.filename;
+          _req$body = req.body, type = _req$body.type, adoptionStatus = _req$body.adoptionStatus, name = _req$body.name, colour = _req$body.colour, height = _req$body.height, weight = _req$body.weight, bio = _req$body.bio, dietryRestrictions = _req$body.dietryRestrictions, hypoallergenic = _req$body.hypoallergenic, breed = _req$body.breed;
+          parseHeight = JSON.parse(height);
+          parseWeight = JSON.parse(weight);
+          parseHypoallergenic = JSON.parse(hypoallergenic);
+          availability = false;
+
+          if (adoptionStatus === "available") {
+            availability = true;
+          }
+
+          petID = uuidv4();
+          date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+          _context12.next = 12;
+          return regeneratorRuntime.awrap(query("INSERT INTO pets (pet_ID, type, name, adoption_status, picture_path, height, weight, color, bio, hypoallergenic, availability, dietry_restrictions, breed, date_created) VALUES ('".concat(petID, "', '").concat(type, "', '").concat(name, "', '").concat(adoptionStatus, "', '").concat(filename, "', ").concat(parseHeight, ", ").concat(parseWeight, ", '").concat(colour, "', '").concat(bio, "', ").concat(parseHypoallergenic, ", ").concat(availability, ", '").concat(dietryRestrictions, "', '").concat(breed, "', '").concat(date, "')")));
+
+        case 12:
+          res.send("Added Successfully!");
+          _context12.next = 18;
+          break;
+
+        case 15:
+          _context12.prev = 15;
+          _context12.t0 = _context12["catch"](0);
+          console.log(_context12.t0);
+
+        case 18:
+        case "end":
+          return _context12.stop();
+      }
+    }
+  }, null, null, [[0, 15]]);
 };

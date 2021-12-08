@@ -23,7 +23,6 @@ exports.validateBody = (schema) => {
 
 exports.checkEmailValidSignUp = async(req, res, next) => {
   try {
-
     const { email } = req.body;
     const emailValidation = await query(`SELECT * FROM users WHERE email = '${email.toLowerCase()}'`)
     if (emailValidation.length === 0) {
@@ -125,8 +124,8 @@ exports.authorization = (req, res, next) => {
 exports.checkOldPasswordCorrect = async(req, res, next) => {
   try {
     const { oldPassword } = req.body;
-    const userID = req.decoded
-    const userIDValidation = await query(`SELECT * FROM users WHERE user_ID = '${userID.userID}'`)
+    const {userID} = req.decoded
+    const userIDValidation = await query(`SELECT * FROM users WHERE user_ID = '${userID}'`)
     if(userIDValidation.length === 0){
       res.status(400).send("user not found!");
     }else{
@@ -146,8 +145,8 @@ exports.checkOldPasswordCorrect = async(req, res, next) => {
 exports.checkEmailValidProfileUpdate = async(req, res, next) => {
   try {
     const { email } = req.body;
-    const userID = req.decoded
-    const userIDValidation = await query(`SELECT * FROM users WHERE user_ID = '${userID.userID}'`)
+    const {userID} = req.decoded
+    const userIDValidation = await query(`SELECT * FROM users WHERE user_ID = '${userID}'`)
     if(userIDValidation[0].email === email){
       next()
     }else{
@@ -172,6 +171,39 @@ exports.checkIfStillAvailable = async(req, res, next) => {
       res.send("Sorry this pet is no longer available")
     }
   }catch (e) {
+    console.error(e);
+  }
+};
+
+exports.checkAdminAccountCreated = (req, res, next) => {
+  try {
+    const { adminCode } = req.body;
+    if(adminCode){
+    if (adminCode === process.env.ADMIN_CODE) {
+  
+      next();
+    }else{
+      res.status(400).send('admin code not correct');
+      return
+     }}else{
+       next()
+     }
+    
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+exports.checkAdminForAllReq = async(req, res, next) => {
+  try {
+    const { userID } = req.decoded;
+    const userIDValidation = await query(`SELECT * FROM users WHERE user_ID = '${userID}'`)
+    if (userIDValidation[0].admin_status === 1) {
+      next();
+    } else {
+      res.status(400).send('you are not authorised to do that!!');
+    }
+  } catch (e) {
     console.error(e);
   }
 };

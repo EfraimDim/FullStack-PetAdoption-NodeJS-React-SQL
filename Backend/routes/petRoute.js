@@ -4,22 +4,27 @@ const petController = require('../controllers/petController');
 const {
     authorization,
     checkIfStillAvailable,
-    validateBody
+    validateBody,
+    checkAdminForAllReq
 } = require('../middleware/middleware');
 
 const {query} = require('../models/queryModel')
 
+const multer = require('multer');
+const {storage} = require('../models/multerModel');
+const upload = multer({ storage })
+
 query(
     `CREATE TABLE IF NOT EXISTS pets (
         id INT(200) AUTO_INCREMENT,
-        pet_ID VARCHAR(30) NOT NULL,
+        pet_ID VARCHAR(50) NOT NULL,
         type VARCHAR(30) NOT NULL,
         name VARCHAR(30) NOT NULL,
         adoption_status VARCHAR(30) NOT NULL,
         picture_path VARCHAR(100) NOT NULL,
-        height INT(10) NOT NULL,
-        weight INT(10) NOT NULL,
-        color VARCHAR(10) NOT NULL,
+        height INT(3) NOT NULL,
+        weight INT(3) NOT NULL,
+        color VARCHAR(30) NOT NULL,
         bio VARCHAR(200) NOT NULL,
         hypoallergenic BOOLEAN NOT NULL,
         availability BOOLEAN NOT NULL DEFAULT TRUE,
@@ -112,6 +117,14 @@ router.get(
     '/advanceSearch/:type/:adoptionStatus/:minHeight/:maxHeight/:minWeight/:maxWeight',
     authorization,
     petController.advanceSearch
+)
+
+router.post(
+    '/addPet',
+    authorization,
+    checkAdminForAllReq, 
+    upload.single('image'),
+    petController.addPet
 )
 
 

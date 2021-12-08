@@ -14,7 +14,8 @@ var _require = require('../middleware/middleware'),
     createToken = _require.createToken,
     decryptPwd = _require.decryptPwd,
     checkOldPasswordCorrect = _require.checkOldPasswordCorrect,
-    checkEmailValidProfileUpdate = _require.checkEmailValidProfileUpdate;
+    checkEmailValidProfileUpdate = _require.checkEmailValidProfileUpdate,
+    checkAdminAccountCreated = _require.checkAdminAccountCreated;
 
 var _require2 = require('../models/queryModel'),
     query = _require2.query;
@@ -30,7 +31,7 @@ var Schemas = require('../schemas/allSchemas');
 router.post('/login', // validateBody(Schemas.loginSchemaAJV),
 decryptPwd, createToken, usersController.login);
 router.post('/signUp', // validateBody(Schemas.registerSchemaAJV),
-checkEmailValidSignUp, checkPasswordsMatch, encryptPwd, usersController.signUpPublicUser);
+checkEmailValidSignUp, checkPasswordsMatch, encryptPwd, checkAdminAccountCreated, usersController.signUpUser);
 router.put('/updateProfile', // validateBody(Schemas.registerSchemaAJV),
 authorization, checkEmailValidProfileUpdate, usersController.updateUserProfile);
 router.put('/updatePassword', // validateBody(Schemas.registerSchemaAJV),
