@@ -26,8 +26,7 @@ exports.checkEmailValidSignUp = async(req, res, next) => {
 
     const { email } = req.body;
     const emailValidation = await query(`SELECT * FROM users WHERE email = '${email.toLowerCase()}'`)
-    emailValidation.push('not found')
-    if (emailValidation[0] === 'not found') {
+    if (emailValidation.length === 0) {
       next()
     } else {
       res.status(400).send('email already taken');
@@ -72,8 +71,7 @@ exports.decryptPwd = async(req, res, next) => {
   try {
     const { email, password } = req.body;
     const emailValidation = await query(`SELECT * FROM users WHERE email = '${email.toLowerCase()}'`)
-    emailValidation.push('not found')
-    if(emailValidation[0] === 'not found'){
+    if(emailValidation.length === 0){
       res.status(400).send("email not found!");
     }else{
     bcrypt.compare(password, emailValidation[0].password, (err, result) => {
@@ -129,8 +127,7 @@ exports.checkOldPasswordCorrect = async(req, res, next) => {
     const { oldPassword } = req.body;
     const userID = req.decoded
     const userIDValidation = await query(`SELECT * FROM users WHERE user_ID = '${userID.userID}'`)
-    userIDValidation.push('not found')
-    if(userIDValidation[0] === 'not found'){
+    if(userIDValidation.length === 0){
       res.status(400).send("user not found!");
     }else{
     bcrypt.compare(oldPassword, userIDValidation[0].password, (err, result) => {
@@ -155,8 +152,7 @@ exports.checkEmailValidProfileUpdate = async(req, res, next) => {
       next()
     }else{
     const emailValidation = await query(`SELECT * FROM users WHERE email = '${email.toLowerCase()}'`)
-    emailValidation.push('not found')
-    if (emailValidation[0] === 'not found') {
+    if (emailValidation.length === 0) {
       next()
     } else {
       res.status(400).send('email already taken');

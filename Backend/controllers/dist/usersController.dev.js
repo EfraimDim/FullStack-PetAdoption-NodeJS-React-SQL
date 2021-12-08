@@ -23,18 +23,18 @@ exports.login = function (req, res) {
 };
 
 exports.signUpPublicUser = function _callee(req, res) {
-  var _req$body, email, password, firstName, lastName, phoneNumber, date, userID;
+  var _req$body, email, password, firstName, lastName, phoneNumber, admin, date, userID;
 
   return regeneratorRuntime.async(function _callee$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
           _context.prev = 0;
-          _req$body = req.body, email = _req$body.email, password = _req$body.password, firstName = _req$body.firstName, lastName = _req$body.lastName, phoneNumber = _req$body.phoneNumber;
+          _req$body = req.body, email = _req$body.email, password = _req$body.password, firstName = _req$body.firstName, lastName = _req$body.lastName, phoneNumber = _req$body.phoneNumber, admin = _req$body.admin;
           date = new Date().toISOString().slice(0, 19).replace('T', ' ');
           userID = uuidv4();
           _context.next = 6;
-          return regeneratorRuntime.awrap(query("INSERT INTO users (user_ID, email, password, first_name, last_name, phone, admin_status, date_created, bio) VALUES ('".concat(userID, "', '").concat(email.toLowerCase(), "', '").concat(password, "', '").concat(firstName, "', '").concat(lastName, "', ").concat(phoneNumber, ", FALSE, '").concat(date, "', '')")));
+          return regeneratorRuntime.awrap(query("INSERT INTO users (user_ID, email, password, first_name, last_name, phone, admin_status, date_created, bio) VALUES ('".concat(userID, "', '").concat(email.toLowerCase(), "', '").concat(password, "', '").concat(firstName, "', '").concat(lastName, "', ").concat(phoneNumber, ", ").concat(admin, ", '").concat(date, "', '')")));
 
         case 6:
           res.send("Register Succesful!");

@@ -43,28 +43,27 @@ exports.checkEmailValidSignUp = function _callee(req, res, next) {
 
         case 4:
           emailValidation = _context.sent;
-          emailValidation.push('not found');
 
-          if (emailValidation[0] === 'not found') {
+          if (emailValidation.length === 0) {
             next();
           } else {
             res.status(400).send('email already taken');
           }
 
-          _context.next = 12;
+          _context.next = 11;
           break;
 
-        case 9:
-          _context.prev = 9;
+        case 8:
+          _context.prev = 8;
           _context.t0 = _context["catch"](0);
           console.error(_context.t0);
 
-        case 12:
+        case 11:
         case "end":
           return _context.stop();
       }
     }
-  }, null, null, [[0, 9]]);
+  }, null, null, [[0, 8]]);
 };
 
 exports.checkPasswordsMatch = function (req, res, next) {
@@ -115,9 +114,8 @@ exports.decryptPwd = function _callee2(req, res, next) {
 
         case 4:
           emailValidation = _context2.sent;
-          emailValidation.push('not found');
 
-          if (emailValidation[0] === 'not found') {
+          if (emailValidation.length === 0) {
             res.status(400).send("email not found!");
           } else {
             bcrypt.compare(password, emailValidation[0].password, function (err, result) {
@@ -132,20 +130,20 @@ exports.decryptPwd = function _callee2(req, res, next) {
             });
           }
 
-          _context2.next = 12;
+          _context2.next = 11;
           break;
 
-        case 9:
-          _context2.prev = 9;
+        case 8:
+          _context2.prev = 8;
           _context2.t0 = _context2["catch"](0);
           res.status(400).send(_context2.t0);
 
-        case 12:
+        case 11:
         case "end":
           return _context2.stop();
       }
     }
-  }, null, null, [[0, 9]]);
+  }, null, null, [[0, 8]]);
 };
 
 exports.createToken = function (req, res, next) {
@@ -201,9 +199,8 @@ exports.checkOldPasswordCorrect = function _callee3(req, res, next) {
 
         case 5:
           userIDValidation = _context3.sent;
-          userIDValidation.push('not found');
 
-          if (userIDValidation[0] === 'not found') {
+          if (userIDValidation.length === 0) {
             res.status(400).send("user not found!");
           } else {
             bcrypt.compare(oldPassword, userIDValidation[0].password, function (err, result) {
@@ -217,20 +214,20 @@ exports.checkOldPasswordCorrect = function _callee3(req, res, next) {
             });
           }
 
-          _context3.next = 13;
+          _context3.next = 12;
           break;
 
-        case 10:
-          _context3.prev = 10;
+        case 9:
+          _context3.prev = 9;
           _context3.t0 = _context3["catch"](0);
           res.status(400).send(_context3.t0);
 
-        case 13:
+        case 12:
         case "end":
           return _context3.stop();
       }
     }
-  }, null, null, [[0, 10]]);
+  }, null, null, [[0, 9]]);
 };
 
 exports.checkEmailValidProfileUpdate = function _callee4(req, res, next) {
@@ -254,7 +251,7 @@ exports.checkEmailValidProfileUpdate = function _callee4(req, res, next) {
           }
 
           next();
-          _context4.next = 15;
+          _context4.next = 14;
           break;
 
         case 10:
@@ -263,29 +260,28 @@ exports.checkEmailValidProfileUpdate = function _callee4(req, res, next) {
 
         case 12:
           emailValidation = _context4.sent;
-          emailValidation.push('not found');
 
-          if (emailValidation[0] === 'not found') {
+          if (emailValidation.length === 0) {
             next();
           } else {
             res.status(400).send('email already taken');
           }
 
-        case 15:
-          _context4.next = 20;
+        case 14:
+          _context4.next = 19;
           break;
 
-        case 17:
-          _context4.prev = 17;
+        case 16:
+          _context4.prev = 16;
           _context4.t0 = _context4["catch"](0);
           console.error(_context4.t0);
 
-        case 20:
+        case 19:
         case "end":
           return _context4.stop();
       }
     }
-  }, null, null, [[0, 17]]);
+  }, null, null, [[0, 16]]);
 };
 
 exports.checkIfStillAvailable = function _callee5(req, res, next) {

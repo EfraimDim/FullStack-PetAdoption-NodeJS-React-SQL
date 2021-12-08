@@ -23,6 +23,7 @@ const customStyles = {
 function ModalLoginSignUp() {
 
     const [isSignUp, setIsSignUp] = useState(true);
+    const [isAdmin, setIsAdmin] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [rePassword, setRePassword] = useState('');
@@ -31,6 +32,13 @@ function ModalLoginSignUp() {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [emailLogin, setEmailLogin] = useState('');
     const [passwordLogin, setPasswordLogin] = useState('');
+    const [emailAdmin, setEmailAdmin] = useState('');
+    const [passwordAdmin, setPasswordAdmin] = useState('');
+    const [rePasswordAdmin, setRePasswordAdmin] = useState('');
+    const [firstNameAdmin, setFirstNameAdmin] = useState('');
+    const [lastNameAdmin, setLastNameAdmin] = useState('');
+    const [phoneNumberAdmin, setPhoneNumberAdmin] = useState('');
+    const [adminCode, setAdminCode] = useState('')
 
     const { modalIsOpen, setModalIsOpen, setLoggedInInfo } = useContext(AppContext);
 
@@ -53,11 +61,37 @@ function ModalLoginSignUp() {
     const handlePhoneNumber = (e) => {
         setPhoneNumber(e.target.value)
     }
+    const handleEmailAdmin = (e) => {
+        setEmailAdmin(e.target.value)
+    }
+    const handlePasswordAdmin = (e) => {
+        setPasswordAdmin(e.target.value)
+    }
+    const handleRepasswordAdmin = (e) => {
+        setRePasswordAdmin(e.target.value)
+    }
+    const handleFirstNameAdmin = (e) => {
+        setFirstNameAdmin(e.target.value)
+    }
+    const handleLastNameAdmin = (e) => {
+        setLastNameAdmin(e.target.value)
+    }
+    const handlePhoneNumberAdmin = (e) => {
+        setPhoneNumberAdmin(e.target.value)
+    }
+    const handleAdminCode = (e) => {
+        setAdminCode(e.target.value)
+    }
     const navSignUp = () => {
         setIsSignUp(true)
+        setIsAdmin(false)
     }
     const navLogin = () => {
         setIsSignUp(false)
+        setIsAdmin(false)
+    }
+    const navAdmin = () => {
+        setIsAdmin(true)
     }
     const handleEmailLogin = (e) => {
         setEmailLogin(e.target.value)
@@ -74,7 +108,8 @@ function ModalLoginSignUp() {
             rePassword: rePassword,
             firstName: firstName,
             lastName: lastName,
-            phoneNumber: phoneNumber
+            phoneNumber: phoneNumber,
+            admin: false
           })
           if(addUser.data === "Register Succesful!"){
           alert(addUser.data)
@@ -84,6 +119,32 @@ function ModalLoginSignUp() {
           setFirstName('')
           setLastName('')
           setPhoneNumber('')
+        }
+          else{
+              alert("Something went wrong, please try again")
+          }
+
+    }
+    const signUpAdmin = async(e) => {
+        e.preventDefault();
+        const addUser = await axios.post("/users/signUp", {
+            email: emailAdmin,
+            password: passwordAdmin,
+            rePassword: rePasswordAdmin,
+            firstName: firstNameAdmin,
+            lastName: lastNameAdmin,
+            phoneNumber: phoneNumberAdmin,
+            admin: true,
+            adminCode: adminCode
+          })
+          if(addUser.data === "Register Succesful!"){
+          alert(addUser.data)
+          setEmailAdmin('')
+          setPasswordAdmin('')
+          setRePasswordAdmin('')
+          setFirstNameAdmin('')
+          setLastNameAdmin('')
+          setPhoneNumberAdmin('')
         }
           else{
               alert("Something went wrong, please try again")
@@ -129,7 +190,20 @@ function ModalLoginSignUp() {
         <nav className={styles.navBar}>
             <div onClick={navSignUp} className={styles.signUp}>Sign Up</div>
             <div onClick={navLogin} className={styles.login}>Login</div>
+            <div onClick={navAdmin} className={styles.login}>Admin</div>
         </nav>
+        {isAdmin  ? <>
+        <h2 className={styles.header}>Admin</h2> 
+        <form onSubmit={signUpAdmin} className={styles.form}>
+        <input className={styles.input} required type="email" value={emailAdmin} onChange={handleEmailAdmin} placeholder="email address" />
+        <input className={styles.input} required type="password" value={passwordAdmin} onChange={handlePasswordAdmin} placeholder="password" />
+        <input className={styles.input} required type="password" value={rePasswordAdmin} onChange={handleRepasswordAdmin} placeholder="re password" />
+        <input className={styles.input} required type="text" value={firstNameAdmin} onChange={handleFirstNameAdmin} placeholder="first name" />
+        <input className={styles.input} required type="text" value={lastNameAdmin} onChange={handleLastNameAdmin} placeholder="last name" />
+        <input className={styles.input} required type="tel" value={phoneNumberAdmin} onChange={handlePhoneNumberAdmin} placeholder="phone number" />
+        <input className={styles.input} required type="password" value={adminCode} onChange={handleAdminCode} placeholder="admin code" />
+        <button className={styles.submit} type="submit">Sign Up</button>
+       </form> </> :<>
         {isSignUp ? <>
         <h2 className={styles.header}>SignUp</h2> 
         <form onSubmit={signUp} className={styles.form}>
@@ -145,7 +219,7 @@ function ModalLoginSignUp() {
              <input className={styles.input} required type="email" value={emailLogin} onChange={handleEmailLogin} placeholder="email address" />
              <input className={styles.input} required type="password" value={passwordLogin} onChange={handlePasswordLogin} placeholder="password" />
              <button className={styles.submit} type="submit">Login</button>
-            </form>}
+            </form>}</>}
         <button onClick={(e)=>closeModal(e)}>close</button>
       </Modal>
   

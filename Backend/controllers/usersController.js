@@ -17,10 +17,10 @@ exports.login = (req, res) => {
 
 exports.signUpPublicUser = async(req, res) => {
     try {
-        const {email, password, firstName, lastName, phoneNumber} = req.body;
+        const {email, password, firstName, lastName, phoneNumber, admin} = req.body;
         const date = new Date().toISOString().slice(0, 19).replace('T', ' ')
         const userID = uuidv4()
-        await query(`INSERT INTO users (user_ID, email, password, first_name, last_name, phone, admin_status, date_created, bio) VALUES ('${userID}', '${email.toLowerCase()}', '${password}', '${firstName}', '${lastName}', ${phoneNumber}, FALSE, '${date}', '')`)
+        await query(`INSERT INTO users (user_ID, email, password, first_name, last_name, phone, admin_status, date_created, bio) VALUES ('${userID}', '${email.toLowerCase()}', '${password}', '${firstName}', '${lastName}', ${phoneNumber}, ${admin}, '${date}', '')`)
         res.send("Register Succesful!")
     } catch (e) {
         console.log(e)
