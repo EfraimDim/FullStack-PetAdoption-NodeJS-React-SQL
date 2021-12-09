@@ -12,12 +12,17 @@ import ViewUsers from './ViewUsers'
 function AdminPage() {
 
 
-  const { sideBarOpen,  onSetSidebarOpen, signOut } = useContext(AppContext);
+
+  const {  sideBarOpen,  onSetSidebarOpen, signOut } = useContext(AppContext);
   const location = useLocation()
 
   useEffect(()=>{
     location.pathname = "/"
   },[])
+
+
+
+
 
 
   return (
@@ -27,8 +32,8 @@ function AdminPage() {
 <div>
  <Sidebar
         sidebar={<>
-        <Link to="/"><div onClick={() => onSetSidebarOpen(false)} className={styles.sideBarButtons}>Add Pet</div></Link>
-        <Link to="/editPets"><div onClick={() => onSetSidebarOpen(false)} className={styles.sideBarButtons}>Edit Pets</div></Link>
+        <Link to="/"><div onClick={() => onSetSidebarOpen(false)} className={styles.sideBarButtons}>Edit Pets</div></Link>
+        <Link to="/addPets"><div onClick={() => onSetSidebarOpen(false)} className={styles.sideBarButtons}>Add Pet</div></Link>
         <Link to="/viewUsers"><div onClick={() => onSetSidebarOpen(false)} className={styles.sideBarButtons}>Users</div></Link>
         </>
     }
@@ -48,8 +53,8 @@ function AdminPage() {
       <div className={styles.index}>
       <Routes>
     <Route path="/viewUsers" element={<ViewUsers/>}></Route>
-    <Route path="/editPets" element={<EditPet/>}></Route>
-    <Route path='/' element={<AddPet/>}></Route>
+    <Route path='/addPets' element={<AddPet/>}></Route>
+    <Route path="/" element={<EditPet/>}></Route>
     </Routes>
     </div>
 

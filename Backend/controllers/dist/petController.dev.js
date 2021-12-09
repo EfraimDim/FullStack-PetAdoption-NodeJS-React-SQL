@@ -398,3 +398,81 @@ exports.addPet = function _callee12(req, res) {
     }
   }, null, null, [[0, 15]]);
 };
+
+exports.editPetWithNewPhoto = function _callee13(req, res) {
+  var filename, _req$body2, petID, type, adoptionStatus, name, colour, height, weight, bio, dietryRestrictions, hypoallergenic, breed, parseHeight, parseWeight, parseHypoallergenic, availability, updatePet;
+
+  return regeneratorRuntime.async(function _callee13$(_context13) {
+    while (1) {
+      switch (_context13.prev = _context13.next) {
+        case 0:
+          _context13.prev = 0;
+          filename = req.file.filename;
+          _req$body2 = req.body, petID = _req$body2.petID, type = _req$body2.type, adoptionStatus = _req$body2.adoptionStatus, name = _req$body2.name, colour = _req$body2.colour, height = _req$body2.height, weight = _req$body2.weight, bio = _req$body2.bio, dietryRestrictions = _req$body2.dietryRestrictions, hypoallergenic = _req$body2.hypoallergenic, breed = _req$body2.breed;
+          parseHeight = JSON.parse(height);
+          parseWeight = JSON.parse(weight);
+          parseHypoallergenic = JSON.parse(hypoallergenic);
+          availability = false;
+
+          if (adoptionStatus === "available") {
+            availability = true;
+          }
+
+          _context13.next = 10;
+          return regeneratorRuntime.awrap(query("UPDATE pets SET type = \"".concat(type, "\", adoption_status = \"").concat(adoptionStatus, "\", name = \"").concat(name, "\", color = \"").concat(colour, "\", picture_path = \"").concat(filename, "\", height = ").concat(parseHeight, ", weight = ").concat(parseWeight, ", bio = \"").concat(bio, "\", dietry_restrictions = \"").concat(dietryRestrictions, "\", hypoallergenic = ").concat(parseHypoallergenic, ", breed = \"").concat(breed, "\", availability = ").concat(availability, "  WHERE pet_ID = \"").concat(petID, "\"")));
+
+        case 10:
+          updatePet = _context13.sent;
+          res.send("Updated Successfully!");
+          _context13.next = 17;
+          break;
+
+        case 14:
+          _context13.prev = 14;
+          _context13.t0 = _context13["catch"](0);
+          console.log(_context13.t0);
+
+        case 17:
+        case "end":
+          return _context13.stop();
+      }
+    }
+  }, null, null, [[0, 14]]);
+};
+
+exports.editPetWithoutNewPhoto = function _callee14(req, res) {
+  var _req$body3, petID, type, adoptionStatus, name, colour, height, weight, bio, dietryRestrictions, hypoallergenic, breed, availability, updatePet;
+
+  return regeneratorRuntime.async(function _callee14$(_context14) {
+    while (1) {
+      switch (_context14.prev = _context14.next) {
+        case 0:
+          _context14.prev = 0;
+          _req$body3 = req.body, petID = _req$body3.petID, type = _req$body3.type, adoptionStatus = _req$body3.adoptionStatus, name = _req$body3.name, colour = _req$body3.colour, height = _req$body3.height, weight = _req$body3.weight, bio = _req$body3.bio, dietryRestrictions = _req$body3.dietryRestrictions, hypoallergenic = _req$body3.hypoallergenic, breed = _req$body3.breed;
+          availability = false;
+
+          if (adoptionStatus === "available") {
+            availability = true;
+          }
+
+          _context14.next = 6;
+          return regeneratorRuntime.awrap(query("UPDATE pets SET type = \"".concat(type, "\", adoption_status = \"").concat(adoptionStatus, "\", name = \"").concat(name, "\", color = \"").concat(colour, "\", height = ").concat(height, ", weight = ").concat(weight, ", bio = \"").concat(bio, "\", dietry_restrictions = \"").concat(dietryRestrictions, "\", hypoallergenic = ").concat(hypoallergenic, ", breed = \"").concat(breed, "\", availability = ").concat(availability, "  WHERE pet_ID = \"").concat(petID, "\"")));
+
+        case 6:
+          updatePet = _context14.sent;
+          res.send("Updated Successfully!");
+          _context14.next = 13;
+          break;
+
+        case 10:
+          _context14.prev = 10;
+          _context14.t0 = _context14["catch"](0);
+          console.log(_context14.t0);
+
+        case 13:
+        case "end":
+          return _context14.stop();
+      }
+    }
+  }, null, null, [[0, 10]]);
+};

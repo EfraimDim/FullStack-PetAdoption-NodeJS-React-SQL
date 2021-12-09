@@ -10,7 +10,8 @@ const {
     decryptPwd,
     checkOldPasswordCorrect,
     checkEmailValidProfileUpdate,
-    checkAdminAccountCreated
+    checkAdminAccountCreated,
+    checkAdminForAllReq
 } = require('../middleware/middleware');
 
 const {query} = require('../models/queryModel')
@@ -70,6 +71,29 @@ router.put(
     encryptPwd,
     checkOldPasswordCorrect,
     usersController.updateUserPassword
+)
+
+router.get(
+    '/allPublicUsers',
+    // validateBody(Schemas.registerSchemaAJV),
+    authorization,
+    checkAdminForAllReq,
+    usersController.getAllPublicUsers
+)
+
+router.get(
+    '/allAdminUsers',
+    // validateBody(Schemas.registerSchemaAJV),
+    authorization,
+    checkAdminForAllReq,
+    usersController.getAllAdminUsers
+)
+router.get(
+    '/viewedUsersPets',
+    // validateBody(Schemas.registerSchemaAJV),
+    authorization,
+    checkAdminForAllReq,
+    usersController.getViewedUsersPets
 )
 
 

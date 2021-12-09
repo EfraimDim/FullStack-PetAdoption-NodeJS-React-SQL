@@ -14,7 +14,7 @@ function MyPetsPage() {
     const [viewYourPets, setViewYourPets] = useState(false)
     const [viewSavedPets, setViewSavedPets] = useState(false)
 
-    const { loggedInInfo, savedPetsArray, myPetsArray } = useContext(AppContext);
+    const { savedPetsArray, myPetsArray } = useContext(AppContext);
 
     useEffect(()=>{
         setViewYourPets(false)

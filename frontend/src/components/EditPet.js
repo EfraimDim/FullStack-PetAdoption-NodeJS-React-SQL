@@ -1,20 +1,18 @@
-import styles from '../styles/AdminPage.module.css';
 import { AppContext } from "../components/AppContext"
-import {useState, useEffect, useContext} from "react"
-import axios from 'axios'
-import localforage from 'localforage'
-import Sidebar from "react-sidebar";
-import { Routes, Route, Link, useLocation } from "react-router-dom";
+import {useContext} from "react"
+import SearchPets from './SearchPets'
+import EditPetForm from './EditPetForm'
 
 function EditPet() {
 
 
-  const {  } = useContext(AppContext);
-
+  const { petDetailsToEdit } = useContext(AppContext);
 
   return (
     <div>
-  edit pet
+      {petDetailsToEdit ? 
+        <EditPetForm />
+       :<SearchPets />}
     </div>
 
   );

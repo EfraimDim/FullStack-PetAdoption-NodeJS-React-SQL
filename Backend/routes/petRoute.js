@@ -127,6 +127,21 @@ router.post(
     petController.addPet
 )
 
+router.put(
+    '/editPetWithoutNewPhoto',
+    authorization,
+    checkAdminForAllReq, 
+    petController.editPetWithoutNewPhoto
+)
+
+router.put(
+    '/editPetWithNewPhoto',
+    authorization,
+    checkAdminForAllReq,
+    upload.single('image'), 
+    petController.editPetWithNewPhoto
+)
+
 
 
 

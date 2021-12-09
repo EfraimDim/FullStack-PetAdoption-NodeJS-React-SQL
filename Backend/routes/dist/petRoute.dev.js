@@ -53,4 +53,6 @@ router.post('/fosterPet', authorization, checkIfStillAvailable, petController.fo
 router.get('/basicSearch', authorization, petController.basicSearch);
 router.get('/advanceSearch/:type/:adoptionStatus/:minHeight/:maxHeight/:minWeight/:maxWeight', authorization, petController.advanceSearch);
 router.post('/addPet', authorization, checkAdminForAllReq, upload.single('image'), petController.addPet);
+router.put('/editPetWithoutNewPhoto', authorization, checkAdminForAllReq, petController.editPetWithoutNewPhoto);
+router.put('/editPetWithNewPhoto', authorization, checkAdminForAllReq, upload.single('image'), petController.editPetWithNewPhoto);
 module.exports = router;

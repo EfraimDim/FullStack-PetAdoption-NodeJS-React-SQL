@@ -124,3 +124,100 @@ exports.updateUserProfile = function _callee3(req, res) {
     }
   }, null, null, [[0, 9]]);
 };
+
+exports.getAllPublicUsers = function _callee4(req, res) {
+  var publicUsersArray;
+  return regeneratorRuntime.async(function _callee4$(_context4) {
+    while (1) {
+      switch (_context4.prev = _context4.next) {
+        case 0:
+          _context4.prev = 0;
+          _context4.next = 3;
+          return regeneratorRuntime.awrap(query("SELECT * FROM users where admin_status = 0"));
+
+        case 3:
+          publicUsersArray = _context4.sent;
+          res.send(publicUsersArray);
+          _context4.next = 11;
+          break;
+
+        case 7:
+          _context4.prev = 7;
+          _context4.t0 = _context4["catch"](0);
+          console.log(_context4.t0);
+          res.status(400).send({
+            error: _context4.t0.message
+          });
+
+        case 11:
+        case "end":
+          return _context4.stop();
+      }
+    }
+  }, null, null, [[0, 7]]);
+};
+
+exports.getAllAdminUsers = function _callee5(req, res) {
+  var adminUsersArray;
+  return regeneratorRuntime.async(function _callee5$(_context5) {
+    while (1) {
+      switch (_context5.prev = _context5.next) {
+        case 0:
+          _context5.prev = 0;
+          _context5.next = 3;
+          return regeneratorRuntime.awrap(query("SELECT * FROM users where admin_status = 1"));
+
+        case 3:
+          adminUsersArray = _context5.sent;
+          res.send(adminUsersArray);
+          _context5.next = 11;
+          break;
+
+        case 7:
+          _context5.prev = 7;
+          _context5.t0 = _context5["catch"](0);
+          console.log(_context5.t0);
+          res.status(400).send({
+            error: _context5.t0.message
+          });
+
+        case 11:
+        case "end":
+          return _context5.stop();
+      }
+    }
+  }, null, null, [[0, 7]]);
+};
+
+exports.getViewedUsersPets = function _callee6(req, res) {
+  var viewedUserID, viewedUsersPets;
+  return regeneratorRuntime.async(function _callee6$(_context6) {
+    while (1) {
+      switch (_context6.prev = _context6.next) {
+        case 0:
+          _context6.prev = 0;
+          viewedUserID = req.query.viewedUserID;
+          _context6.next = 4;
+          return regeneratorRuntime.awrap(query("SELECT * FROM pets JOIN adoptedPets on pets.pet_ID = adoptedPets.pet_ID WHERE user_ID = \"".concat(viewedUserID, "\"")));
+
+        case 4:
+          viewedUsersPets = _context6.sent;
+          res.send(viewedUsersPets);
+          _context6.next = 12;
+          break;
+
+        case 8:
+          _context6.prev = 8;
+          _context6.t0 = _context6["catch"](0);
+          console.log(_context6.t0);
+          res.status(400).send({
+            error: _context6.t0.message
+          });
+
+        case 12:
+        case "end":
+          return _context6.stop();
+      }
+    }
+  }, null, null, [[0, 8]]);
+};

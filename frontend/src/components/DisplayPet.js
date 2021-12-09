@@ -3,7 +3,7 @@ import {AppContext} from "./AppContext"
 import styles from "../styles/DisplayPet.module.css"
 import ShowMore from 'react-show-more';
 import axios from 'axios'
-import localforage from 'localforage'
+
 
 
 
@@ -11,7 +11,7 @@ import localforage from 'localforage'
 
 function DisplayPet({pet, index, myPets, savedPets, allPets}) {
 
-    const { petImages, setSavedPetsArray, setMyPetsArray, myPetsArray, savedPetsArray, allPetsArray, setAllPetsArray, tokenFromLocalforage } = useContext(AppContext);
+    const { loggedInInfo, petImages, setSavedPetsArray, setMyPetsArray, myPetsArray, savedPetsArray, allPetsArray, setAllPetsArray, tokenFromLocalforage,  setPetDetailsToEdit, adminInfo } = useContext(AppContext);
 
 
 
@@ -78,6 +78,14 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
         setMyPetsArray([...myPetsArray, pet])
     }
 
+    const goToEditPage = (pet) => {
+        if(pet.hypoallergenic == 1)
+        pet.hypoallergenic = true
+        else
+        pet.hypoallergenic = false
+        setPetDetailsToEdit(pet)
+    }
+
 
     
     return < >  
@@ -103,29 +111,31 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
                 <div className={styles.info}><span className={styles.field}>Dietry Restrictions:</span> {pet.dietry_restrictions}</div>
                 <div className={styles.info}><span className={styles.field}>Date Posted:</span> {pet.date_created}</div>
 
-                {myPets && pet.adoption_status === "fostered" && <div onClick={() =>fosterToAdopt(pet.pet_ID, index)}>Adopt</div>}
+                {myPets && loggedInInfo && pet.adoption_status === "fostered" && <div onClick={() =>fosterToAdopt(pet.pet_ID, index)}>Adopt</div>}
 
-                {myPets && <div onClick={() =>returnForAdoption(pet.pet_ID, index)}>Return to Adoption Centre</div>}
+                {loggedInInfo && myPets && <div onClick={() =>returnForAdoption(pet.pet_ID, index)}>Return to Adoption Centre</div>}
 
-                {savedPets && <div onClick={() =>unsavePet(pet.pet_ID, index)}>Unsave</div>}
+                {loggedInInfo && savedPets &&  <div onClick={() =>unsavePet(pet.pet_ID, index)}>Unsave</div>}
 
-                {allPets && savedPetsArray.filter(savedPet => savedPet.pet_ID === pet.pet_ID).length === 0 && 
+                {allPets && loggedInInfo && savedPetsArray.filter(savedPet => savedPet.pet_ID === pet.pet_ID).length === 0 && 
                 <div onClick={() =>savePet(pet.pet_ID, pet)}>Save For Later</div>}
 
-                {allPets && savedPetsArray.filter(savedPet => savedPet.pet_ID === pet.pet_ID).length !== 0 && 
+                {loggedInInfo && allPets && savedPetsArray.filter(savedPet => savedPet.pet_ID === pet.pet_ID).length !== 0 && 
                 <div onClick={() =>unsavePet(pet.pet_ID, index)}>Unsave</div>}
 
-                {allPets && pet.adoption_status === "available" && <>
+                {loggedInInfo && allPets && pet.adoption_status === "available" && <>
                 <div onClick={() =>adoptPet(pet.pet_ID, pet)}>Adopt</div>
                 <div onClick={() =>fosterPet(pet.pet_ID, pet)}>Foster</div></>} 
 
-                {allPets && myPetsArray.filter(myPet => myPet.pet_ID === pet.pet_ID).length !== 0 && pet.adoption_status === "fostered" &&
+                {loggedInInfo && allPets && myPetsArray.filter(myPet => myPet.pet_ID === pet.pet_ID).length !== 0 && pet.adoption_status === "fostered" &&
                 <div onClick={() =>fosterToAdopt(pet.pet_ID, index)}>Adopt</div>}
+
+             
 
                 </div>}
             
             </ShowMore>
-             
+            {adminInfo &&  <div onClick={() => goToEditPage(pet)}>Edit Pet</div>}
                
              
                 </div>

@@ -1,22 +1,41 @@
 import styles from '../styles/AdminPage.module.css';
 import { AppContext } from "../components/AppContext"
-import {useState, useEffect, useContext} from "react"
-import axios from 'axios'
-import localforage from 'localforage'
-import Sidebar from "react-sidebar";
-import { Routes, Route, Link, useLocation } from "react-router-dom";
+import DisplayUser from './DisplayUser'
+import { useContext } from "react"
+import ViewUserPets from './ViewUserPets'
+
 
 function ViewUsers() {
 
+  
 
-  const {  } = useContext(AppContext);
+  const { allPublicUsersArray, allAdminUsersArray, viewedUserDetails } = useContext(AppContext);
 
 
-  return (
-    <div>
-  view users
-    </div>
+  return (<>
+    {viewedUserDetails ? <ViewUserPets />  :<div>
+          <h1>Admin Users</h1>
+          <div>
+          {allAdminUsersArray.map((user, index) => {  
+                    return   (
+                            <div className={styles.userHolder} key={index}>
+                            <DisplayUser  user= {user}/>
+                            </div>
+                            )})}
+            </div>
+          <h1>Public Users</h1>
+          <div>
+          {allPublicUsersArray.map((user, index) => {  
+                    return   (
+                            <div className={styles.userHolder} key={index}>
+                            <DisplayUser  user= {user}/>
+                            </div>
+                            )})}
+            </div>
+    </div>}
 
+
+</>
   );
 }
 

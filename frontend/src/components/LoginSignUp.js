@@ -40,7 +40,7 @@ function ModalLoginSignUp() {
     const [phoneNumberAdmin, setPhoneNumberAdmin] = useState('');
     const [adminCode, setAdminCode] = useState('')
 
-    const { modalIsOpen, setModalIsOpen, setLoggedInInfo, setAdminInfo, setAdminLoggedIn } = useContext(AppContext);
+    const { modalIsOpen, setModalIsOpen, setLoggedInInfo, setAdminInfo, setAdminLoggedIn, setAllPublicUsersArray, setAllAdminUsersArray, tokenFromLocalforage } = useContext(AppContext);
 
 
     const handleEmail = (e) => {
@@ -111,7 +111,6 @@ function ModalLoginSignUp() {
             phoneNumber: phoneNumber,
             admin: false
           })
-          if(addUser.data === "Register Succesful!"){
           alert(addUser.data)
           setEmail('')
           setPassword('')
@@ -119,10 +118,7 @@ function ModalLoginSignUp() {
           setFirstName('')
           setLastName('')
           setPhoneNumber('')
-        }
-          else{
-              alert("Something went wrong, please try again")
-          }
+
 
     }
     const signUpAdmin = async(e) => {
@@ -147,6 +143,18 @@ function ModalLoginSignUp() {
           setAdminCode('')
     
     }
+    const getAllPublicUsers = async() => {
+        const headers = await tokenFromLocalforage()
+        const allPublicUsers = await axios.get('/users/allPublicUsers', {headers:headers})
+        setAllPublicUsersArray(allPublicUsers.data)
+      }
+    
+      const getAllAdminUsers = async() => {
+        const headers = await tokenFromLocalforage()
+        const allAdminUsers = await axios.get('/users/allAdminUsers', {headers:headers})
+        setAllAdminUsersArray(allAdminUsers.data)
+      }
+
     const login = async(e) => {
         e.preventDefault();
         const loginUser = await axios.post("/users/login", {
@@ -154,33 +162,28 @@ function ModalLoginSignUp() {
             password: passwordLogin,
          
           })
-        if(loginUser.data.message === "Login Success!"){
-            const tokenSet = await localforage.setItem('token', JSON.stringify(loginUser.data.token));
+            await localforage.setItem('token', JSON.stringify(loginUser.data.token));
+            if(loginUser.data.userInfo.admin_status === 1){
+                await getAllPublicUsers()
+                await getAllAdminUsers()
+                setAdminInfo(loginUser.data.userInfo)
+                setAdminLoggedIn(true)}
+                else{
+                setLoggedInInfo(loginUser.data.userInfo)
+                }
             alert(loginUser.data.message)
             setModalIsOpen(false)
-            console.log(loginUser.data.userInfo)
-            if(loginUser.data.userInfo.admin_status === 1){
-            setAdminInfo(loginUser.data.userInfo)
-            setAdminLoggedIn(true)}
-            else{
-            setLoggedInInfo(loginUser.data.userInfo)
-            }
             setPasswordLogin('')
             setEmailLogin('')
-        }
-       else{
-           alert("Oops something went wrong, please try again!")
-       }
-
     }
 
  
 
-  function closeModal(e) { 
-    e.stopPropagation()
-    setIsSignUp(true)
-    setModalIsOpen(false);
-  }
+        function closeModal(e) { 
+            e.stopPropagation()
+            setIsSignUp(true)
+            setModalIsOpen(false);
+        }
 
     return <div >
           <Modal 

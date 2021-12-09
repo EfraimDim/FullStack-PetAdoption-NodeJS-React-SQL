@@ -102,8 +102,8 @@ function AddPet() {
                 <input required className={styles.input} min={0} max={50} type="number" value={weight} onChange={handleWeight} placeholder="weight (kg)" />
                 <input required className={styles.input} type="text" value={bio} onChange={handleBio} placeholder="pet bio" />
                 <select required value={hypoallergenic} onChange={handleHypoallergenic}>
-                    <option defaultValue value={false}>False</option>
-                    <option value={true}>True</option>
+                    <option defaultValue value={false}>No</option>
+                    <option value={true}>Yes</option>
                 </select>
                 <input required className={styles.input} type="text" value={dietryRestrictions} onChange={handleDietryRestrictions} placeholder="dietry restrictions" />
                 <input required className={styles.input} type="text" value={breed} onChange={handleBreed} placeholder="breed" />

@@ -15,7 +15,8 @@ var _require = require('../middleware/middleware'),
     decryptPwd = _require.decryptPwd,
     checkOldPasswordCorrect = _require.checkOldPasswordCorrect,
     checkEmailValidProfileUpdate = _require.checkEmailValidProfileUpdate,
-    checkAdminAccountCreated = _require.checkAdminAccountCreated;
+    checkAdminAccountCreated = _require.checkAdminAccountCreated,
+    checkAdminForAllReq = _require.checkAdminForAllReq;
 
 var _require2 = require('../models/queryModel'),
     query = _require2.query;
@@ -36,4 +37,10 @@ router.put('/updateProfile', // validateBody(Schemas.registerSchemaAJV),
 authorization, checkEmailValidProfileUpdate, usersController.updateUserProfile);
 router.put('/updatePassword', // validateBody(Schemas.registerSchemaAJV),
 authorization, checkPasswordsMatch, encryptPwd, checkOldPasswordCorrect, usersController.updateUserPassword);
+router.get('/allPublicUsers', // validateBody(Schemas.registerSchemaAJV),
+authorization, checkAdminForAllReq, usersController.getAllPublicUsers);
+router.get('/allAdminUsers', // validateBody(Schemas.registerSchemaAJV),
+authorization, checkAdminForAllReq, usersController.getAllAdminUsers);
+router.get('/viewedUsersPets', // validateBody(Schemas.registerSchemaAJV),
+authorization, checkAdminForAllReq, usersController.getViewedUsersPets);
 module.exports = router;

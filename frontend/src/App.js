@@ -18,33 +18,36 @@ function App() {
   const [savedPetsArray, setSavedPetsArray] = useState([])
   const [myPetsArray, setMyPetsArray] = useState([])
   const [petImages, setPetImages] = useState([])
+  const [allPublicUsersArray, setAllPublicUsersArray] = useState([])
+  const [allAdminUsersArray, setAllAdminUsersArray] = useState([])
+  const [viewedUserDetails, setViewedUserDetails] = useState(null)
+  const [petDetailsToEdit, setPetDetailsToEdit] = useState(null)
 
-  function importAll(r) {
+
+  function importAllImages(r) {
     let images = {};
     r.keys().forEach((item, index) => { images[item.replace('./', '')] = r(item); });
     return images
   }
 
   useEffect(()=>{
-    const images = importAll(require.context('./images', false, /\.(png|jpe?g|svg)$/));
+    const images = importAllImages(require.context('./images', false, /\.(png|jpe?g|svg)$/));
     setPetImages(images)
-
   },[])
   
-  
-  
-  
-
-
+ 
   const getAllPets = async() => {
     const allPets = await axios.get('/pets/allPets')
     setAllPetsArray(allPets.data)
   }
 
 
+
   useEffect(()=>{
     getAllPets()
   },[])
+
+
 
   const location = useLocation()
   
@@ -60,6 +63,7 @@ function App() {
 }
 
   const signOut = () => {
+    location.pathname = "/"
     setLoggedInInfo(null)
     setAdminInfo(null)
     setAdminLoggedIn(false)
@@ -96,7 +100,17 @@ function App() {
       sideBarOpen,
       setSideBarOpen,
       onSetSidebarOpen,
-      petImages
+      petImages,
+      setAllPublicUsersArray,
+      setAllAdminUsersArray,
+      allAdminUsersArray,
+      allPublicUsersArray,
+      viewedUserDetails,
+      setViewedUserDetails,
+      petDetailsToEdit,
+      setPetDetailsToEdit,
+      setPetImages,
+      importAllImages
 
     }}>
     

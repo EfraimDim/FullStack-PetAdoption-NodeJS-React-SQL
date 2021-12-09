@@ -137,6 +137,38 @@ exports.addPet = async(req, res) =>{
     }
 }
 
+exports.editPetWithNewPhoto = async(req, res) =>{
+    try {
+        const { filename } = req.file
+        const { petID, type, adoptionStatus, name, colour, height, weight, bio, dietryRestrictions, hypoallergenic, breed } = req.body
+        const parseHeight = JSON.parse(height)
+        const parseWeight = JSON.parse(weight)
+        const parseHypoallergenic = JSON.parse(hypoallergenic)
+        let availability = false
+        if(adoptionStatus === "available"){
+            availability = true
+        }
+        const updatePet = await query(`UPDATE pets SET type = "${type}", adoption_status = "${adoptionStatus}", name = "${name}", color = "${colour}", picture_path = "${filename}", height = ${parseHeight}, weight = ${parseWeight}, bio = "${bio}", dietry_restrictions = "${dietryRestrictions}", hypoallergenic = ${parseHypoallergenic}, breed = "${breed}", availability = ${availability}  WHERE pet_ID = "${petID}"`)
+        res.send("Updated Successfully!")
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+exports.editPetWithoutNewPhoto = async(req, res) =>{
+    try {
+        const { petID, type, adoptionStatus, name, colour, height, weight, bio, dietryRestrictions, hypoallergenic, breed } = req.body
+        let availability = false
+        if(adoptionStatus === "available"){
+            availability = true
+        }
+        const updatePet = await query(`UPDATE pets SET type = "${type}", adoption_status = "${adoptionStatus}", name = "${name}", color = "${colour}", height = ${height}, weight = ${weight}, bio = "${bio}", dietry_restrictions = "${dietryRestrictions}", hypoallergenic = ${hypoallergenic}, breed = "${breed}", availability = ${availability}  WHERE pet_ID = "${petID}"`)
+        res.send("Updated Successfully!")
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 
 
 
