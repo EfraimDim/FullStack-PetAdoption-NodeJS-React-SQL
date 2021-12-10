@@ -53,7 +53,7 @@ function App() {
   
  
   const getAllPets = async() => {
-    const allPets = await axios.get('/pets/allPets')
+    const allPets = await axios.get('http://localhost:3000/pets/allPets')
     setAllPetsArray(allPets.data)
   }
 

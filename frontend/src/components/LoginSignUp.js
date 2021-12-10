@@ -102,7 +102,7 @@ function ModalLoginSignUp() {
 
     const signUp = async(e) => {
         e.preventDefault();
-        const addUser = await axios.post("/users/signUp", {
+        const addUser = await axios.post("http://localhost:3000/users/signUp", {
             email: email,
             password: password,
             rePassword: rePassword,
@@ -123,7 +123,7 @@ function ModalLoginSignUp() {
     }
     const signUpAdmin = async(e) => {
         e.preventDefault();
-        const addUser = await axios.post("/users/signUp", {
+        const addUser = await axios.post("http://localhost:3000/users/signUp", {
             email: emailAdmin,
             password: passwordAdmin,
             rePassword: rePasswordAdmin,
@@ -145,19 +145,19 @@ function ModalLoginSignUp() {
     }
     const getAllPublicUsers = async() => {
         const headers = await tokenFromLocalforage()
-        const allPublicUsers = await axios.get('/users/allPublicUsers', {headers:headers})
+        const allPublicUsers = await axios.get('http://localhost:3000/users/allPublicUsers', {headers:headers})
         setAllPublicUsersArray(allPublicUsers.data)
       }
     
       const getAllAdminUsers = async() => {
         const headers = await tokenFromLocalforage()
-        const allAdminUsers = await axios.get('/users/allAdminUsers', {headers:headers})
+        const allAdminUsers = await axios.get('http://localhost:3000/users/allAdminUsers', {headers:headers})
         setAllAdminUsersArray(allAdminUsers.data)
       }
 
     const login = async(e) => {
         e.preventDefault();
-        const loginUser = await axios.post("/users/login", {
+        const loginUser = await axios.post("http://localhost:3000/users/login", {
             email: emailLogin,
             password: passwordLogin,
          

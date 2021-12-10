@@ -68,7 +68,7 @@ function EditPetForm() {
     e.preventDefault()
     if(fileInputRef.current.files[0] === undefined){
         const headers = await tokenFromLocalforage()
-        const editPetWithoutNewPhoto = await axios.put("/pets/editPetWithoutNewPhoto", {
+        const editPetWithoutNewPhoto = await axios.put("http://localhost:3000/pets/editPetWithoutNewPhoto", {
             type: type,
             adoptionStatus: adoptionStatus,
             name: petName,
@@ -122,7 +122,7 @@ function EditPetForm() {
         fd.append('hypoallergenic', hypoallergenic);
         fd.append('breed', breed)
         fd.append('petID', petDetailsToEdit.pet_ID)
-        const editPetWithNewPhoto = await axios.put("/pets/editPetWithNewPhoto", fd ,{headers:headers})
+        const editPetWithNewPhoto = await axios.put("http://localhost:3000/pets/editPetWithNewPhoto", fd ,{headers:headers})
         alert(editPetWithNewPhoto.data)
         setPetDetailsToEdit(null)
     }

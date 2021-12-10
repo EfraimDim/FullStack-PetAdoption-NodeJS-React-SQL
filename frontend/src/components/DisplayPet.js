@@ -17,7 +17,7 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
 
     const returnForAdoption = async(petID, index) => {
         const headers = await tokenFromLocalforage()
-        const returnForAdoption = await axios.delete(`/pets/returnForAdoption/${petID}`, {headers:headers})
+        const returnForAdoption = await axios.delete(`http://localhost:3000/pets/returnForAdoption/${petID}`, {headers:headers})
         const newPetsArray = myPetsArray.filter(pet => pet.pet_ID !== petID)
         setMyPetsArray(newPetsArray)
         alert(returnForAdoption.data)
@@ -32,7 +32,7 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
     }
     const fosterToAdopt = async(petID, index) => {
         const headers = await tokenFromLocalforage()
-        const changeFromFosterToAdopt = await axios.put(`/pets/fosterToAdopt`, {
+        const changeFromFosterToAdopt = await axios.put(`http://localhost:3000/pets/fosterToAdopt`, {
             petID: petID
         }, {headers:headers})
         const newPetsArray = [...myPetsArray]
@@ -44,14 +44,14 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
     }
     const unsavePet = async(petID, index) => {
         const headers = await tokenFromLocalforage()
-        const unsavePet = await axios.delete(`/pets/unsavePet/${petID}`, {headers:headers})
+        const unsavePet = await axios.delete(`http://localhost:3000/pets/unsavePet/${petID}`, {headers:headers})
         const newSavedPetsArray = savedPetsArray.filter(pet => pet.pet_ID !== petID)
         setSavedPetsArray(newSavedPetsArray)
         alert(unsavePet.data)
     }
     const savePet = async(petID, pet) => {
         const headers = await tokenFromLocalforage()
-        const savePet = await axios.post(`/pets/savePet`, {
+        const savePet = await axios.post(`http://localhost:3000/pets/savePet`, {
             petID: petID
         }, {headers:headers})
         setSavedPetsArray([...savedPetsArray, pet])
@@ -60,7 +60,7 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
 
     const adoptPet = async(petID, pet) => {
         const headers = await tokenFromLocalforage()
-        const adoptPet = await axios.post(`/pets/adoptPet`, {
+        const adoptPet = await axios.post(`http://localhost:3000/pets/adoptPet`, {
             petID: petID
         }, {headers:headers})
         pet.adoption_status = "adopted"
@@ -70,7 +70,7 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
 
     const fosterPet = async(petID, pet) => {
         const headers = await tokenFromLocalforage()
-        const fosterPet = await axios.post(`/pets/fosterPet`, {
+        const fosterPet = await axios.post(`http://localhost:3000/pets/fosterPet`, {
             petID: petID
         }, {headers:headers})
         pet.adoption_status = "fostered"

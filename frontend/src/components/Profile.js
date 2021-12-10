@@ -48,7 +48,7 @@ function Profile() {
         const tokenString = await localforage.getItem('token');
         const token = JSON.parse(tokenString)
         const headers = {Authorization: `Bearer ${token}`}
-        const updateUserPassword = await axios.put("/users/updatePassword", {
+        const updateUserPassword = await axios.put("http://localhost:3000/users/updatePassword", {
             oldPassword: oldPassword,
             password: newPassword,
             rePassword: reNewPassword,
@@ -64,7 +64,7 @@ function Profile() {
         const tokenString = await localforage.getItem('token');
         const token = JSON.parse(tokenString)
         const headers = {Authorization: `Bearer ${token}`}
-        const updateUserProfile = await axios.put("/users/updateProfile", {
+        const updateUserProfile = await axios.put("http://localhost:3000/users/updateProfile", {
             email: email,
             firstName: firstName,
             lastName: lastName,

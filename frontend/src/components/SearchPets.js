@@ -60,7 +60,7 @@ function SearchPets() {
     const handleBasicSearch = async(e) => {
         e.preventDefault()
         const headers = await tokenFromLocalforage()
-        const searchResults = await axios.get(`/pets/basicSearch?type=${typeBasic}`, {headers:headers})
+        const searchResults = await axios.get(`http://localhost:3000/pets/basicSearch?type=${typeBasic}`, {headers:headers})
         setSearchedPetArray(searchResults.data)
         setDisplayAllPets(false)
 
@@ -68,7 +68,7 @@ function SearchPets() {
     const handleAdvanceSearch = async(e) => {
         e.preventDefault()
         const headers = await tokenFromLocalforage()
-        const searchResults = await axios.get(`/pets/advanceSearch/${typeAdvance}/${adoptionStatus}/${minHeight}/${maxHeight}/${minWeight}/${maxWeight}?name=${petName}`, {headers:headers})
+        const searchResults = await axios.get(`http://localhost:3000/pets/advanceSearch/${typeAdvance}/${adoptionStatus}/${minHeight}/${maxHeight}/${minWeight}/${maxWeight}?name=${petName}`, {headers:headers})
         setSearchedPetArray(searchResults.data)
         setDisplayAllPets(false)
 

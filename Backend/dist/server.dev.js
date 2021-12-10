@@ -3,9 +3,15 @@
 var express = require('express');
 
 var app = express();
+
+require('dotenv').config();
+
 var port = process.env.PORT || 5000;
+
+var cors = require('cors');
+
 app.use(express.json());
-app.use(express["static"]('public'));
+app.use(cors());
 
 var usersRoute = require('./routes/usersRoute');
 

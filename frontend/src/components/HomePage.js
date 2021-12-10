@@ -32,7 +32,7 @@ function HomePage() {
       const tokenString = await localforage.getItem('token');
       const token = JSON.parse(tokenString)
       const headers = {Authorization: `Bearer ${token}`}
-      const savedPets = await axios.get('/pets/savedPets', {headers:headers})
+      const savedPets = await axios.get('http://localhost:3000/pets/savedPets', {headers:headers})
       setSavedPetsArray(savedPets.data)
     }
   
@@ -40,7 +40,7 @@ function HomePage() {
       const tokenString = await localforage.getItem('token');
       const token = JSON.parse(tokenString)
       const headers = {Authorization: `Bearer ${token}`}
-      const myPets = await axios.get('/pets/adoptedPets', {headers:headers})
+      const myPets = await axios.get('http://localhost:3000/pets/adoptedPets', {headers:headers})
       setMyPetsArray(myPets.data)
     }
 

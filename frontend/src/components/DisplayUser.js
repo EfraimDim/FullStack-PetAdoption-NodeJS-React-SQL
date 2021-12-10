@@ -15,7 +15,7 @@ function DisplayUser({user}) {
     const viewUserPetsAndDetails = async(user) => {
         if(user.admin_status === 0){
         const headers = await tokenFromLocalforage()
-        const usersPets = await axios.get(`/users/viewedUsersPets?viewedUserID=${user.user_ID}`, {headers:headers})
+        const usersPets = await axios.get(`http://localhost:3000/users/viewedUsersPets?viewedUserID=${user.user_ID}`, {headers:headers})
         setViewedUserDetails({user:user, usersPets: usersPets.data})
         }else{
             setViewedUserDetails({user:user})
