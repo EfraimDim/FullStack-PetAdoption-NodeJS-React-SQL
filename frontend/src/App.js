@@ -7,8 +7,6 @@ import AdminPage from './components/AdminPage'
 import axios from 'axios'
 import localforage from 'localforage'
 import { useLocation } from "react-router-dom";
-
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
@@ -20,7 +18,6 @@ import SearchPets from './components/SearchPets';
 
 
 function App() {
-  const [sideBarOpen, setSideBarOpen] = useState(false)
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [loggedInInfo, setLoggedInInfo] = useState(null)
   const [adminInfo, setAdminInfo] = useState(null)
@@ -35,7 +32,7 @@ function App() {
   const [petDetailsToEdit, setPetDetailsToEdit] = useState(null)
   const [searchBeforeLogin, setSearchBeforeLogin] = useState(false)
 
-  const [state, setState] = useState({
+  const [sidebar, setSidebar] = useState({
     top: false,
     left: false,
     bottom: false,
@@ -93,16 +90,14 @@ function App() {
   function openModal() {
     setModalIsOpen(true);
   }
-  const onSetSidebarOpen = (open) => {
-    setSideBarOpen(open);
-  }
+
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
 
-    setState({ ...state, [anchor]: open });
+    setSidebar({ ...sidebar, [anchor]: open });
   };
 
   const navHome = () => {
@@ -113,15 +108,17 @@ function App() {
   }
   const list = (anchor) => (
     <Box
-      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
+      sx={{ background: 'rgb(44, 44, 198)', height: '100vh', width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
       role="presentation"
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      <List>
+      <List  sx={{
+              background: 'rgb(44, 44, 198)',
+            }}>
         {[<div onClick={()=>navHome()}>Home</div>, <div onClick={()=>navSearchBeforeLogin()}>Search Pets</div>].map((text, index) => (
           <ListItem button key={index}>
-            <ListItemText primary={text} />
+            <ListItemText  sx={{ height: '100%', width: '100%'}} primary={text} />
           </ListItem>
         ))}
       </List>
@@ -147,9 +144,6 @@ function App() {
       adminInfo,
       setAdminLoggedIn,
       signOut,
-      sideBarOpen,
-      setSideBarOpen,
-      onSetSidebarOpen,
       petImages,
       setAllPublicUsersArray,
       setAllAdminUsersArray,
@@ -160,7 +154,9 @@ function App() {
       petDetailsToEdit,
       setPetDetailsToEdit,
       setPetImages,
-      importAllImages
+      importAllImages,
+      toggleDrawer,
+      sidebar
 
     }}>
     
@@ -173,16 +169,17 @@ function App() {
       <nav className={styles.navBar}>
       <div>
       {["left"].map((anchor) => (
-        <React.Fragment key={anchor}>
+        <div key={anchor}>
           <Button onClick={toggleDrawer(anchor, true)}>Menu</Button>
           <Drawer
             anchor={anchor}
-            open={state[anchor]}
+            open={sidebar[anchor]}
             onClose={toggleDrawer(anchor, false)}
+           
           >
             {list(anchor)}
           </Drawer>
-        </React.Fragment>
+        </div>
       ))}
     </div>
       <div onClick={openModal} className={styles.login}>Login</div>

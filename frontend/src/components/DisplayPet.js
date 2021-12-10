@@ -111,24 +111,24 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
                 <div className={styles.info}><span className={styles.field}>Dietry Restrictions:</span> {pet.dietry_restrictions}</div>
                 <div className={styles.info}><span className={styles.field}>Date Posted:</span> {pet.date_created}</div>
 
-                {myPets && loggedInInfo && pet.adoption_status === "fostered" && <div onClick={() =>fosterToAdopt(pet.pet_ID, index)}>Adopt</div>}
+                {myPets && loggedInInfo && pet.adoption_status === "fostered" && <button onClick={() =>fosterToAdopt(pet.pet_ID, index)}>Adopt</button>}
 
-                {loggedInInfo && myPets && <div onClick={() =>returnForAdoption(pet.pet_ID, index)}>Return to Adoption Centre</div>}
+                {loggedInInfo && myPets && <button onClick={() =>returnForAdoption(pet.pet_ID, index)}>Return to Adoption Centre</button>}
 
-                {loggedInInfo && savedPets &&  <div onClick={() =>unsavePet(pet.pet_ID, index)}>Unsave</div>}
+                {loggedInInfo && savedPets &&  <button onClick={() =>unsavePet(pet.pet_ID, index)}>Unsave</button>}
 
                 {allPets && loggedInInfo && savedPetsArray.filter(savedPet => savedPet.pet_ID === pet.pet_ID).length === 0 && 
-                <div onClick={() =>savePet(pet.pet_ID, pet)}>Save For Later</div>}
+                <button onClick={() =>savePet(pet.pet_ID, pet)}>Save For Later</button>}
 
                 {loggedInInfo && allPets && savedPetsArray.filter(savedPet => savedPet.pet_ID === pet.pet_ID).length !== 0 && 
-                <div onClick={() =>unsavePet(pet.pet_ID, index)}>Unsave</div>}
+                <button onClick={() =>unsavePet(pet.pet_ID, index)}>Unsave</button>}
 
                 {loggedInInfo && allPets && pet.adoption_status === "available" && <>
-                <div onClick={() =>adoptPet(pet.pet_ID, pet)}>Adopt</div>
-                <div onClick={() =>fosterPet(pet.pet_ID, pet)}>Foster</div></>} 
+                <button onClick={() =>adoptPet(pet.pet_ID, pet)}>Adopt</button>
+                <button onClick={() =>fosterPet(pet.pet_ID, pet)}>Foster</button></>} 
 
                 {loggedInInfo && allPets && myPetsArray.filter(myPet => myPet.pet_ID === pet.pet_ID).length !== 0 && pet.adoption_status === "fostered" &&
-                <div onClick={() =>fosterToAdopt(pet.pet_ID, index)}>Adopt</div>}
+                <button onClick={() =>fosterToAdopt(pet.pet_ID, index)}>Adopt</button>}
 
              
 
