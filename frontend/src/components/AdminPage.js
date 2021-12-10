@@ -16,8 +16,6 @@ import ListItemText from '@mui/material/ListItemText';
 
 function AdminPage() {
 
-
-
   const {  signOut, toggleDrawer, sidebar } = useContext(AppContext);
   const location = useLocation()
 
@@ -43,10 +41,6 @@ function AdminPage() {
       </List>
     </Box>
   );
-
-
-
-
 
 
   return (

@@ -110,7 +110,9 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
                 <div className={styles.info}><span className={styles.field}>Availability:</span> {pet.availability === 1 ? <span>Available</span> : <span>Unavailable</span>}</div>
                 <div className={styles.info}><span className={styles.field}>Dietry Restrictions:</span> {pet.dietry_restrictions}</div>
                 <div className={styles.info}><span className={styles.field}>Date Posted:</span> {pet.date_created}</div>
-
+                </div>}
+            
+            </ShowMore>
                 {myPets && loggedInInfo && pet.adoption_status === "fostered" && <button onClick={() =>fosterToAdopt(pet.pet_ID, index)}>Adopt</button>}
 
                 {loggedInInfo && myPets && <button onClick={() =>returnForAdoption(pet.pet_ID, index)}>Return to Adoption Centre</button>}
@@ -129,13 +131,8 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
 
                 {loggedInInfo && allPets && myPetsArray.filter(myPet => myPet.pet_ID === pet.pet_ID).length !== 0 && pet.adoption_status === "fostered" &&
                 <button onClick={() =>fosterToAdopt(pet.pet_ID, index)}>Adopt</button>}
-
-             
-
-                </div>}
-            
-            </ShowMore>
-            {adminInfo &&  <div onClick={() => goToEditPage(pet)}>Edit Pet</div>}
+                
+                {adminInfo &&  <div onClick={() => goToEditPage(pet)}>Edit Pet</div>}
                
              
                 </div>
