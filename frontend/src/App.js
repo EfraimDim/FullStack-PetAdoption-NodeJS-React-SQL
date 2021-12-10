@@ -8,6 +8,17 @@ import axios from 'axios'
 import localforage from 'localforage'
 import { useLocation } from "react-router-dom";
 
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import Button from '@mui/material/Button';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import SearchPets from './components/SearchPets';
+
+
+
 function App() {
   const [sideBarOpen, setSideBarOpen] = useState(false)
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -22,6 +33,14 @@ function App() {
   const [allAdminUsersArray, setAllAdminUsersArray] = useState([])
   const [viewedUserDetails, setViewedUserDetails] = useState(null)
   const [petDetailsToEdit, setPetDetailsToEdit] = useState(null)
+  const [searchBeforeLogin, setSearchBeforeLogin] = useState(false)
+
+  const [state, setState] = useState({
+    top: false,
+    left: false,
+    bottom: false,
+    right: false,
+  });
 
 
   function importAllImages(r) {
@@ -78,6 +97,37 @@ function App() {
     setSideBarOpen(open);
   }
 
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+
+    setState({ ...state, [anchor]: open });
+  };
+
+  const navHome = () => {
+    setSearchBeforeLogin(false)
+  }
+  const navSearchBeforeLogin = () => {
+    setSearchBeforeLogin(true)
+  }
+  const list = (anchor) => (
+    <Box
+      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
+      role="presentation"
+      onClick={toggleDrawer(anchor, false)}
+      onKeyDown={toggleDrawer(anchor, false)}
+    >
+      <List>
+        {[<div onClick={()=>navHome()}>Home</div>, <div onClick={()=>navSearchBeforeLogin()}>Search Pets</div>].map((text, index) => (
+          <ListItem button key={index}>
+            <ListItemText primary={text} />
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
+
 
 
   return (
@@ -118,11 +168,28 @@ function App() {
       {adminLoggedIn ? <AdminPage /> :
       <>
       {loggedInInfo ? <HomePage /> :<>
+        
+  
       <nav className={styles.navBar}>
-      <button></button>
+      <div>
+      {["left"].map((anchor) => (
+        <React.Fragment key={anchor}>
+          <Button onClick={toggleDrawer(anchor, true)}>Menu</Button>
+          <Drawer
+            anchor={anchor}
+            open={state[anchor]}
+            onClose={toggleDrawer(anchor, false)}
+          >
+            {list(anchor)}
+          </Drawer>
+        </React.Fragment>
+      ))}
+    </div>
       <div onClick={openModal} className={styles.login}>Login</div>
       </nav>
-      <h1 className={styles.header}>Welcome to the pet adoption agency!</h1>
+
+      {searchBeforeLogin ? <SearchPets /> :<h1 className={styles.header}>Welcome to the pet adoption agency!</h1>}
+      
       <LoginSignUp /></>}</>}
     </div>
     </AppContext.Provider>

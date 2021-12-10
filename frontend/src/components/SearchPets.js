@@ -80,7 +80,7 @@ function SearchPets() {
             {basicSearch ? 
             <form onSubmit={handleBasicSearch}>
                 <select required value={typeBasic} onChange={handleTypeBasic}>
-                    <option selected value="dog">Dog</option>
+                    <option defaultValue={true} value="dog">Dog</option>
                     <option value="cat">Cat</option>
                     <option value="bird">Bird</option>
                     <option value="fish">Fish</option>
@@ -90,14 +90,14 @@ function SearchPets() {
                 </form> : 
             <form onSubmit={handleAdvanceSearch}>
                 <select required value={typeAdvance} onChange={handleTypeAdvance}>
-                    <option defaultValue value="dog">Dog</option>
+                    <option defaultValue={true} value="dog">Dog</option>
                     <option value="cat">Cat</option>
                     <option value="bird">Bird</option>
                     <option value="fish">Fish</option>
                     <option value="bulldog">Bulldog</option>
                 </select>
                 <select required value={adoptionStatus} onChange={handleAdoptionStatus}>
-                    <option defaultValue value="available">Available</option>
+                    <option defaultValue={true} value="available">Available</option>
                     <option value="adopted">Adopted</option>
                     <option value="fostered">Fostered</option>
                 </select>
