@@ -3,29 +3,158 @@
 var Ajv = require("ajv");
 
 var ajv = new Ajv();
-exports.registerSchemaAJV = {
+exports.addOrEditPetSchemaAJV = {
+  type: 'object',
+  properties: {
+    type: {
+      type: "string",
+      maxLength: 15
+    },
+    adoptionStatus: {
+      type: "string",
+      maxLength: 10
+    },
+    name: {
+      type: "string",
+      maxLength: 15
+    },
+    colour: {
+      type: "string",
+      maxLength: 30
+    },
+    height: {
+      type: "string",
+      minLength: 1,
+      maxLength: 3
+    },
+    weight: {
+      type: "string",
+      minLength: 1,
+      maxLength: 2
+    },
+    bio: {
+      type: "string",
+      maxLength: 200
+    },
+    hypoallergenic: {
+      type: "string",
+      minLength: 5,
+      maxLength: 5
+    },
+    dietryRestrictions: {
+      type: "string",
+      maxLength: 100
+    },
+    breed: {
+      type: "string",
+      maxLength: 20
+    },
+    petID: {
+      type: "string",
+      maxLength: 50
+    }
+  },
+  required: ['type', 'adoptionStatus', 'name', 'colour', 'height', 'weight', 'bio', 'hypoallergenic', 'dietryRestrictions', 'breed'],
+  additionalProperties: false
+};
+exports.editPetWithoutPhotoSchemaAJV = {
+  type: 'object',
+  properties: {
+    type: {
+      type: "string",
+      maxLength: 15
+    },
+    adoptionStatus: {
+      type: "string",
+      maxLength: 10
+    },
+    name: {
+      type: "string",
+      maxLength: 15
+    },
+    colour: {
+      type: "string",
+      maxLength: 30
+    },
+    height: {
+      type: "number"
+    },
+    weight: {
+      type: "number"
+    },
+    bio: {
+      type: "string",
+      maxLength: 200
+    },
+    hypoallergenic: {
+      type: "boolean"
+    },
+    dietryRestrictions: {
+      type: "string",
+      maxLength: 100
+    },
+    breed: {
+      type: "string",
+      maxLength: 20
+    },
+    petID: {
+      type: "string",
+      maxLength: 50
+    }
+  },
+  required: ['type', 'adoptionStatus', 'name', 'colour', 'height', 'weight', 'bio', 'hypoallergenic', 'dietryRestrictions', 'breed'],
+  additionalProperties: false
+};
+exports.petIDSchemaAJV = {
+  type: 'object',
+  properties: {
+    petID: {
+      type: "string",
+      maxLength: 50
+    }
+  },
+  required: ['petID'],
+  additionalProperties: false
+};
+exports.signUpSchemaAJV = {
   type: 'object',
   properties: {
     email: {
       type: "string",
-      format: 'email'
+      format: 'email',
+      maxLength: 50
     },
     password: {
       type: "string",
-      minLength: 5
+      minLength: 6,
+      maxLength: 20
     },
-    repassword: {
+    rePassword: {
       type: "string",
-      minLength: 5
+      minLength: 6,
+      maxLength: 20
     },
-    username: {
-      type: "string"
+    firstName: {
+      type: "string",
+      maxLength: 20
     },
-    role: {
+    lastName: {
+      type: "string",
+      maxLength: 20
+    },
+    phoneNumber: {
+      type: "string",
+      minLength: 10,
+      maxLength: 10
+    },
+    admin: {
+      type: "boolean"
+    },
+    adminCode: {
       type: "string"
     }
   },
-  required: ['email', 'password', 'repassword', 'username', "role"],
+  required: ['email', 'password', 'rePassword', 'firstName', 'lastName', 'phoneNumber', 'admin'],
   additionalProperties: false
 };
 exports.loginSchemaAJV = {
@@ -33,73 +162,66 @@ exports.loginSchemaAJV = {
   properties: {
     email: {
       type: "string",
-      format: 'email'
+      format: 'email',
+      maxLength: 50
     },
     password: {
       type: "string",
-      minLength: 5
+      minLength: 6,
+      maxLength: 20
     }
   },
   required: ['email', 'password'],
   additionalProperties: false
 };
-exports.postSubmitSchemaAJV = {
+exports.updateProfileSchemaAJV = {
   type: 'object',
   properties: {
-    title: {
-      type: "string"
-    },
-    tags: {
+    email: {
       type: "string",
-      maxLength: 15
+      format: 'email',
+      maxLength: 50
     },
-    post: {
-      type: "string"
-    }
-  },
-  required: ['title', 'tags', 'post'],
-  additionalProperties: false
-};
-exports.editPostSchemaAJV = {
-  type: 'object',
-  properties: {
-    postID: {
-      type: "string"
-    },
-    title: {
-      type: "string"
-    },
-    tags: {
+    firstName: {
       type: "string",
-      maxLength: 15
+      maxLength: 20
     },
-    post: {
-      type: "string"
+    lastName: {
+      type: "string",
+      maxLength: 20
+    },
+    phoneNumber: {
+      type: "string",
+      minLength: 10,
+      maxLength: 10
+    },
+    bio: {
+      type: "string",
+      maxLength: 200
     }
   },
-  required: ['postID', 'title', 'tags', 'post'],
+  required: ['email', 'firstName', 'lastName', 'phoneNumber', 'bio'],
   additionalProperties: false
 };
-exports.searchTermSchemaAJV = {
+exports.updatePasswordSchemaAJV = {
   type: 'object',
   properties: {
-    searchTerm: {
-      type: "string"
-    }
-  },
-  required: ['searchTerm'],
-  additionalProperties: false
-};
-exports.commentSchemaAJV = {
-  type: 'object',
-  properties: {
-    postID: {
-      type: "string"
+    oldPassword: {
+      type: "string",
+      minLength: 6,
+      maxLength: 20
     },
-    comment: {
-      type: "string"
+    password: {
+      type: "string",
+      minLength: 6,
+      maxLength: 20
+    },
+    rePassword: {
+      type: "string",
+      minLength: 6,
+      maxLength: 20
     }
   },
-  required: ['postID', 'comment'],
+  required: ['oldPassword', 'password', 'rePassword'],
   additionalProperties: false
 };

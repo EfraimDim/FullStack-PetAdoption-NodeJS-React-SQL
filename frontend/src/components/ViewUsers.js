@@ -7,8 +7,6 @@ import ViewUserPets from './ViewUserPets'
 
 function ViewUsers() {
 
-  
-
   const { allPublicUsersArray, allAdminUsersArray, viewedUserDetails } = useContext(AppContext);
 
 

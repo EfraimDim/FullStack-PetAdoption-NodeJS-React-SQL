@@ -22,7 +22,7 @@ function SearchPets() {
     const [minWeight, setMinWeight] = useState(0)
     const [maxWeight, setMaxWeight] = useState(50)
 
-    const { allPetsArray, tokenFromLocalforage } = useContext(AppContext);
+    const { allPetsArray, tokenFromLocalforage, setLoadSpinner } = useContext(AppContext);
 
     const showAllPets = () => {
         setDisplayAllPets(true)
@@ -58,20 +58,26 @@ function SearchPets() {
         setBasicSearch(!basicSearch)
     }
     const handleBasicSearch = async(e) => {
+    try{
         e.preventDefault()
         const headers = await tokenFromLocalforage()
-        const searchResults = await axios.get(`http://localhost:3000/pets/basicSearch?type=${typeBasic}`, {headers:headers})
+        const searchResults = await axios.get(`http://localhost:5000/pets/basicSearch?type=${typeBasic}`, {headers:headers})
         setSearchedPetArray(searchResults.data)
         setDisplayAllPets(false)
-
+    }catch(e){
+        console.log(e) 
+            }
     }
     const handleAdvanceSearch = async(e) => {
+    try{
         e.preventDefault()
         const headers = await tokenFromLocalforage()
-        const searchResults = await axios.get(`http://localhost:3000/pets/advanceSearch/${typeAdvance}/${adoptionStatus}/${minHeight}/${maxHeight}/${minWeight}/${maxWeight}?name=${petName}`, {headers:headers})
+        const searchResults = await axios.get(`http://localhost:5000/pets/advanceSearch/${typeAdvance}/${adoptionStatus}/${minHeight}/${maxHeight}/${minWeight}/${maxWeight}?name=${petName}`, {headers:headers})
         setSearchedPetArray(searchResults.data)
         setDisplayAllPets(false)
-
+    }catch(e){
+        console.log(e) 
+            }
     }
 
     return <div>
@@ -84,7 +90,6 @@ function SearchPets() {
                     <option value="cat">Cat</option>
                     <option value="bird">Bird</option>
                     <option value="fish">Fish</option>
-                    <option value="bulldog">Bulldog</option>
                     </select>
                 <button className={styles.submit} type="submit">Search</button>
                 </form> : 
@@ -94,14 +99,13 @@ function SearchPets() {
                     <option value="cat">Cat</option>
                     <option value="bird">Bird</option>
                     <option value="fish">Fish</option>
-                    <option value="bulldog">Bulldog</option>
                 </select>
                 <select required value={adoptionStatus} onChange={handleAdoptionStatus}>
                     <option defaultValue={true} value="available">Available</option>
                     <option value="adopted">Adopted</option>
                     <option value="fostered">Fostered</option>
                 </select>
-                <input className={styles.input} type="text" value={petName} onChange={handlePetName} placeholder="name" />
+                <input className={styles.input} type="text" value={petName} maxLength={"15"} onChange={handlePetName} placeholder="name" />
                 <input required className={styles.input} min={0} max={200} type="number" value={minHeight} onChange={handleMinHeight} placeholder="min height (cm)" />
                 <input required className={styles.input} min={0} max={200} type="number" value={maxHeight} onChange={handleMaxHeight} placeholder="max height (cm)" />
                 <input required className={styles.input} min={0} max={50} type="number" value={minWeight} onChange={handleMinWeight} placeholder="min weight (kg)" />

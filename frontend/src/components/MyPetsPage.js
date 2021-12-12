@@ -4,7 +4,6 @@ import styles from '../styles/MyPetsPage.module.css'
 import DisplayPet from './DisplayPet'
 import axios from "axios"
 import localforage from 'localforage'
-import Sidebar from "react-sidebar";
 import { Routes, Route, useLocation } from "react-router-dom";
 
 
@@ -32,7 +31,7 @@ function MyPetsPage() {
 
 
 
-    return <div className={styles.index}>
+    return <div>
         <h1>What would you like to see?</h1>
         <div className={styles.wrapper}>
         <div className={styles.toggleButton} onClick={toggledYourPets}>Your Pets</div>

@@ -3,7 +3,6 @@ import { AppContext } from "../components/AppContext"
 import {useState, useEffect, useContext} from "react"
 import axios from 'axios'
 import localforage from 'localforage'
-import Sidebar from "react-sidebar";
 import { Routes, Route, Link, useLocation } from "react-router-dom";
 import { createRef } from 'react'
 
@@ -20,8 +19,9 @@ function AddPet() {
     const [hypoallergenic, setHypoallergenic] = useState(false)
     const [dietryRestrictions, setDietryRestrictions] = useState('')
     const [breed, setBreed] = useState('')
+    const [selectedFile, setSelectedFile] = useState(null);
 
-    const { } = useContext(AppContext);
+    const { setLoadSpinner } = useContext(AppContext);
     const fileInputRef = createRef()
 
     const handleType = (e) => {
@@ -56,16 +56,20 @@ function AddPet() {
     const handleBreed = (e) => {
         setBreed(e.target.value)
     }
+    const handleFileInput = () => {
+        setSelectedFile(fileInputRef.current.files[0])
+    }
 
     const addPet = async(e) =>{
+    try{
         e.preventDefault()
+        setLoadSpinner(true)
         const tokenString = await localforage.getItem('token');
         const token = JSON.parse(tokenString)
         const headers = {Authorization: `Bearer ${token}`,
         'Content-Type': 'multipart/form-data'}
         const fd = new FormData();
-        const file = fileInputRef.current.files[0]
-        fd.append('image', file, `${file.name}`);
+        fd.append('image', selectedFile, `${selectedFile.name}`);
         fd.append('type', type);
         fd.append('adoptionStatus', adoptionStatus)
         fd.append('name', petName);
@@ -76,10 +80,15 @@ function AddPet() {
         fd.append('dietryRestrictions', dietryRestrictions);
         fd.append('hypoallergenic', hypoallergenic);
         fd.append('breed', breed)
-        const addPet = await axios.post("/pets/addPet", fd ,{headers:headers})
+        const addPet = await axios.post("http://localhost:5000/pets/addPet", fd ,{headers:headers})
+        setLoadSpinner(false)
+        alert(addPet.data)
+    }catch(e){
+        console.log(e)
+        setLoadSpinner(false) 
+        alert("Upload Failed!")
+        }
     }
-
-
 
 
   return (
@@ -96,18 +105,18 @@ function AddPet() {
                     <option value="adopted">Adopted</option>
                     <option value="fostered">Fostered</option>
                 </select>
-                <input required className={styles.input} type="text" value={petName} onChange={handlePetName} placeholder="name" />
-                <input required className={styles.input} type="text" value={colour} onChange={handleColour} placeholder="colour" />
+                <input required className={styles.input} type="text" value={petName} maxLength={"15"} onChange={handlePetName} placeholder="name" />
+                <input required className={styles.input} type="text" value={colour} maxLength={"30"}  onChange={handleColour} placeholder="colour" />
                 <input required className={styles.input} min={0} max={200} type="number" value={height} onChange={handleHeight} placeholder="height (cm)" />
                 <input required className={styles.input} min={0} max={50} type="number" value={weight} onChange={handleWeight} placeholder="weight (kg)" />
-                <input required className={styles.input} type="text" value={bio} onChange={handleBio} placeholder="pet bio" />
+                <input required className={styles.input} type="text" value={bio} maxLength={"200"} onChange={handleBio} placeholder="pet bio" />
                 <select required value={hypoallergenic} onChange={handleHypoallergenic}>
                     <option defaultValue value={false}>No</option>
                     <option value={true}>Yes</option>
                 </select>
-                <input required className={styles.input} type="text" value={dietryRestrictions} onChange={handleDietryRestrictions} placeholder="dietry restrictions" />
-                <input required className={styles.input} type="text" value={breed} onChange={handleBreed} placeholder="breed" />
-                <input type="file" accept="image/png, image/gif, image/jpeg" required ref={fileInputRef} />
+                <input required className={styles.input} type="text" value={dietryRestrictions} maxLength={"100"} onChange={handleDietryRestrictions} placeholder="dietry restrictions" />
+                <input required className={styles.input} type="text" value={breed} maxLength={"20"} onChange={handleBreed} placeholder="breed" />
+                <input type="file" accept="image/png, image/gif, image/jpeg" required ref={fileInputRef} onChange={handleFileInput} />
             <button className={styles.submit} type="submit">add Pet!</button>
             </form>
     </div>

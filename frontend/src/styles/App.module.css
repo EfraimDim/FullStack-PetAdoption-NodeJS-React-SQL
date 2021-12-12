@@ -19,3 +19,12 @@
 .header{
     text-align: center;
 }
+
+.loadingButton {
+
+    width: fit-content;
+    height: fit-content;
+    margin:auto;
+    margin-top: 50vh
+    
+}

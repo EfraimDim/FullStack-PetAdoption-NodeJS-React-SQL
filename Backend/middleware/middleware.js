@@ -71,15 +71,14 @@ exports.decryptPwd = async(req, res, next) => {
     const { email, password } = req.body;
     const emailValidation = await query(`SELECT * FROM users WHERE email = '${email.toLowerCase()}'`)
     if(emailValidation.length === 0){
-      res.status(400).send("email not found!");
+      res.status(400).send("Email not found!");
     }else{
     bcrypt.compare(password, emailValidation[0].password, (err, result) => {
-      if (err) {
-        throw new Error('Incorrect password');
-      }
       if (result) {
         req.body.user = emailValidation[0]
         next();
+      }else{
+        res.status(400).send("Wrong Password!");
       }
     });
   }} catch (err) {

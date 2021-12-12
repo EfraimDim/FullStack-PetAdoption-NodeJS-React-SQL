@@ -5,7 +5,6 @@ import DisplayUser from './DisplayUser'
 import {useState, useEffect, useContext} from "react"
 import axios from 'axios'
 import localforage from 'localforage'
-import Sidebar from "react-sidebar";
 import { Routes, Route, Link, useLocation } from "react-router-dom";
 
 function ViewUserPets() {
@@ -20,7 +19,7 @@ function ViewUserPets() {
 
 
   return (<div>
-      <div onClick={returnToAllUsers}>Return</div>
+      <button onClick={returnToAllUsers}>Return</button>
       <div>{viewedUserDetails.user.email}</div>
       <div>{viewedUserDetails.user.first_name}</div>
       <div>{viewedUserDetails.user.last_name}</div>

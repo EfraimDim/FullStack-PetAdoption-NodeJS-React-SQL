@@ -18,9 +18,9 @@ query(
     `CREATE TABLE IF NOT EXISTS pets (
         id INT(200) AUTO_INCREMENT,
         pet_ID VARCHAR(50) NOT NULL,
-        type VARCHAR(30) NOT NULL,
-        name VARCHAR(30) NOT NULL,
-        adoption_status VARCHAR(30) NOT NULL,
+        type VARCHAR(15) NOT NULL,
+        name VARCHAR(15) NOT NULL,
+        adoption_status VARCHAR(10) NOT NULL,
         picture_path VARCHAR(100) NOT NULL,
         height INT(3) NOT NULL,
         weight INT(3) NOT NULL,
@@ -58,15 +58,9 @@ const Schemas = require('../schemas/allSchemas');
 
 
 router.get(
-    '/savedPets',
+    '/usersPetArrays',
     authorization,
-    petController.getSavedPetsArray
-)
-
-router.get(
-    '/adoptedPets',
-    authorization,
-    petController.getAdoptedPetsArray
+    petController.usersPetArrays
 )
 router.get(
     '/allPets',
@@ -79,6 +73,7 @@ router.delete(
 )
 router.put(
     '/fosterToAdopt',
+    validateBody(Schemas.petIDSchemaAJV),
     authorization,
     petController.fosterToAdopt
 )
@@ -91,12 +86,14 @@ router.delete(
 
 router.post(
     '/savePet',
+    validateBody(Schemas.petIDSchemaAJV),
     authorization,
     petController.savePet
 )
 
 router.post(
     '/adoptPet',
+    validateBody(Schemas.petIDSchemaAJV),
     authorization,
     checkIfStillAvailable,
     petController.adoptPet
@@ -104,18 +101,17 @@ router.post(
 
 router.post(
     '/fosterPet',
+    validateBody(Schemas.petIDSchemaAJV),
     authorization,
     checkIfStillAvailable,
     petController.fosterPet
 )
 router.get(
     '/basicSearch',
-    authorization,
     petController.basicSearch
 )
 router.get(
     '/advanceSearch/:type/:adoptionStatus/:minHeight/:maxHeight/:minWeight/:maxWeight',
-    authorization,
     petController.advanceSearch
 )
 
@@ -124,11 +120,13 @@ router.post(
     authorization,
     checkAdminForAllReq, 
     upload.single('image'),
+    validateBody(Schemas.addOrEditPetSchemaAJV),
     petController.addPet
 )
 
 router.put(
     '/editPetWithoutNewPhoto',
+    validateBody(Schemas.editPetWithoutPhotoSchemaAJV),
     authorization,
     checkAdminForAllReq, 
     petController.editPetWithoutNewPhoto
@@ -138,7 +136,8 @@ router.put(
     '/editPetWithNewPhoto',
     authorization,
     checkAdminForAllReq,
-    upload.single('image'), 
+    upload.single('image'),
+    validateBody(Schemas.addOrEditPetSchemaAJV), 
     petController.editPetWithNewPhoto
 )
 

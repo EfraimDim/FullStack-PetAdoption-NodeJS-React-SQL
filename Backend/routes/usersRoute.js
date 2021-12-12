@@ -3,6 +3,7 @@ const router = express.Router();
 const usersController = require('../controllers/usersController');
 const {
     authorization,
+    validateBody,
     checkPasswordsMatch,
     checkEmailValidSignUp,
     encryptPwd,
@@ -22,10 +23,10 @@ query(
     `CREATE TABLE IF NOT EXISTS users (
         id INT(200) AUTO_INCREMENT,
         user_ID VARCHAR(50) NOT NULL,
-        email VARCHAR(30) NOT NULL,
+        email VARCHAR(50) NOT NULL,
         password VARCHAR(100) NOT NULL,
-        first_name VARCHAR(30) NOT NULL,
-        last_name VARCHAR(30) NOT NULL,
+        first_name VARCHAR(20) NOT NULL,
+        last_name VARCHAR(20) NOT NULL,
         phone INT(10) NOT NULL,
         admin_status BOOLEAN NOT NULL,
         date_created DATE DEFAULT (CURRENT_DATE),
@@ -38,7 +39,7 @@ const Schemas = require('../schemas/allSchemas');
  
 router.post(
     '/login',
-    // validateBody(Schemas.loginSchemaAJV),
+    validateBody(Schemas.loginSchemaAJV),
     decryptPwd,
     createToken,
     usersController.login
@@ -46,7 +47,7 @@ router.post(
 
 router.post(
     '/signUp',
-    // validateBody(Schemas.registerSchemaAJV),
+    validateBody(Schemas.signUpSchemaAJV),
     checkEmailValidSignUp,
     checkPasswordsMatch,
     encryptPwd,
@@ -57,7 +58,7 @@ router.post(
 
 router.put(
     '/updateProfile',
-    // validateBody(Schemas.registerSchemaAJV),
+    validateBody(Schemas.updateProfileSchemaAJV),
     authorization,
     checkEmailValidProfileUpdate,
     usersController.updateUserProfile
@@ -65,7 +66,7 @@ router.put(
 
 router.put(
     '/updatePassword',
-    // validateBody(Schemas.registerSchemaAJV),
+    validateBody(Schemas.updatePasswordSchemaAJV),
     authorization,
     checkPasswordsMatch,
     encryptPwd,
@@ -75,7 +76,6 @@ router.put(
 
 router.get(
     '/allPublicUsers',
-    // validateBody(Schemas.registerSchemaAJV),
     authorization,
     checkAdminForAllReq,
     usersController.getAllPublicUsers
@@ -83,14 +83,12 @@ router.get(
 
 router.get(
     '/allAdminUsers',
-    // validateBody(Schemas.registerSchemaAJV),
     authorization,
     checkAdminForAllReq,
     usersController.getAllAdminUsers
 )
 router.get(
     '/viewedUsersPets',
-    // validateBody(Schemas.registerSchemaAJV),
     authorization,
     checkAdminForAllReq,
     usersController.getViewedUsersPets

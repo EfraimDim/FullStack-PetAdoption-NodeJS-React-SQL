@@ -9,7 +9,7 @@ import { Routes, Route, Link, useLocation } from "react-router-dom";
 function EditPetForm() {
 
 
-  const { setPetDetailsToEdit, petDetailsToEdit, petImages, tokenFromLocalforage, allPetsArray, setAllPetsArray } = useContext(AppContext);
+  const { setPetDetailsToEdit, petDetailsToEdit, petImages, tokenFromLocalforage, allPetsArray, setAllPetsArray, setLoadSpinner } = useContext(AppContext);
 
   const [picturePath, setPicturePath] = useState(petDetailsToEdit.picture_path)
   const [type, setType] = useState(petDetailsToEdit.type)
@@ -22,6 +22,7 @@ function EditPetForm() {
   const [hypoallergenic, setHypoallergenic] = useState(petDetailsToEdit.hypoallergenic)
   const [dietryRestrictions, setDietryRestrictions] = useState(petDetailsToEdit.dietry_restrictions)
   const [breed, setBreed] = useState(petDetailsToEdit.breed)
+  const [selectedFile, setSelectedFile] = useState(null);
 
   
   const fileInputRef = createRef()
@@ -58,6 +59,9 @@ function EditPetForm() {
   const handleBreed = (e) => {
       setBreed(e.target.value)
   }
+  const handleFileInput = () => {
+    setSelectedFile(fileInputRef.current.files[0])
+}
 
 
   const returnToSearch = () =>{
@@ -66,9 +70,11 @@ function EditPetForm() {
 
   const editPet = async(e) => {
     e.preventDefault()
-    if(fileInputRef.current.files[0] === undefined){
+    try{
+    setLoadSpinner(true)
+    if(selectedFile === null){
         const headers = await tokenFromLocalforage()
-        const editPetWithoutNewPhoto = await axios.put("http://localhost:3000/pets/editPetWithoutNewPhoto", {
+        const editPetWithoutNewPhoto = await axios.put("http://localhost:5000/pets/editPetWithoutNewPhoto", {
             type: type,
             adoptionStatus: adoptionStatus,
             name: petName,
@@ -81,7 +87,6 @@ function EditPetForm() {
             breed: breed,
             petID: petDetailsToEdit.pet_ID
         } ,{headers:headers})
-        alert(editPetWithoutNewPhoto.data)
         const newAllPetsArray = [...allPetsArray]
         const indexFromAllPets = newAllPetsArray.findIndex(oldPet => oldPet.pet_ID === petDetailsToEdit.pet_ID)
         const petToUpdate = newAllPetsArray[indexFromAllPets]
@@ -102,6 +107,8 @@ function EditPetForm() {
         petToUpdate.availability = availability
         newAllPetsArray[indexFromAllPets] = petToUpdate
         setAllPetsArray(newAllPetsArray)
+        setLoadSpinner(false) 
+        alert(editPetWithoutNewPhoto.data)
         setPetDetailsToEdit(null)
     }else{
         const tokenString = await localforage.getItem('token');
@@ -109,8 +116,7 @@ function EditPetForm() {
         const headers = {Authorization: `Bearer ${token}`,
         'Content-Type': 'multipart/form-data'}
         const fd = new FormData();
-        const file = fileInputRef.current.files[0]
-        fd.append('image', file, `${file.name}`);
+        fd.append('image', selectedFile, `${selectedFile.name}`);
         fd.append('type', type);
         fd.append('adoptionStatus', adoptionStatus)
         fd.append('name', petName);
@@ -122,17 +128,22 @@ function EditPetForm() {
         fd.append('hypoallergenic', hypoallergenic);
         fd.append('breed', breed)
         fd.append('petID', petDetailsToEdit.pet_ID)
-        const editPetWithNewPhoto = await axios.put("http://localhost:3000/pets/editPetWithNewPhoto", fd ,{headers:headers})
+        const editPetWithNewPhoto = await axios.put("http://localhost:5000/pets/editPetWithNewPhoto", fd ,{headers:headers})
+        setLoadSpinner(false) 
         alert(editPetWithNewPhoto.data)
         setPetDetailsToEdit(null)
-    }
+    }  
+    }catch(e){
+        console.log(e)
+        setLoadSpinner(false) 
+        }
   }
 
 
   return (
     <div>
        
-           <div onClick={returnToSearch}>Return</div>
+           <button onClick={returnToSearch}>Return</button>
            <img className={styles.image} src={petImages[`${picturePath}`].default} />
          <form onSubmit={editPet}>
                  <select required value={type} onChange={handleType}>
@@ -146,19 +157,19 @@ function EditPetForm() {
                      <option defaultValue={petDetailsToEdit.adoption_status === "adopted"} value="adopted">Adopted</option>
                      <option defaultValue={petDetailsToEdit.adoption_status === "fostered"} value="fostered">Fostered</option>
                  </select>
-                 <input required className={styles.input} type="text" value={petName} onChange={handlePetName} placeholder="name" />
-                 <input required className={styles.input} type="text" value={colour} onChange={handleColour} placeholder="colour" />
+                 <input required className={styles.input} type="text" value={petName} maxLength={"15"} onChange={handlePetName} placeholder="name" />
+                 <input required className={styles.input} type="text" value={colour} maxLength={"30"} onChange={handleColour} placeholder="colour" />
                  <input required className={styles.input} min={0} max={200} type="number" value={height} onChange={handleHeight} placeholder="height (cm)" />
                  <input required className={styles.input} min={0} max={50} type="number" value={weight} onChange={handleWeight} placeholder="weight (kg)" />
-                 <input required className={styles.input} type="text" value={bio} onChange={handleBio} placeholder="pet bio" />
+                 <input required className={styles.input} type="text" value={bio} maxLength={"200"} onChange={handleBio} placeholder="pet bio" />
                  <label>hypoallergenic:</label>
                  <select required value={hypoallergenic} onChange={handleHypoallergenic}>
                     <option defaultValue={petDetailsToEdit.hypoallergenic === true} value={true}>Yes</option>
                      <option defaultValue={petDetailsToEdit.hypoallergenic === false} value={false}>No</option>
                  </select>
-                 <input required className={styles.input} type="text" value={dietryRestrictions} onChange={handleDietryRestrictions} placeholder="dietry restrictions" />
-                 <input required className={styles.input} type="text" value={breed} onChange={handleBreed} placeholder="breed" />
-                 <input type="file" accept="image/png, image/gif, image/jpeg"  ref={fileInputRef} />
+                 <input required className={styles.input} type="text" value={dietryRestrictions} maxLength={"100"} onChange={handleDietryRestrictions} placeholder="dietry restrictions" />
+                 <input required className={styles.input} type="text" value={breed} maxLength={"20"} onChange={handleBreed} placeholder="breed" />
+                 <input type={"file"} accept={"image/png, image/gif, image/jpeg"}  ref={fileInputRef} onChange={handleFileInput} />
              <button className={styles.submit} type="submit">Edit Pet!</button>
              </form>
    

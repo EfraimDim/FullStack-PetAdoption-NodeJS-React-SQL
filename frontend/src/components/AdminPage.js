@@ -49,7 +49,7 @@ function AdminPage() {
       <div>
       {["left"].map((anchor) => (
         <div key={anchor}>
-          <Button onClick={toggleDrawer(anchor, true)}>Menu</Button>
+          <Button sx={{color: 'white'}} onClick={toggleDrawer(anchor, true)}>Menu</Button>
           <Drawer
             anchor={anchor}
             open={sidebar[anchor]}
@@ -64,12 +64,13 @@ function AdminPage() {
       <div onClick={signOut} className={styles.signOut}>Sign Out</div>
       </nav>
 
-     
+     <div className={styles.routesWrapper}>
       <Routes>
     <Route path="/viewUsers" element={<ViewUsers/>}></Route>
     <Route path='/addPets' element={<AddPet/>}></Route>
     <Route path="/" element={<EditPet/>}></Route>
     </Routes>
+    </div>
     
 
     </div>

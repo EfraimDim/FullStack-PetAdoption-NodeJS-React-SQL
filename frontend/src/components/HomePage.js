@@ -24,36 +24,13 @@ function HomePage() {
 
   
 
-    const { loggedInInfo, setSavedPetsArray, setMyPetsArray, signOut, toggleDrawer, sidebar } = useContext(AppContext);
+    const { loggedInInfo,  signOut, toggleDrawer, sidebar } = useContext(AppContext);
     const location = useLocation()
 
   
-    const getSavedPets = async() => {
-      const tokenString = await localforage.getItem('token');
-      const token = JSON.parse(tokenString)
-      const headers = {Authorization: `Bearer ${token}`}
-      const savedPets = await axios.get('http://localhost:3000/pets/savedPets', {headers:headers})
-      setSavedPetsArray(savedPets.data)
-    }
-  
-    const getMyPets = async() => {
-      const tokenString = await localforage.getItem('token');
-      const token = JSON.parse(tokenString)
-      const headers = {Authorization: `Bearer ${token}`}
-      const myPets = await axios.get('http://localhost:3000/pets/adoptedPets', {headers:headers})
-      setMyPetsArray(myPets.data)
-    }
-
+    
     useEffect(()=>{
       location.pathname = "/"
-    },[])
-
-    useEffect(()=>{
-      getSavedPets()
-    },[])
-  
-    useEffect(()=>{
-      getMyPets()
     },[])
 
     const list = (anchor) => (
@@ -84,7 +61,7 @@ function HomePage() {
       <div>
       {["left"].map((anchor) => (
         <div key={anchor}>
-          <Button onClick={toggleDrawer(anchor, true)}>Menu</Button>
+          <Button sx={{color: 'white'}} onClick={toggleDrawer(anchor, true)}>Menu</Button>
           <Drawer
             anchor={anchor}
             open={sidebar[anchor]}
@@ -99,13 +76,14 @@ function HomePage() {
       <div onClick={signOut} className={styles.signOut}>Sign Out</div>
       </nav>
 
-      
+    <div className={styles.routesWrapper}>
     <Routes>
     <Route path="/myProfile" element={<Profile/>}></Route> 
     <Route path="/petsPage" element={<MyPetsPage/>}></Route>
     <Route path="/searchPets" element={<SearchPets/>}></Route>
     <Route path='/' element={<h1 className={styles.header}>Welcome {loggedInInfo.first_name} {loggedInInfo.last_name} to your pet adoption account!</h1>}></Route>
     </Routes>
+    </div>
    
 
 </div>

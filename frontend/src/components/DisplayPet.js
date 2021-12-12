@@ -11,13 +11,14 @@ import axios from 'axios'
 
 function DisplayPet({pet, index, myPets, savedPets, allPets}) {
 
-    const { loggedInInfo, petImages, setSavedPetsArray, setMyPetsArray, myPetsArray, savedPetsArray, allPetsArray, setAllPetsArray, tokenFromLocalforage,  setPetDetailsToEdit, adminInfo } = useContext(AppContext);
+    const { loggedInInfo, petImages, setSavedPetsArray, setMyPetsArray, myPetsArray, savedPetsArray, allPetsArray, setAllPetsArray, tokenFromLocalforage,  setPetDetailsToEdit, adminInfo, setLoadSpinner } = useContext(AppContext);
 
 
 
     const returnForAdoption = async(petID, index) => {
+    try{
         const headers = await tokenFromLocalforage()
-        const returnForAdoption = await axios.delete(`http://localhost:3000/pets/returnForAdoption/${petID}`, {headers:headers})
+        const returnForAdoption = await axios.delete(`http://localhost:5000/pets/returnForAdoption/${petID}`, {headers:headers})
         const newPetsArray = myPetsArray.filter(pet => pet.pet_ID !== petID)
         setMyPetsArray(newPetsArray)
         alert(returnForAdoption.data)
@@ -28,54 +29,78 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
         petToUpdate.adoption_status = "available"
         newAllPetsArray[indexFromAllPets] = petToUpdate
         setAllPetsArray(newAllPetsArray)
-        
+    }catch(e){
+        console.log(e) 
+        }
     }
     const fosterToAdopt = async(petID, index) => {
+    try{
         const headers = await tokenFromLocalforage()
-        const changeFromFosterToAdopt = await axios.put(`http://localhost:3000/pets/fosterToAdopt`, {
+        const changeFromFosterToAdopt = await axios.put(`http://localhost:5000/pets/fosterToAdopt`, {
             petID: petID
         }, {headers:headers})
         const newPetsArray = [...myPetsArray]
-        const petToChange = newPetsArray[index]
+        const petToChange = newPetsArray.find(pet => pet.pet_ID === petID)
         petToChange.adoption_status = "adopted"
         newPetsArray[index] = petToChange
         setMyPetsArray(newPetsArray)
         alert(changeFromFosterToAdopt.data)
+    }catch(e){
+        console.log(e)
+        }
     }
     const unsavePet = async(petID, index) => {
+    try{
         const headers = await tokenFromLocalforage()
-        const unsavePet = await axios.delete(`http://localhost:3000/pets/unsavePet/${petID}`, {headers:headers})
+        const unsavePet = await axios.delete(`http://localhost:5000/pets/unsavePet/${petID}`, {headers:headers})
         const newSavedPetsArray = savedPetsArray.filter(pet => pet.pet_ID !== petID)
         setSavedPetsArray(newSavedPetsArray)
         alert(unsavePet.data)
+    }catch(e){
+        console.log(e)
+        }
     }
     const savePet = async(petID, pet) => {
+    try{
         const headers = await tokenFromLocalforage()
-        const savePet = await axios.post(`http://localhost:3000/pets/savePet`, {
+        const savePet = await axios.post(`http://localhost:5000/pets/savePet`, {
             petID: petID
         }, {headers:headers})
         setSavedPetsArray([...savedPetsArray, pet])
         alert(savePet.data)
+    }catch(e){
+        console.log(e) 
+        }
     }
 
     const adoptPet = async(petID, pet) => {
+    try{
         const headers = await tokenFromLocalforage()
-        const adoptPet = await axios.post(`http://localhost:3000/pets/adoptPet`, {
+        const adoptPet = await axios.post(`http://localhost:5000/pets/adoptPet`, {
             petID: petID
         }, {headers:headers})
         pet.adoption_status = "adopted"
         pet.availability = 0
         setMyPetsArray([...myPetsArray, pet])
+        alert(adoptPet.data)
+    }catch(e){
+        console.log(e) 
+        }
     }
 
     const fosterPet = async(petID, pet) => {
+    try{
         const headers = await tokenFromLocalforage()
-        const fosterPet = await axios.post(`http://localhost:3000/pets/fosterPet`, {
+        const fosterPet = await axios.post(`http://localhost:5000/pets/fosterPet`, {
             petID: petID
         }, {headers:headers})
         pet.adoption_status = "fostered"
         pet.availability = 0
         setMyPetsArray([...myPetsArray, pet])
+        alert(fosterPet.data)
+    }catch(e){
+        console.log(e) 
+        }
     }
 
     const goToEditPage = (pet) => {
@@ -86,8 +111,6 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
         setPetDetailsToEdit(pet)
     }
 
-
-    
     return < >  
     <div id={pet.pet_ID} className={styles.petInfo}>
         <img className={styles.image} src={petImages[`${pet.picture_path}`].default} />
@@ -132,7 +155,7 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
                 {loggedInInfo && allPets && myPetsArray.filter(myPet => myPet.pet_ID === pet.pet_ID).length !== 0 && pet.adoption_status === "fostered" &&
                 <button onClick={() =>fosterToAdopt(pet.pet_ID, index)}>Adopt</button>}
                 
-                {adminInfo &&  <div onClick={() => goToEditPage(pet)}>Edit Pet</div>}
+                {adminInfo &&  <button onClick={() => goToEditPage(pet)}>Edit Pet</button>}
                
              
                 </div>

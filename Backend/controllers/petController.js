@@ -3,24 +3,17 @@ const { v4: uuidv4 } = require('uuid');
 
 
 
-exports.getSavedPetsArray = async(req, res) => {
+exports.usersPetArrays = async(req, res) => {
     try {
         const {userID} = req.decoded
         const savedPetsArray = await query(`SELECT * FROM pets JOIN savedPets on pets.pet_ID = savedPets.pet_ID WHERE user_ID = "${userID}"`)
-        res.send(savedPetsArray)
-    } catch (e) {
-        console.error(e)
-    }
-}
-exports.getAdoptedPetsArray = async(req, res) => {
-    try {
-        const {userID} = req.decoded
         const adoptedPetsArray = await query(`SELECT * FROM pets JOIN adoptedPets on pets.pet_ID = adoptedPets.pet_ID WHERE user_ID = "${userID}"`)
-        res.send(adoptedPetsArray)
+        res.send({savedPetsArray: savedPetsArray, adoptedPetsArray: adoptedPetsArray})
     } catch (e) {
-        console.error(e)
+        res.status(500).send(e.message)
     }
 }
+
 
 exports.getAllPetsArray = async(req, res) => {
     try {
@@ -28,6 +21,7 @@ exports.getAllPetsArray = async(req, res) => {
         res.send(allPetsArray)
     } catch (e) {
         console.error(e)
+        res.status(500).send(e.message)
     }
 }
 
@@ -41,6 +35,7 @@ exports.returnForAdoption  = async(req, res) => {
     res.send("Returned Succesfully!")
 }catch (e) {
     console.error(e)
+    res.status(500).send(e.message)
 }}
 
 exports.fosterToAdopt = async(req, res) => {
@@ -50,6 +45,7 @@ exports.fosterToAdopt = async(req, res) => {
     res.send("Updated Succesfully!")
 }catch (e) {
     console.error(e)
+    res.status(500).send(e.message)
 }}
 
 exports.unsavePet  = async(req, res) => {
@@ -60,6 +56,7 @@ exports.unsavePet  = async(req, res) => {
     res.send("Unsaved Succesfully!")
 }catch (e) {
     console.error(e)
+    res.status(500).send(e.message)
 }}
 
 exports.savePet  = async(req, res) => {
@@ -70,6 +67,7 @@ exports.savePet  = async(req, res) => {
     res.send("Saved Succesfully!")
 }catch (e) {
     console.error(e)
+    res.status(500).send(e.message)
 }}
 
 exports.adoptPet  = async(req, res) => {
@@ -81,6 +79,7 @@ exports.adoptPet  = async(req, res) => {
     res.send("Adoption Success!")
 }catch (e) {
     console.error(e)
+    res.status(500).send(e.message)
 }}
 
 exports.fosterPet  = async(req, res) => {
@@ -92,6 +91,7 @@ exports.fosterPet  = async(req, res) => {
     res.send("Foster Success!")
 }catch (e) {
     console.error(e)
+    res.status(500).send(e.message)
 }}
 
 exports.basicSearch = async(req, res) =>{
@@ -99,8 +99,9 @@ exports.basicSearch = async(req, res) =>{
         const {type} = req.query
         const searchResults = await query(`SELECT * FROM pets WHERE type = "${type}"`)
         res.send(searchResults)
-    } catch (error) {
-        console.log(error)
+    } catch (e) {
+        console.log(e)
+        res.status(500).send(e.message)
     }
 }
 
@@ -110,8 +111,9 @@ exports.advanceSearch = async(req, res) =>{
         const {name} = req.query
         const searchResults = await query(`SELECT * FROM pets WHERE type = "${type}" AND adoption_status = "${adoptionStatus}" AND weight >= ${minWeight} AND weight <= ${maxWeight} AND height >= ${minHeight} AND height <= ${maxHeight} AND name LIKE '%${name}%'`)
         res.send(searchResults)
-    } catch (error) {
-        console.log(error)
+    } catch (e) {
+        console.log(e)
+        res.status(500).send(e.message)
     }
 }
 
@@ -132,8 +134,8 @@ exports.addPet = async(req, res) =>{
         const date = new Date().toISOString().slice(0, 19).replace('T', ' ')
         await query(`INSERT INTO pets (pet_ID, type, name, adoption_status, picture_path, height, weight, color, bio, hypoallergenic, availability, dietry_restrictions, breed, date_created) VALUES ('${petID}', '${type}', '${name}', '${adoptionStatus}', '${filename}', ${parseHeight}, ${parseWeight}, '${colour}', '${bio}', ${parseHypoallergenic}, ${availability}, '${dietryRestrictions}', '${breed}', '${date}')`)
         res.send("Added Successfully!")
-    } catch (error) {
-        console.log(error)
+    } catch (e) {
+        res.status(500).send(e.message)
     }
 }
 
@@ -150,8 +152,9 @@ exports.editPetWithNewPhoto = async(req, res) =>{
         }
         const updatePet = await query(`UPDATE pets SET type = "${type}", adoption_status = "${adoptionStatus}", name = "${name}", color = "${colour}", picture_path = "${filename}", height = ${parseHeight}, weight = ${parseWeight}, bio = "${bio}", dietry_restrictions = "${dietryRestrictions}", hypoallergenic = ${parseHypoallergenic}, breed = "${breed}", availability = ${availability}  WHERE pet_ID = "${petID}"`)
         res.send("Updated Successfully!")
-    } catch (error) {
-        console.log(error)
+    } catch (e) {
+        console.log(e)
+        res.status(500).send(e.message)
     }
 }
 
@@ -164,8 +167,9 @@ exports.editPetWithoutNewPhoto = async(req, res) =>{
         }
         const updatePet = await query(`UPDATE pets SET type = "${type}", adoption_status = "${adoptionStatus}", name = "${name}", color = "${colour}", height = ${height}, weight = ${weight}, bio = "${bio}", dietry_restrictions = "${dietryRestrictions}", hypoallergenic = ${hypoallergenic}, breed = "${breed}", availability = ${availability}  WHERE pet_ID = "${petID}"`)
         res.send("Updated Successfully!")
-    } catch (error) {
-        console.log(error)
+    } catch (e) {
+        console.log(e)
+        res.status(500).send(e.message)
     }
 }
 

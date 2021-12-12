@@ -4,6 +4,7 @@ import Modal from 'react-modal';
 import styles from '../styles/LoginSignUp.module.css'
 import axios from "axios"
 import localforage from 'localforage'
+import { LoadingButton } from '@mui/lab';
 
 const customStyles = {
     content: {
@@ -40,7 +41,7 @@ function ModalLoginSignUp() {
     const [phoneNumberAdmin, setPhoneNumberAdmin] = useState('');
     const [adminCode, setAdminCode] = useState('')
 
-    const { modalIsOpen, setModalIsOpen, setLoggedInInfo, setAdminInfo, setAdminLoggedIn, setAllPublicUsersArray, setAllAdminUsersArray, tokenFromLocalforage } = useContext(AppContext);
+    const { modalIsOpen, setModalIsOpen, setLoadSpinner, setLoggedInInfo, setAdminInfo, setAdminLoggedIn, setAllPublicUsersArray, setAllAdminUsersArray, tokenFromLocalforage } = useContext(AppContext);
 
 
     const handleEmail = (e) => {
@@ -101,29 +102,35 @@ function ModalLoginSignUp() {
     }
 
     const signUp = async(e) => {
+        try{
         e.preventDefault();
-        const addUser = await axios.post("http://localhost:3000/users/signUp", {
+        setLoadSpinner(true)
+        const addUser = await axios.post("http://localhost:5000/users/signUp", {
             email: email,
             password: password,
             rePassword: rePassword,
             firstName: firstName,
             lastName: lastName,
-            phoneNumber: phoneNumber,
+            phoneNumber:  phoneNumber,
             admin: false
           })
-          alert(addUser.data)
+          setLoadSpinner(false)
           setEmail('')
           setPassword('')
           setRePassword('')
           setFirstName('')
           setLastName('')
           setPhoneNumber('')
-
-
+        }catch(e){
+            console.log(e)
+            setLoadSpinner(false) 
+            }
     }
     const signUpAdmin = async(e) => {
+        try{
         e.preventDefault();
-        const addUser = await axios.post("http://localhost:3000/users/signUp", {
+        setLoadSpinner(true)
+        const addUser = await axios.post("http://localhost:5000/users/signUp", {
             email: emailAdmin,
             password: passwordAdmin,
             rePassword: rePasswordAdmin,
@@ -133,7 +140,7 @@ function ModalLoginSignUp() {
             admin: true,
             adminCode: adminCode
           })
-          alert(addUser.data)
+          setLoadSpinner(false)
           setEmailAdmin('')
           setPasswordAdmin('')
           setRePasswordAdmin('')
@@ -141,27 +148,47 @@ function ModalLoginSignUp() {
           setLastNameAdmin('')
           setPhoneNumberAdmin('')
           setAdminCode('')
-    
+        }catch(e){
+            console.log(e)
+            setLoadSpinner(false) 
+            }
     }
     const getAllPublicUsers = async() => {
+    try{
+        setLoadSpinner(true)
         const headers = await tokenFromLocalforage()
-        const allPublicUsers = await axios.get('http://localhost:3000/users/allPublicUsers', {headers:headers})
+        const allPublicUsers = await axios.get('http://localhost:5000/users/allPublicUsers', {headers:headers})
         setAllPublicUsersArray(allPublicUsers.data)
+        setLoadSpinner(false)
+    }catch(e){
+        console.log(e)
+        setLoadSpinner(false) 
+        }
       }
     
       const getAllAdminUsers = async() => {
+        try{
+        setLoadSpinner(true)
         const headers = await tokenFromLocalforage()
-        const allAdminUsers = await axios.get('http://localhost:3000/users/allAdminUsers', {headers:headers})
+        const allAdminUsers = await axios.get('http://localhost:5000/users/allAdminUsers', {headers:headers})
         setAllAdminUsersArray(allAdminUsers.data)
+        setLoadSpinner(false)
+        }catch(e){
+        console.log(e)
+        setLoadSpinner(false) 
+        }
       }
 
     const login = async(e) => {
+        try{
         e.preventDefault();
-        const loginUser = await axios.post("http://localhost:3000/users/login", {
+        setLoadSpinner(true)
+        const loginUser = await axios.post("http://localhost:5000/users/login", {
             email: emailLogin,
             password: passwordLogin,
          
           })
+          console.log(loginUser)
             await localforage.setItem('token', JSON.stringify(loginUser.data.token));
             if(loginUser.data.userInfo.admin_status === 1){
                 await getAllPublicUsers()
@@ -171,14 +198,16 @@ function ModalLoginSignUp() {
                 else{
                 setLoggedInInfo(loginUser.data.userInfo)
                 }
-            alert(loginUser.data.message)
+            setLoadSpinner(false)
             setModalIsOpen(false)
             setPasswordLogin('')
             setEmailLogin('')
+        }catch(e){
+            console.log(e)
+            setLoadSpinner(false) 
+            }
     }
-
- 
-
+    
         function closeModal(e) { 
             e.stopPropagation()
             setIsSignUp(true)
@@ -200,29 +229,29 @@ function ModalLoginSignUp() {
         {isAdmin  ? <>
         <h2 className={styles.header}>Admin</h2> 
         <form onSubmit={signUpAdmin} className={styles.form}>
-        <input className={styles.input} required type="email" value={emailAdmin} onChange={handleEmailAdmin} placeholder="email address" />
-        <input className={styles.input} required type="password" value={passwordAdmin} onChange={handlePasswordAdmin} placeholder="password" />
-        <input className={styles.input} required type="password" value={rePasswordAdmin} onChange={handleRepasswordAdmin} placeholder="re password" />
-        <input className={styles.input} required type="text" value={firstNameAdmin} onChange={handleFirstNameAdmin} placeholder="first name" />
-        <input className={styles.input} required type="text" value={lastNameAdmin} onChange={handleLastNameAdmin} placeholder="last name" />
-        <input className={styles.input} required type="tel" value={phoneNumberAdmin} onChange={handlePhoneNumberAdmin} placeholder="phone number" />
+        <input className={styles.input} required type="email" value={emailAdmin} maxLength={"50"} onChange={handleEmailAdmin} placeholder="email address" />
+        <input className={styles.input} required type="password" value={passwordAdmin} minLength={"6"} maxLength={"20"} onChange={handlePasswordAdmin} placeholder="password" />
+        <input className={styles.input} required type="password" value={rePasswordAdmin} minLength={"6"} maxLength={"20"} onChange={handleRepasswordAdmin} placeholder="re password" />
+        <input className={styles.input} required type="text" value={firstNameAdmin} maxLength={"20"} onChange={handleFirstNameAdmin} placeholder="first name" />
+        <input className={styles.input} required type="text" value={lastNameAdmin} maxLength={"20"} onChange={handleLastNameAdmin} placeholder="last name" />
+        <input className={styles.input} required type="text" value={phoneNumberAdmin} minLength={"10"} maxLength={"10"} onChange={handlePhoneNumberAdmin} placeholder="phone number" />
         <input className={styles.input} required type="password" value={adminCode} onChange={handleAdminCode} placeholder="admin code" />
         <button className={styles.submit} type="submit">Sign Up</button>
        </form> </> :<>
         {isSignUp ? <>
         <h2 className={styles.header}>SignUp</h2> 
         <form onSubmit={signUp} className={styles.form}>
-        <input className={styles.input} required type="email" value={email} onChange={handleEmail} placeholder="email address" />
-        <input className={styles.input} required type="password" value={password} onChange={handlePassword} placeholder="password" />
-        <input className={styles.input} required type="password" value={rePassword} onChange={handleRepassword} placeholder="re password" />
-        <input className={styles.input} required type="text" value={firstName} onChange={handleFirstName} placeholder="first name" />
-        <input className={styles.input} required type="text" value={lastName} onChange={handleLastName} placeholder="last name" />
-        <input className={styles.input} required type="tel" value={phoneNumber} onChange={handlePhoneNumber} placeholder="phone number" />
+        <input className={styles.input} required type="email" value={email} maxLength={"50"} onChange={handleEmail} placeholder="email address" />
+        <input className={styles.input} required type="password" value={password} minLength={"6"} maxLength={"20"} onChange={handlePassword} placeholder="password" />
+        <input className={styles.input} required type="password" value={rePassword} minLength={"6"} maxLength={"20"} onChange={handleRepassword} placeholder="re password" />
+        <input className={styles.input} required type="text" value={firstName} maxLength={"20"} onChange={handleFirstName} placeholder="first name" />
+        <input className={styles.input} required type="text" value={lastName} maxLength={"20"} onChange={handleLastName} placeholder="last name" />
+        <input className={styles.input} required type="text" value={phoneNumber} minLength={"10"} maxLength={"10"}  onChange={handlePhoneNumber} placeholder="phone number" />
         <button className={styles.submit} type="submit">Sign Up</button>
        </form> </>:
              <form onSubmit={login} className={styles.form}>
-             <input className={styles.input} required type="email" value={emailLogin} onChange={handleEmailLogin} placeholder="email address" />
-             <input className={styles.input} required type="password" value={passwordLogin} onChange={handlePasswordLogin} placeholder="password" />
+             <input className={styles.input} required type="email" value={emailLogin} maxLength={"50"} onChange={handleEmailLogin} placeholder="email address" />
+             <input className={styles.input} required type="password" value={passwordLogin} minLength={"6"} maxLength={"20"} onChange={handlePasswordLogin} placeholder="password" />
              <button className={styles.submit} type="submit">Login</button>
             </form>}</>}
         <button onClick={(e)=>closeModal(e)}>close</button>

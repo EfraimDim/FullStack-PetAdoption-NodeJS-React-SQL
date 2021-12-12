@@ -16,9 +16,7 @@ exports.login = function (req, res) {
     });
   } catch (e) {
     console.log(e);
-    res.status(400).send({
-      error: e.message
-    });
+    res.status(500).send(e.message);
   }
 };
 
@@ -34,7 +32,7 @@ exports.signUpUser = function _callee(req, res) {
           date = new Date().toISOString().slice(0, 19).replace('T', ' ');
           userID = uuidv4();
           _context.next = 6;
-          return regeneratorRuntime.awrap(query("INSERT INTO users (user_ID, email, password, first_name, last_name, phone, admin_status, date_created, bio) VALUES ('".concat(userID, "', '").concat(email.toLowerCase(), "', '").concat(password, "', '").concat(firstName, "', '").concat(lastName, "', ").concat(phoneNumber, ", ").concat(admin, ", '").concat(date, "', '')")));
+          return regeneratorRuntime.awrap(query("INSERT INTO users (user_ID, email, password, first_name, last_name, phone, admin_status, date_created, bio) VALUES ('".concat(userID, "', '").concat(email.toLowerCase(), "', '").concat(password, "', '").concat(firstName, "', '").concat(lastName, "', '").concat(phoneNumber, "', ").concat(admin, ", '").concat(date, "', '')")));
 
         case 6:
           res.send("Register Succesful!");
@@ -45,9 +43,7 @@ exports.signUpUser = function _callee(req, res) {
           _context.prev = 9;
           _context.t0 = _context["catch"](0);
           console.log(_context.t0);
-          res.status(400).send({
-            error: _context.t0.message
-          });
+          res.status(500).send(_context.t0.message);
 
         case 13:
         case "end":
@@ -78,9 +74,7 @@ exports.updateUserPassword = function _callee2(req, res) {
           _context2.prev = 8;
           _context2.t0 = _context2["catch"](0);
           console.log(_context2.t0);
-          res.status(400).send({
-            error: _context2.t0.message
-          });
+          res.status(500).send(_context2.t0.message);
 
         case 12:
         case "end":
@@ -101,7 +95,7 @@ exports.updateUserProfile = function _callee3(req, res) {
           _req$body2 = req.body, email = _req$body2.email, firstName = _req$body2.firstName, lastName = _req$body2.lastName, phoneNumber = _req$body2.phoneNumber, bio = _req$body2.bio;
           userID = req.decoded.userID;
           _context3.next = 5;
-          return regeneratorRuntime.awrap(query("UPDATE users SET email = \"".concat(email, "\", first_name = \"").concat(firstName, "\", last_name = \"").concat(lastName, "\", phone = ").concat(phoneNumber, ", bio = \"").concat(bio, "\" WHERE user_ID = \"").concat(userID, "\"")));
+          return regeneratorRuntime.awrap(query("UPDATE users SET email = \"".concat(email, "\", first_name = \"").concat(firstName, "\", last_name = \"").concat(lastName, "\", phone = \"").concat(phoneNumber, "\", bio = \"").concat(bio, "\" WHERE user_ID = \"").concat(userID, "\"")));
 
         case 5:
           updateQuery = _context3.sent;
@@ -113,9 +107,7 @@ exports.updateUserProfile = function _callee3(req, res) {
           _context3.prev = 9;
           _context3.t0 = _context3["catch"](0);
           console.log(_context3.t0);
-          res.status(400).send({
-            error: _context3.t0.message
-          });
+          res.status(500).send(_context3.t0.message);
 
         case 13:
         case "end":
@@ -145,9 +137,7 @@ exports.getAllPublicUsers = function _callee4(req, res) {
           _context4.prev = 7;
           _context4.t0 = _context4["catch"](0);
           console.log(_context4.t0);
-          res.status(400).send({
-            error: _context4.t0.message
-          });
+          res.status(500).send(_context4.t0.message);
 
         case 11:
         case "end":
@@ -177,9 +167,7 @@ exports.getAllAdminUsers = function _callee5(req, res) {
           _context5.prev = 7;
           _context5.t0 = _context5["catch"](0);
           console.log(_context5.t0);
-          res.status(400).send({
-            error: _context5.t0.message
-          });
+          res.status(500).send(_context5.t0.message);
 
         case 11:
         case "end":
@@ -210,9 +198,7 @@ exports.getViewedUsersPets = function _callee6(req, res) {
           _context6.prev = 8;
           _context6.t0 = _context6["catch"](0);
           console.log(_context6.t0);
-          res.status(400).send({
-            error: _context6.t0.message
-          });
+          res.status(500).send(_context6.t0.message);
 
         case 12:
         case "end":

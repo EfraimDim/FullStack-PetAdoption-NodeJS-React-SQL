@@ -116,16 +116,14 @@ exports.decryptPwd = function _callee2(req, res, next) {
           emailValidation = _context2.sent;
 
           if (emailValidation.length === 0) {
-            res.status(400).send("email not found!");
+            res.status(400).send("Email not found!");
           } else {
             bcrypt.compare(password, emailValidation[0].password, function (err, result) {
-              if (err) {
-                throw new Error('Incorrect password');
-              }
-
               if (result) {
                 req.body.user = emailValidation[0];
                 next();
+              } else {
+                res.status(400).send("Wrong Password!");
               }
             });
           }
