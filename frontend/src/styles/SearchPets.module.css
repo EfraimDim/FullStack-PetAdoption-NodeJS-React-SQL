@@ -2,4 +2,53 @@
     margin: 1rem;
     width: 10vw;
     text-align: center;
+} 
+.searchWrapper{
+    margin:auto;
+    text-align: center;
+}
+.advancedSearch{
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    margin:auto;
+}
+.inputWrapper{
+    display: flex;
+    flex-direction: row;
+}
+.halfOfInputs{
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    width:10vw
+}
+.label{
+    font-size: 0.75rem;
+    font-family: sans-serif;
+}
+.input, .inputNumber{
+    margin-bottom: 10px;
+    border-radius: 5px;
+    padding: 2px;
+    
+}
+.inputNumber{
+    width:5vw;
+    margin:auto;
+    margin-bottom: 10px;
+}
+.submit, .button{
+    width: fit-content;
+    padding: 5px;
+    margin: auto;
+    cursor:pointer
+}
+
+.button{
+    margin: 1rem;
+}
+.header{
+    text-align: center;
+    font-family: sans-serif;
 }

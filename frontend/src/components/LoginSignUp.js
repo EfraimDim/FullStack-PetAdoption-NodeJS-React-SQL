@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 import styles from '../styles/LoginSignUp.module.css'
 import axios from "axios"
 import localforage from 'localforage'
-import { LoadingButton } from '@mui/lab';
+import { TextField } from '@mui/material';
 
 const customStyles = {
     content: {
@@ -19,6 +19,9 @@ const customStyles = {
       height: 'fit-content'
     },
   };
+const inputStyles = {
+     margin: "1px", transform: "scale(0.7)", width: "250px"
+}
   Modal.setAppElement('#root');
 
 function ModalLoginSignUp() {
@@ -188,7 +191,6 @@ function ModalLoginSignUp() {
             password: passwordLogin,
          
           })
-          console.log(loginUser)
             await localforage.setItem('token', JSON.stringify(loginUser.data.token));
             if(loginUser.data.userInfo.admin_status === 1){
                 await getAllPublicUsers()
@@ -214,50 +216,56 @@ function ModalLoginSignUp() {
             setModalIsOpen(false);
         }
 
-    return <div >
-          <Modal 
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        style={customStyles}
-        contentLabel="SignUp/Login Modal"
-      >
-        <nav className={styles.navBar}>
-            <div onClick={navSignUp} className={styles.signUp}>Sign Up</div>
-            <div onClick={navLogin} className={styles.login}>Login</div>
-            <div onClick={navAdmin} className={styles.login}>Admin</div>
-        </nav>
-        {isAdmin  ? <>
-        <h2 className={styles.header}>Admin</h2> 
-        <form onSubmit={signUpAdmin} className={styles.form}>
-        <input className={styles.input} required type="email" value={emailAdmin} maxLength={"50"} onChange={handleEmailAdmin} placeholder="email address" />
-        <input className={styles.input} required type="password" value={passwordAdmin} minLength={"6"} maxLength={"20"} onChange={handlePasswordAdmin} placeholder="password" />
-        <input className={styles.input} required type="password" value={rePasswordAdmin} minLength={"6"} maxLength={"20"} onChange={handleRepasswordAdmin} placeholder="re password" />
-        <input className={styles.input} required type="text" value={firstNameAdmin} maxLength={"20"} onChange={handleFirstNameAdmin} placeholder="first name" />
-        <input className={styles.input} required type="text" value={lastNameAdmin} maxLength={"20"} onChange={handleLastNameAdmin} placeholder="last name" />
-        <input className={styles.input} required type="text" value={phoneNumberAdmin} minLength={"10"} maxLength={"10"} onChange={handlePhoneNumberAdmin} placeholder="phone number" />
-        <input className={styles.input} required type="password" value={adminCode} onChange={handleAdminCode} placeholder="admin code" />
-        <button className={styles.submit} type="submit">Sign Up</button>
-       </form> </> :<>
-        {isSignUp ? <>
-        <h2 className={styles.header}>SignUp</h2> 
-        <form onSubmit={signUp} className={styles.form}>
-        <input className={styles.input} required type="email" value={email} maxLength={"50"} onChange={handleEmail} placeholder="email address" />
-        <input className={styles.input} required type="password" value={password} minLength={"6"} maxLength={"20"} onChange={handlePassword} placeholder="password" />
-        <input className={styles.input} required type="password" value={rePassword} minLength={"6"} maxLength={"20"} onChange={handleRepassword} placeholder="re password" />
-        <input className={styles.input} required type="text" value={firstName} maxLength={"20"} onChange={handleFirstName} placeholder="first name" />
-        <input className={styles.input} required type="text" value={lastName} maxLength={"20"} onChange={handleLastName} placeholder="last name" />
-        <input className={styles.input} required type="text" value={phoneNumber} minLength={"10"} maxLength={"10"}  onChange={handlePhoneNumber} placeholder="phone number" />
-        <button className={styles.submit} type="submit">Sign Up</button>
-       </form> </>:
-             <form onSubmit={login} className={styles.form}>
-             <input className={styles.input} required type="email" value={emailLogin} maxLength={"50"} onChange={handleEmailLogin} placeholder="email address" />
-             <input className={styles.input} required type="password" value={passwordLogin} minLength={"6"} maxLength={"20"} onChange={handlePasswordLogin} placeholder="password" />
-             <button className={styles.submit} type="submit">Login</button>
-            </form>}</>}
-        <button onClick={(e)=>closeModal(e)}>close</button>
-      </Modal>
-  
+    return (
+    <div>
+        <Modal 
+            isOpen={modalIsOpen}
+            onRequestClose={closeModal}
+            style={customStyles}
+            contentLabel="SignUp/Login Modal">
 
-</div>
+                <nav className={styles.navBar}>
+                    <div onClick={navSignUp} className={!isAdmin && isSignUp ? styles.white : styles.login }>Sign Up</div>
+                    <div onClick={navLogin} className={!isAdmin && !isSignUp ? styles.white : styles.login }>Login</div>
+                    <div onClick={navAdmin} className={isAdmin ? styles.white : styles.login }>Admin</div>
+                </nav>
+                {isAdmin  ? 
+                <> 
+                    <form onSubmit={signUpAdmin} className={styles.form}>
+                        <TextField className={styles.input} required type="email" value={emailAdmin} maxLength={"50"} onChange={handleEmailAdmin} label="email address" />
+                        <input className={styles.input} required type="password" value={passwordAdmin} minLength={"6"} maxLength={"20"} onChange={handlePasswordAdmin} placeholder="password" />
+                        <input className={styles.input} required type="password" value={rePasswordAdmin} minLength={"6"} maxLength={"20"} onChange={handleRepasswordAdmin} placeholder="re password" />
+                        <input className={styles.input} required type="text" value={firstNameAdmin} maxLength={"20"} onChange={handleFirstNameAdmin} placeholder="first name" />
+                        <input className={styles.input} required type="text" value={lastNameAdmin} maxLength={"20"} onChange={handleLastNameAdmin} placeholder="last name" />
+                        <input className={styles.input} required type="text" value={phoneNumberAdmin} minLength={"10"} maxLength={"10"} onChange={handlePhoneNumberAdmin} placeholder="phone number" />
+                        <input className={styles.input} required type="password" value={adminCode} onChange={handleAdminCode} placeholder="admin code" />
+                        <button className={styles.submit} type="submit">Sign Up</button>
+                    </form> 
+                </> 
+                :
+                <>
+                    {isSignUp ? 
+                    <>
+                        <form onSubmit={signUp} className={styles.form}>
+                            <input className={styles.input} required type="email" value={email} maxLength={"50"} onChange={handleEmail} placeholder="email address" />
+                            <input className={styles.input} required type="password" value={password} minLength={"6"} maxLength={"20"} onChange={handlePassword} placeholder="password" />
+                            <input className={styles.input} required type="password" value={rePassword} minLength={"6"} maxLength={"20"} onChange={handleRepassword} placeholder="re password" />
+                            <input className={styles.input} required type="text" value={firstName} maxLength={"20"} onChange={handleFirstName} placeholder="first name" />
+                            <input className={styles.input} required type="text" value={lastName} maxLength={"20"} onChange={handleLastName} placeholder="last name" />
+                            <input className={styles.input} required type="text" value={phoneNumber} minLength={"10"} maxLength={"10"}  onChange={handlePhoneNumber} placeholder="phone number" />
+                            <button className={styles.submit} type="submit">Sign Up</button>
+                        </form> 
+                    </>
+                    :
+                        <form onSubmit={login} className={styles.form}>
+                            <TextField size="small"  required type="email" value={emailLogin} onChange={handleEmailLogin} inputProps={{ maxLength: 50 }} label="email address" sx={inputStyles} />
+                            <TextField size="small" classes={styles.input} required type="password" value={passwordLogin} inputProps={{ minLength: 6, maxLength: 20 }} sx={inputStyles}  onChange={handlePasswordLogin} label="password" />
+                            <button  className={styles.submit} type="submit">Login</button>
+                        </form>
+                    }
+                </>}
+                <button className={styles.close} onClick={(e)=>closeModal(e)}>close</button>
+        </Modal>
+    </div>)
     }
     export default ModalLoginSignUp

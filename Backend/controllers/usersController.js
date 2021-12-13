@@ -53,7 +53,7 @@ exports.updateUserProfile = async(req, res) => {
 
 exports.getAllPublicUsers = async(req, res) => {
     try {
-        const publicUsersArray = await query(`SELECT * FROM users where admin_status = 0`)
+        const publicUsersArray = await query(`SELECT user_ID, email, first_name, last_name, phone, bio, date_created, admin_status FROM users where admin_status = 0`)
         res.send(publicUsersArray)
     } catch (e) {
         console.log(e)
@@ -63,7 +63,7 @@ exports.getAllPublicUsers = async(req, res) => {
 
 exports.getAllAdminUsers = async(req, res) => {
     try {
-        const adminUsersArray = await query(`SELECT * FROM users where admin_status = 1`)
+        const adminUsersArray = await query(`SELECT user_ID, email, first_name, last_name, phone, bio, date_created, admin_status FROM users where admin_status = 1`)
         res.send(adminUsersArray)
     } catch (e) {
         console.log(e)

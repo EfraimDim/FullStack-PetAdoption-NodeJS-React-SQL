@@ -125,7 +125,7 @@ exports.getAllPublicUsers = function _callee4(req, res) {
         case 0:
           _context4.prev = 0;
           _context4.next = 3;
-          return regeneratorRuntime.awrap(query("SELECT * FROM users where admin_status = 0"));
+          return regeneratorRuntime.awrap(query("SELECT user_ID, email, first_name, last_name, phone, bio, date_created, admin_status FROM users where admin_status = 0"));
 
         case 3:
           publicUsersArray = _context4.sent;
@@ -155,7 +155,7 @@ exports.getAllAdminUsers = function _callee5(req, res) {
         case 0:
           _context5.prev = 0;
           _context5.next = 3;
-          return regeneratorRuntime.awrap(query("SELECT * FROM users where admin_status = 1"));
+          return regeneratorRuntime.awrap(query("SELECT user_ID, email, first_name, last_name, phone, bio, date_created, admin_status FROM users where admin_status = 1"));
 
         case 3:
           adminUsersArray = _context5.sent;

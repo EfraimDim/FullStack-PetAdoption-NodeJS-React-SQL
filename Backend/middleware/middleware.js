@@ -129,11 +129,10 @@ exports.checkOldPasswordCorrect = async(req, res, next) => {
       res.status(400).send("user not found!");
     }else{
     bcrypt.compare(oldPassword, userIDValidation[0].password, (err, result) => {
-      if (err) {
-        throw new Error('Incorrect password');
-      }
       if (result) {
         next();
+      }else{
+        res.status(400).send("Wrong Password!");
       }
     });
   }} catch (err) {

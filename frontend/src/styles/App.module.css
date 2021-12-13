@@ -28,3 +28,14 @@
     margin-top: 50vh
     
 }
+.wrapper {
+    text-align: center
+}
+.sideBarButtons{
+    margin: 1rem;
+    color: white;
+    font-family: sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}

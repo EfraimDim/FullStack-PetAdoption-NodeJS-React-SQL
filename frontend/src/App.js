@@ -154,7 +154,7 @@ function App() {
       <List  sx={{
               background: 'rgb(44, 44, 198)',
             }}>
-        {[<div onClick={()=>navHome()}>Home</div>, <div onClick={()=>navSearchBeforeLogin()}>Search Pets</div>].map((text, index) => (
+        {[<div className={styles.sideBarButtons} onClick={()=>navHome()}>Home</div>, <div className={styles.sideBarButtons} onClick={()=>navSearchBeforeLogin()}>Search Pets</div>].map((text, index) => (
           <ListItem button key={index}>
             <ListItemText  sx={{ height: '100%', width: '100%'}} primary={text} />
           </ListItem>
@@ -226,7 +226,12 @@ function App() {
       <div onClick={openModal} className={styles.login}>Login</div>
       </nav>
 
-      {searchBeforeLogin ? <SearchPets /> :<h1 className={styles.header}>Welcome to the pet adoption agency!</h1>}
+      {searchBeforeLogin ? <SearchPets /> :
+      <div className={styles.wrapper}>
+      <h1 className={styles.header}>Welcome to the pet adoption agency!</h1>
+      <p>Go ahead and sign up to adopt your first pet today!</p>
+      <p>Or go ahead and use our search to find your perfect match first</p>
+      </div>}
       
       <LoginSignUp /></>}</>}</>}
     </div>
