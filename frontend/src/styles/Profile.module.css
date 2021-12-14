@@ -1,4 +1,13 @@
-.index{
-   width: 30%;
+.form{
    margin: auto;
-} 
+   display: flex;
+   flex-direction: column;
+   width: fit-content;
+}
+
+.submit {
+   width: fit-content;
+   padding: 5px;
+   cursor:pointer;
+   align-self: center;
+}

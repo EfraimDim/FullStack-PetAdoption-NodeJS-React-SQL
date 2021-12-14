@@ -126,7 +126,7 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
             > 
                 {<div className={styles.extraInfoWrapper}><br></br>
                 <div className={styles.extraInfo}>
-                <div className={styles.reduceMargin}><span className={styles.field}>Type:</span> {pet.type}</div>
+                <div className={styles.info}><span className={styles.field}>Type:</span> {pet.type}</div>
                 <div className={styles.info}><span className={styles.field}>Breed:</span> {pet.breed}</div>
                 <div className={styles.info}><span className={styles.field}>Height:</span> {pet.height}cm</div>
                 <div className={styles.info}><span className={styles.field}>Weigth:</span> {pet.weight}kg</div>
@@ -143,26 +143,26 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
 
             
             </ShowMore>
-                {myPets && loggedInInfo && pet.adoption_status === "fostered" && <button onClick={() =>fosterToAdopt(pet.pet_ID, index)}>Adopt</button>}
+                {myPets && loggedInInfo && pet.adoption_status === "fostered" && <button className={styles.button} onClick={() =>fosterToAdopt(pet.pet_ID, index)}>Adopt</button>}
 
-                {loggedInInfo && myPets && <button onClick={() =>returnForAdoption(pet.pet_ID, index)}>Return to Adoption Centre</button>}
+                {loggedInInfo && myPets && <button className={styles.button} onClick={() =>returnForAdoption(pet.pet_ID, index)}>Return to Adoption Centre</button>}
 
-                {loggedInInfo && savedPets &&  <button onClick={() =>unsavePet(pet.pet_ID, index)}>Unsave</button>}
+                {loggedInInfo && savedPets &&  <button className={styles.button} onClick={() =>unsavePet(pet.pet_ID, index)}>Unsave</button>}
 
                 {allPets && loggedInInfo && savedPetsArray.filter(savedPet => savedPet.pet_ID === pet.pet_ID).length === 0 && 
-                <button onClick={() =>savePet(pet.pet_ID, pet)}>Save For Later</button>}
+                <button className={styles.button} onClick={() =>savePet(pet.pet_ID, pet)}>Save For Later</button>}
 
                 {loggedInInfo && allPets && savedPetsArray.filter(savedPet => savedPet.pet_ID === pet.pet_ID).length !== 0 && 
-                <button onClick={() =>unsavePet(pet.pet_ID, index)}>Unsave</button>}
+                <button className={styles.button} onClick={() =>unsavePet(pet.pet_ID, index)}>Unsave</button>}
 
                 {loggedInInfo && allPets && pet.adoption_status === "available" && <>
-                <button onClick={() =>adoptPet(pet.pet_ID, pet)}>Adopt</button>
-                <button onClick={() =>fosterPet(pet.pet_ID, pet)}>Foster</button></>} 
+                <button className={styles.button} onClick={() =>adoptPet(pet.pet_ID, pet)}>Adopt</button>
+                <button className={styles.button} onClick={() =>fosterPet(pet.pet_ID, pet)}>Foster</button></>} 
 
                 {loggedInInfo && allPets && myPetsArray.filter(myPet => myPet.pet_ID === pet.pet_ID).length !== 0 && pet.adoption_status === "fostered" &&
-                <button onClick={() =>fosterToAdopt(pet.pet_ID, index)}>Adopt</button>}
+                <button className={styles.button} onClick={() =>fosterToAdopt(pet.pet_ID, index)}>Adopt</button>}
                 
-                {adminInfo &&  <button onClick={() => goToEditPage(pet)}>Edit Pet</button>}
+                {adminInfo &&  <button className={styles.button} onClick={() => goToEditPage(pet)}>Edit Pet</button>}
                
              
                 </div>

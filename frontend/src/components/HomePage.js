@@ -4,7 +4,7 @@ import styles from '../styles/HomePage.module.css'
 import axios from "axios"
 import localforage from 'localforage'
 
-import { Routes, Route, Link, useLocation } from "react-router-dom";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import Profile from './Profile'
 import MyPetsPage from './MyPetsPage'
 import SearchPets from './SearchPets'
@@ -25,12 +25,12 @@ function HomePage() {
   
 
     const { loggedInInfo,  signOut, toggleDrawer, sidebar } = useContext(AppContext);
-    const location = useLocation()
 
-  
-    
+
+    const navigate = useNavigate();
+
     useEffect(()=>{
-      location.pathname = "/"
+      navigate('/')
     },[])
 
     const list = (anchor) => (

@@ -28,13 +28,13 @@ function DisplayUser({user}) {
         setLoadSpinner(false) 
         }
     }
-    
+   
     return < >  
    <div  id={user.user_ID} className={styles.userInfo}>
-        <div>{user.email}</div>
-        <div>{user.first_name}</div>
-        <div>{user.last_name}</div>
-       <button onClick={() => viewUserPetsAndDetails(user)}>View More</button>
+        <div className={styles.info}> <span className={styles.field}>Email: </span>{user.email}</div>
+        <div className={styles.info}><span className={styles.field}>First Name: </span>{user.first_name}</div>
+        <div className={styles.info}><span className={styles.field}>Last Name: </span>{user.last_name}</div>
+       <button className={styles.button} onClick={() => viewUserPetsAndDetails(user)}>More Info</button>
                 </div>
 </>
     }

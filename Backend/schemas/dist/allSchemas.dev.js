@@ -38,7 +38,7 @@ exports.addOrEditPetSchemaAJV = {
     },
     hypoallergenic: {
       type: "string",
-      minLength: 5,
+      minLength: 4,
       maxLength: 5
     },
     dietryRestrictions: {

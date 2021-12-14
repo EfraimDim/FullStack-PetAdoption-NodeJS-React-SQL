@@ -34,11 +34,11 @@ function MyPetsPage() {
     return <div>
         <h1>What would you like to see?</h1>
         <div className={styles.wrapper}>
-        <div className={styles.toggleButton} onClick={toggledYourPets}>Your Pets</div>
-        <div className={styles.toggleButton} onClick={toggledSavedPets}>Saved Pets</div>
+        <button className={styles.toggleButton} onClick={toggledYourPets}>Your Pets</button>
+        <button className={styles.toggleButton} onClick={toggledSavedPets}>Saved Pets</button>
         </div>
-        {viewYourPets && myPetsArray.length === 0 && <div>You don't have any pets!</div>}
-        {viewSavedPets && savedPetsArray.length === 0 && <div>No pets saved!</div>}
+        {viewYourPets && myPetsArray.length === 0 && <div className={styles.noPets}>You don't have any pets!</div>}
+        {viewSavedPets && savedPetsArray.length === 0 && <div className={styles.noPets}>No pets saved!</div>}
         {viewYourPets && myPetsArray.length !== 0 && 
         <div> {myPetsArray.map((pet, index) => {  
                     return   (

@@ -1,0 +1,24 @@
+.form{
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+}
+.submit{
+    width: fit-content;
+    padding: 5px;
+    cursor:pointer;
+    margin: 10px;
+}
+
+.header{
+    text-align: center;
+    font-family: sans-serif;
+    margin-top: -1rem;
+}
+.input{
+    width: fit-content;
+    align-self: center;
+    margin: 10px;
+    cursor: pointer;
+}

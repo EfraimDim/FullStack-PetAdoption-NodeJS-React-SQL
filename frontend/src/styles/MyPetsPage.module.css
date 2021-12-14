@@ -1,7 +1,8 @@
 
 .toggleButton{
-    cursor: pointer;
-    border: 1px solid black;
+    width: fit-content;
+    padding: 5px;
+    cursor:pointer
 }
 .wrapper{
     display: flex;
@@ -10,4 +11,11 @@
 }
 .petHolder {
     margin: 1rem
+}
+
+.noPets{
+    margin-top: 3rem;
+    font-family: sans-serif;
+    font-size: larger;
+    font-style: italic;
 }

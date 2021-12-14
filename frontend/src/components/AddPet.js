@@ -1,10 +1,11 @@
-import styles from '../styles/AdminPage.module.css';
 import { AppContext } from "../components/AppContext"
-import {useState, useEffect, useContext} from "react"
+import {useState, useContext} from "react"
 import axios from 'axios'
 import localforage from 'localforage'
-import { Routes, Route, Link, useLocation } from "react-router-dom";
 import { createRef } from 'react'
+import styles from '../styles/AddPet.module.css';
+import { TextField, InputLabel } from '@mui/material';
+import { inputStyles} from '../styles/MaterialUIStyles'
 
 
 function AddPet() {
@@ -93,31 +94,38 @@ function AddPet() {
 
   return (
     <div>
-        <form onSubmit={addPet}>
-                <select required value={type} onChange={handleType}>
-                    <option defaultValue value="dog">Dog</option>
+        <h1 className={styles.header}>Add a Pet to Database:</h1>
+        <form className={styles.form} onSubmit={addPet}>
+            <InputLabel id="demo-simple-select-label">Type</InputLabel>
+                <select className={styles.input} required value={type}  onChange={handleType} >
+                    <option defaultValue={true} value="dog">Dog</option>
                     <option value="cat">Cat</option>
                     <option value="bird">Bird</option>
                     <option value="fish">Fish</option>
                 </select>
-                <select required value={adoptionStatus} onChange={handleAdoptionStatus}>
+            <InputLabel id="demo-simple-select-label">Status</InputLabel>
+                <select className={styles.input} required value={adoptionStatus} onChange={handleAdoptionStatus}>
                     <option defaultValue value="available">Available</option>
                     <option value="adopted">Adopted</option>
                     <option value="fostered">Fostered</option>
                 </select>
-                <input required className={styles.input} type="text" value={petName} maxLength={"15"} onChange={handlePetName} placeholder="name" />
-                <input required className={styles.input} type="text" value={colour} maxLength={"30"}  onChange={handleColour} placeholder="colour" />
-                <input required className={styles.input} min={0} max={200} type="number" value={height} onChange={handleHeight} placeholder="height (cm)" />
-                <input required className={styles.input} min={0} max={50} type="number" value={weight} onChange={handleWeight} placeholder="weight (kg)" />
-                <input required className={styles.input} type="text" value={bio} maxLength={"200"} onChange={handleBio} placeholder="pet bio" />
-                <select required value={hypoallergenic} onChange={handleHypoallergenic}>
+                <TextField size="small" required type="text" value={petName} inputProps={{ maxLength: 15 }} onChange={handlePetName} sx={inputStyles} label="name" />
+                <TextField size="small" required type="text" value={colour} inputProps={{ maxLength: 30 }} onChange={handleColour} sx={inputStyles} label="colour" />
+                <InputLabel id="demo-simple-select-label">Weight</InputLabel>        
+                <input className={styles.input}  required min={0} max={200} type="number" value={height} onChange={handleHeight} placeholder="height (cm)" />
+                <InputLabel id="demo-simple-select-label">Height</InputLabel>        
+                <input className={styles.input}  required min={0} max={50} type="number" value={weight} onChange={handleWeight} placeholder="weight (kg)" />
+                <TextField size="small" multiline={true}  required type="text" value={bio} inputProps={{ maxLength: 200 }} onChange={handleBio} sx={inputStyles} label="pet bio" />
+                <InputLabel id="demo-simple-select-label">Hypoallergenic</InputLabel>        
+                <select className={styles.input} required value={hypoallergenic} onChange={handleHypoallergenic}>
                     <option defaultValue value={false}>No</option>
                     <option value={true}>Yes</option>
                 </select>
-                <input required className={styles.input} type="text" value={dietryRestrictions} maxLength={"100"} onChange={handleDietryRestrictions} placeholder="dietry restrictions" />
-                <input required className={styles.input} type="text" value={breed} maxLength={"20"} onChange={handleBreed} placeholder="breed" />
-                <input type="file" accept="image/png, image/gif, image/jpeg" required ref={fileInputRef} onChange={handleFileInput} />
-            <button className={styles.submit} type="submit">add Pet!</button>
+                <TextField size="small" multiline={true} required type="text" value={dietryRestrictions} inputProps={{ maxLength: 100 }} onChange={handleDietryRestrictions} sx={inputStyles} label="dietry restrictions" />
+                <TextField size="small" required type="text" value={breed} inputProps={{ maxLength: 20 }} onChange={handleBreed} sx={inputStyles} label="breed" />
+                <InputLabel id="demo-simple-select-label">Photo</InputLabel>        
+                <input className={styles.input} type="file" accept="image/png, image/gif, image/jpeg" required ref={fileInputRef} onChange={handleFileInput} />
+            <button className={styles.submit} type="submit">Add Pet!</button>
             </form>
     </div>
 

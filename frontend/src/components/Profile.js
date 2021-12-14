@@ -3,6 +3,8 @@ import {AppContext} from './AppContext'
 import styles from '../styles/Profile.module.css'
 import axios from "axios"
 import localforage from 'localforage'
+import { TextField } from '@mui/material';
+import { inputStyles} from '../styles/MaterialUIStyles'
 
 
 function Profile() {
@@ -85,21 +87,21 @@ function Profile() {
             }
     }
 
-    return <div className={styles.index}>
-        <h1>Update Profile</h1>
-         <form onSubmit={updatedProfile}>
-        <input className={styles.input} required type="email" value={email} maxLength={"50"} onChange={handleEmail} placeholder="email address" />
-        <input className={styles.input} required type="text" value={firstName} maxLength={"20"} onChange={handleFirstName} placeholder="first name" />
-        <input className={styles.input} required type="text" value={lastName} maxLength={"20"} onChange={handleLastName} placeholder="last name" />
-        <input className={styles.input} required type="text" value={phoneNumber} minLength={"10"} maxLength={"10"} onChange={handlePhoneNumber} placeholder="phone number" />
-        <textarea className={styles.input} required type="text" value={bio} maxLength={"200"} onChange={handleBio} placeholder="Bio" />
+    return <div>
+        <h1>Update Profile:</h1>
+         <form className={styles.form} onSubmit={updatedProfile}>
+        <TextField size="small" required type="email" value={email}  onChange={handleEmail} inputProps={{ maxLength: 50 }} sx={inputStyles} label="email address" />
+        <TextField size="small" required type="text" value={firstName} inputProps={{ maxLength: 20 }} onChange={handleFirstName} sx={inputStyles} label="first name" />
+        <TextField size="small" required type="text" value={lastName}  inputProps={{ maxLength: 20 }} onChange={handleLastName} sx={inputStyles} label="last name" />
+        <TextField size="small" required type="text" value={phoneNumber} inputProps={{ minLength: 10, maxLength: 10 }} onChange={handlePhoneNumber} sx={inputStyles} label="phone number" />
+        <TextField size="small" multiline={true} required type="text" value={bio} inputProps={{maxLength: 200 }} onChange={handleBio} sx={inputStyles} label="Bio" />
         <button className={styles.submit} type="submit">Update Profile</button>
        </form>
-       <h1>Update Password</h1>
-       <form onSubmit={updatedPassword}>
-        <input className={styles.input} required type="password" value={oldPassword} minLength={"6"} maxLength={"20"}  onChange={handleOldPassword} placeholder="old password" />
-        <input className={styles.input} required type="password" value={newPassword} minLength={"6"} maxLength={"20"}  onChange={handleNewPassword} placeholder="new password" />
-        <input className={styles.input} required type="password" value={reNewPassword} minLength={"6"} maxLength={"20"}  onChange={handleReNewpassword} placeholder="re new password" />
+       <h1>Update Password:</h1>
+       <form className={styles.form} onSubmit={updatedPassword}>
+        <TextField size="small" required type="password" value={oldPassword} inputProps={{ minLength: 6, maxLength: 20 }}  onChange={handleOldPassword} sx={inputStyles} label="old password" />
+        <TextField size="small" required type="password" value={newPassword} inputProps={{ minLength: 6, maxLength: 20 }}  onChange={handleNewPassword} sx={inputStyles} label="new password" />
+        <TextField size="small" required type="password" value={reNewPassword} inputProps={{ minLength: 6, maxLength: 20 }} onChange={handleReNewpassword} sx={inputStyles} label="re new password" />
         <button className={styles.submit} type="submit">Update Password</button>
        </form>
       
