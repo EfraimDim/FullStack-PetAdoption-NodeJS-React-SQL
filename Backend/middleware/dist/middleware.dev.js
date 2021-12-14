@@ -12,9 +12,7 @@ var bcrypt = require('bcrypt');
 
 var jwt = require('jsonwebtoken');
 
-var dotenv = require('dotenv').config();
-
-var _require = require('../models/queryModel'),
+var _require = require('../lib/mysql'),
     query = _require.query;
 
 exports.validateBody = function (schema) {

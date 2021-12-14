@@ -9,6 +9,8 @@ import axios from 'axios'
 
 
 
+
+
 function DisplayPet({pet, index, myPets, savedPets, allPets}) {
 
     const { loggedInInfo, petImages, setSavedPetsArray, setMyPetsArray, myPetsArray, savedPetsArray, allPetsArray, setAllPetsArray, tokenFromLocalforage,  setPetDetailsToEdit, adminInfo, setLoadSpinner } = useContext(AppContext);
@@ -114,26 +116,31 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
     return < >  
     <div id={pet.pet_ID} className={styles.petInfo}>
         <img className={styles.image} src={petImages[`${pet.picture_path}`].default} />
-        <div className={styles.info}><span className={styles.field}>Name:</span> {pet.name}</div>
-        <div className={styles.info}><span className={styles.field}>Status:</span> {pet.adoption_status}</div>
+        <div className={styles.mainInfo}><span className={styles.field}>Name:</span> {pet.name}</div>
+        <div className={styles.mainInfo}><span className={styles.field}>Status:</span> {pet.adoption_status}</div>
     <ShowMore
                 lines={1}
                 more='Show more'
                 less='Show less'
                 anchorClass=''
-            >
-                {<div><br></br>
+            > 
+                {<div className={styles.extraInfoWrapper}><br></br>
+                <div className={styles.extraInfo}>
                 <div className={styles.reduceMargin}><span className={styles.field}>Type:</span> {pet.type}</div>
                 <div className={styles.info}><span className={styles.field}>Breed:</span> {pet.breed}</div>
                 <div className={styles.info}><span className={styles.field}>Height:</span> {pet.height}cm</div>
                 <div className={styles.info}><span className={styles.field}>Weigth:</span> {pet.weight}kg</div>
                 <div className={styles.info}><span className={styles.field}>Colour:</span> {pet.color}</div>
+                </div>
+                <div>
                 <div className={styles.info}><span className={styles.field}>Bio:</span> {pet.bio}</div>
                 <div className={styles.info}><span className={styles.field}>Hypoallergenic:</span> {pet.hypoallergenic === 1 ? <span>yes</span> : <span>no</span>}</div>
                 <div className={styles.info}><span className={styles.field}>Availability:</span> {pet.availability === 1 ? <span>Available</span> : <span>Unavailable</span>}</div>
                 <div className={styles.info}><span className={styles.field}>Dietry Restrictions:</span> {pet.dietry_restrictions}</div>
-                <div className={styles.info}><span className={styles.field}>Date Posted:</span> {pet.date_created}</div>
+                <div className={styles.info}><span className={styles.field}>Date Posted:</span> {pet.date_created.slice(0, 10)}</div>
+                </div>
                 </div>}
+
             
             </ShowMore>
                 {myPets && loggedInInfo && pet.adoption_status === "fostered" && <button onClick={() =>fosterToAdopt(pet.pet_ID, index)}>Adopt</button>}

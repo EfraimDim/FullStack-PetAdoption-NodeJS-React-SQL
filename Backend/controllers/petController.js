@@ -1,4 +1,5 @@
-const {query} = require('../models/queryModel')
+const SQL = require('@nearform/sql');
+const {query} = require('../lib/mysql')
 const { v4: uuidv4 } = require('uuid');
 
 
@@ -6,8 +7,8 @@ const { v4: uuidv4 } = require('uuid');
 exports.usersPetArrays = async(req, res) => {
     try {
         const {userID} = req.decoded
-        const savedPetsArray = await query(`SELECT * FROM pets JOIN savedPets on pets.pet_ID = savedPets.pet_ID WHERE user_ID = "${userID}"`)
-        const adoptedPetsArray = await query(`SELECT * FROM pets JOIN adoptedPets on pets.pet_ID = adoptedPets.pet_ID WHERE user_ID = "${userID}"`)
+        const savedPetsArray = await query(SQL `SELECT * FROM pets JOIN savedPets on pets.pet_ID = savedPets.pet_ID WHERE user_ID = ${userID}`)
+        const adoptedPetsArray = await query(SQL `SELECT * FROM pets JOIN adoptedPets on pets.pet_ID = adoptedPets.pet_ID WHERE user_ID = ${userID}`)
         res.send({savedPetsArray: savedPetsArray, adoptedPetsArray: adoptedPetsArray})
     } catch (e) {
         res.status(500).send(e.message)
@@ -17,7 +18,7 @@ exports.usersPetArrays = async(req, res) => {
 
 exports.getAllPetsArray = async(req, res) => {
     try {
-        const allPetsArray = await query(`SELECT * FROM pets`)
+        const allPetsArray = await query(SQL `SELECT * FROM pets`)
         res.send(allPetsArray)
     } catch (e) {
         console.error(e)
@@ -30,8 +31,8 @@ exports.returnForAdoption  = async(req, res) => {
     try{
     const { petID } = req.params
     const {userID} = req.decoded
-    const deleteFromMyPetsArray = await query(`DELETE FROM adoptedPets WHERE user_ID = "${userID}" AND pet_ID = "${petID}";`)
-    const updateAdoptionStatus = await query(`UPDATE pets SET adoption_status = "available", availability = TRUE  WHERE pet_ID = "${petID}"`)
+    const deleteFromMyPetsArray = await query(SQL `DELETE FROM adoptedPets WHERE user_ID = ${userID} AND pet_ID = ${petID};`)
+    const updateAdoptionStatus = await query(SQL `UPDATE pets SET adoption_status = "available", availability = TRUE  WHERE pet_ID = ${petID}`)
     res.send("Returned Succesfully!")
 }catch (e) {
     console.error(e)
@@ -41,7 +42,7 @@ exports.returnForAdoption  = async(req, res) => {
 exports.fosterToAdopt = async(req, res) => {
     try{
     const { petID } = req.body
-    const updateAdoptionStatus = await query(`UPDATE pets SET adoption_status = "adopted"  WHERE pet_ID = "${petID}"`)
+    const updateAdoptionStatus = await query(SQL `UPDATE pets SET adoption_status = "adopted"  WHERE pet_ID = ${petID}`)
     res.send("Updated Succesfully!")
 }catch (e) {
     console.error(e)
@@ -52,7 +53,7 @@ exports.unsavePet  = async(req, res) => {
     try{
     const { petID } = req.params
     const {userID} = req.decoded
-    const deleteFromSavedPetsArray = await query(`DELETE FROM savedPets WHERE user_ID = "${userID}" AND pet_ID = "${petID}";`)
+    const deleteFromSavedPetsArray = await query(SQL `DELETE FROM savedPets WHERE user_ID = ${userID} AND pet_ID = ${petID};`)
     res.send("Unsaved Succesfully!")
 }catch (e) {
     console.error(e)
@@ -63,7 +64,7 @@ exports.savePet  = async(req, res) => {
     try{
     const { petID } = req.body
     const {userID} = req.decoded
-    const savePet = await query(`INSERT INTO savedPets (user_ID, pet_ID) VALUES ("${userID}", "${petID}")`)
+    const savePet = await query(SQL `INSERT INTO savedPets (user_ID, pet_ID) VALUES (${userID}, ${petID})`)
     res.send("Saved Succesfully!")
 }catch (e) {
     console.error(e)
@@ -74,8 +75,8 @@ exports.adoptPet  = async(req, res) => {
     try{
     const { petID } = req.body
     const {userID} = req.decoded
-    const adoptPet = await query(`INSERT INTO adoptedPets (user_ID, pet_ID) VALUES ("${userID}", "${petID}")`)
-    const availabilityChange = await query(`UPDATE pets SET adoption_status = "adopted", availability = FALSE WHERE pet_ID = "${petID}"`)
+    const adoptPet = await query(SQL `INSERT INTO adoptedPets (user_ID, pet_ID) VALUES (${userID}, ${petID})`)
+    const availabilityChange = await query(SQL `UPDATE pets SET adoption_status = "adopted", availability = FALSE WHERE pet_ID = ${petID}`)
     res.send("Adoption Success!")
 }catch (e) {
     console.error(e)
@@ -86,8 +87,8 @@ exports.fosterPet  = async(req, res) => {
     try{
     const { petID } = req.body
     const {userID} = req.decoded
-    const fosterPet = await query(`INSERT INTO adoptedPets (user_ID, pet_ID) VALUES ("${userID}", "${petID}")`)
-    const availabilityChange = await query(`UPDATE pets SET adoption_status = "fostered", availability = FALSE WHERE pet_ID = "${petID}"`)
+    const fosterPet = await query(SQL `INSERT INTO adoptedPets (user_ID, pet_ID) VALUES (${userID}, ${petID})`)
+    const availabilityChange = await query(SQL `UPDATE pets SET adoption_status = "fostered", availability = FALSE WHERE pet_ID = ${petID}`)
     res.send("Foster Success!")
 }catch (e) {
     console.error(e)
@@ -97,7 +98,7 @@ exports.fosterPet  = async(req, res) => {
 exports.basicSearch = async(req, res) =>{
     try {
         const {type} = req.query
-        const searchResults = await query(`SELECT * FROM pets WHERE type = "${type}"`)
+        const searchResults = await query(SQL `SELECT * FROM pets WHERE type = ${type}`)
         res.send(searchResults)
     } catch (e) {
         console.log(e)
@@ -109,7 +110,7 @@ exports.advanceSearch = async(req, res) =>{
     try {
         const {type, adoptionStatus, minHeight, maxHeight, minWeight, maxWeight} = req.params
         const {name} = req.query
-        const searchResults = await query(`SELECT * FROM pets WHERE type = "${type}" AND adoption_status = "${adoptionStatus}" AND weight >= ${minWeight} AND weight <= ${maxWeight} AND height >= ${minHeight} AND height <= ${maxHeight} AND name LIKE '%${name}%'`)
+        const searchResults = await query(`SELECT * FROM pets WHERE type = "${type}" AND adoption_status = '${adoptionStatus}' AND weight >= ${minWeight} AND weight <= ${maxWeight} AND height >= ${minHeight} AND height <= ${maxHeight} AND name LIKE '%${name}%'`)
         res.send(searchResults)
     } catch (e) {
         console.log(e)
@@ -132,7 +133,7 @@ exports.addPet = async(req, res) =>{
         }
         const petID = uuidv4()
         const date = new Date().toISOString().slice(0, 19).replace('T', ' ')
-        await query(`INSERT INTO pets (pet_ID, type, name, adoption_status, picture_path, height, weight, color, bio, hypoallergenic, availability, dietry_restrictions, breed, date_created) VALUES ('${petID}', '${type}', '${name}', '${adoptionStatus}', '${filename}', ${parseHeight}, ${parseWeight}, '${colour}', '${bio}', ${parseHypoallergenic}, ${availability}, '${dietryRestrictions}', '${breed}', '${date}')`)
+        await query(SQL `INSERT INTO pets (pet_ID, type, name, adoption_status, picture_path, height, weight, color, bio, hypoallergenic, availability, dietry_restrictions, breed, date_created) VALUES (${petID}, ${type}, ${name}, ${adoptionStatus}, ${filename}, ${parseHeight}, ${parseWeight}, ${colour}, ${bio}, ${parseHypoallergenic}, ${availability}, ${dietryRestrictions}, ${breed}, ${date})`)
         res.send("Added Successfully!")
     } catch (e) {
         res.status(500).send(e.message)
@@ -150,7 +151,7 @@ exports.editPetWithNewPhoto = async(req, res) =>{
         if(adoptionStatus === "available"){
             availability = true
         }
-        const updatePet = await query(`UPDATE pets SET type = "${type}", adoption_status = "${adoptionStatus}", name = "${name}", color = "${colour}", picture_path = "${filename}", height = ${parseHeight}, weight = ${parseWeight}, bio = "${bio}", dietry_restrictions = "${dietryRestrictions}", hypoallergenic = ${parseHypoallergenic}, breed = "${breed}", availability = ${availability}  WHERE pet_ID = "${petID}"`)
+        const updatePet = await query(SQL `UPDATE pets SET type = ${type}, adoption_status = ${adoptionStatus}, name = ${name}, color = ${colour}, picture_path = ${filename}, height = ${parseHeight}, weight = ${parseWeight}, bio = ${bio}, dietry_restrictions = ${dietryRestrictions}, hypoallergenic = ${parseHypoallergenic}, breed = ${breed}, availability = ${availability}  WHERE pet_ID = ${petID}`)
         res.send("Updated Successfully!")
     } catch (e) {
         console.log(e)
@@ -165,7 +166,7 @@ exports.editPetWithoutNewPhoto = async(req, res) =>{
         if(adoptionStatus === "available"){
             availability = true
         }
-        const updatePet = await query(`UPDATE pets SET type = "${type}", adoption_status = "${adoptionStatus}", name = "${name}", color = "${colour}", height = ${height}, weight = ${weight}, bio = "${bio}", dietry_restrictions = "${dietryRestrictions}", hypoallergenic = ${hypoallergenic}, breed = "${breed}", availability = ${availability}  WHERE pet_ID = "${petID}"`)
+        const updatePet = await query(SQL `UPDATE pets SET type = ${type}, adoption_status = ${adoptionStatus}, name = ${name}, color = ${colour}, height = ${height}, weight = ${weight}, bio = ${bio}, dietry_restrictions = ${dietryRestrictions}, hypoallergenic = ${hypoallergenic}, breed = ${breed}, availability = ${availability}  WHERE pet_ID = ${petID}`)
         res.send("Updated Successfully!")
     } catch (e) {
         console.log(e)

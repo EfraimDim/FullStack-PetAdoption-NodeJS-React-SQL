@@ -1,7 +1,8 @@
 .petHolder {
-    margin: 1rem;
-    width: 10vw;
-    text-align: center;
+    width: 35vw;
+    margin: auto;
+    align-self: center;
+    margin-top: 20px
 } 
 .searchWrapper{
     margin:auto;
@@ -52,3 +53,15 @@
     text-align: center;
     font-family: sans-serif;
 }
+.petsArrayWrapper{
+    margin:auto;
+    width: 80vw;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content:space-between;
+    align-content: center;
+    align-items: center;
+}
+
+

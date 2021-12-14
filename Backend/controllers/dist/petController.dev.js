@@ -1,6 +1,170 @@
 "use strict";
 
-var _require = require('../models/queryModel'),
+function _templateObject16() {
+  var data = _taggedTemplateLiteral(["UPDATE pets SET type = ", ", adoption_status = ", ", name = ", ", color = ", ", height = ", ", weight = ", ", bio = ", ", dietry_restrictions = ", ", hypoallergenic = ", ", breed = ", ", availability = ", "  WHERE pet_ID = ", ""]);
+
+  _templateObject16 = function _templateObject16() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject15() {
+  var data = _taggedTemplateLiteral(["UPDATE pets SET type = ", ", adoption_status = ", ", name = ", ", color = ", ", picture_path = ", ", height = ", ", weight = ", ", bio = ", ", dietry_restrictions = ", ", hypoallergenic = ", ", breed = ", ", availability = ", "  WHERE pet_ID = ", ""]);
+
+  _templateObject15 = function _templateObject15() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject14() {
+  var data = _taggedTemplateLiteral(["INSERT INTO pets (pet_ID, type, name, adoption_status, picture_path, height, weight, color, bio, hypoallergenic, availability, dietry_restrictions, breed, date_created) VALUES (", ", ", ", ", ", ", ", ", ", ", ", ", ", ", ", ", ", ", ", ", ", ", ", ", ", ", ")"]);
+
+  _templateObject14 = function _templateObject14() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject13() {
+  var data = _taggedTemplateLiteral(["SELECT * FROM pets WHERE type = ", ""]);
+
+  _templateObject13 = function _templateObject13() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject12() {
+  var data = _taggedTemplateLiteral(["UPDATE pets SET adoption_status = \"fostered\", availability = FALSE WHERE pet_ID = ", ""]);
+
+  _templateObject12 = function _templateObject12() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject11() {
+  var data = _taggedTemplateLiteral(["INSERT INTO adoptedPets (user_ID, pet_ID) VALUES (", ", ", ")"]);
+
+  _templateObject11 = function _templateObject11() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject10() {
+  var data = _taggedTemplateLiteral(["UPDATE pets SET adoption_status = \"adopted\", availability = FALSE WHERE pet_ID = ", ""]);
+
+  _templateObject10 = function _templateObject10() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject9() {
+  var data = _taggedTemplateLiteral(["INSERT INTO adoptedPets (user_ID, pet_ID) VALUES (", ", ", ")"]);
+
+  _templateObject9 = function _templateObject9() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject8() {
+  var data = _taggedTemplateLiteral(["INSERT INTO savedPets (user_ID, pet_ID) VALUES (", ", ", ")"]);
+
+  _templateObject8 = function _templateObject8() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject7() {
+  var data = _taggedTemplateLiteral(["DELETE FROM savedPets WHERE user_ID = ", " AND pet_ID = ", ";"]);
+
+  _templateObject7 = function _templateObject7() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject6() {
+  var data = _taggedTemplateLiteral(["UPDATE pets SET adoption_status = \"adopted\"  WHERE pet_ID = ", ""]);
+
+  _templateObject6 = function _templateObject6() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject5() {
+  var data = _taggedTemplateLiteral(["UPDATE pets SET adoption_status = \"available\", availability = TRUE  WHERE pet_ID = ", ""]);
+
+  _templateObject5 = function _templateObject5() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject4() {
+  var data = _taggedTemplateLiteral(["DELETE FROM adoptedPets WHERE user_ID = ", " AND pet_ID = ", ";"]);
+
+  _templateObject4 = function _templateObject4() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject3() {
+  var data = _taggedTemplateLiteral(["SELECT * FROM pets"]);
+
+  _templateObject3 = function _templateObject3() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject2() {
+  var data = _taggedTemplateLiteral(["SELECT * FROM pets JOIN adoptedPets on pets.pet_ID = adoptedPets.pet_ID WHERE user_ID = ", ""]);
+
+  _templateObject2 = function _templateObject2() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject() {
+  var data = _taggedTemplateLiteral(["SELECT * FROM pets JOIN savedPets on pets.pet_ID = savedPets.pet_ID WHERE user_ID = ", ""]);
+
+  _templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+var SQL = require('@nearform/sql');
+
+var _require = require('../lib/mysql'),
     query = _require.query;
 
 var _require2 = require('uuid'),
@@ -15,12 +179,12 @@ exports.usersPetArrays = function _callee(req, res) {
           _context.prev = 0;
           userID = req.decoded.userID;
           _context.next = 4;
-          return regeneratorRuntime.awrap(query("SELECT * FROM pets JOIN savedPets on pets.pet_ID = savedPets.pet_ID WHERE user_ID = \"".concat(userID, "\"")));
+          return regeneratorRuntime.awrap(query(SQL(_templateObject(), userID)));
 
         case 4:
           savedPetsArray = _context.sent;
           _context.next = 7;
-          return regeneratorRuntime.awrap(query("SELECT * FROM pets JOIN adoptedPets on pets.pet_ID = adoptedPets.pet_ID WHERE user_ID = \"".concat(userID, "\"")));
+          return regeneratorRuntime.awrap(query(SQL(_templateObject2(), userID)));
 
         case 7:
           adoptedPetsArray = _context.sent;
@@ -52,7 +216,7 @@ exports.getAllPetsArray = function _callee2(req, res) {
         case 0:
           _context2.prev = 0;
           _context2.next = 3;
-          return regeneratorRuntime.awrap(query("SELECT * FROM pets"));
+          return regeneratorRuntime.awrap(query(SQL(_templateObject3())));
 
         case 3:
           allPetsArray = _context2.sent;
@@ -84,12 +248,12 @@ exports.returnForAdoption = function _callee3(req, res) {
           petID = req.params.petID;
           userID = req.decoded.userID;
           _context3.next = 5;
-          return regeneratorRuntime.awrap(query("DELETE FROM adoptedPets WHERE user_ID = \"".concat(userID, "\" AND pet_ID = \"").concat(petID, "\";")));
+          return regeneratorRuntime.awrap(query(SQL(_templateObject4(), userID, petID)));
 
         case 5:
           deleteFromMyPetsArray = _context3.sent;
           _context3.next = 8;
-          return regeneratorRuntime.awrap(query("UPDATE pets SET adoption_status = \"available\", availability = TRUE  WHERE pet_ID = \"".concat(petID, "\"")));
+          return regeneratorRuntime.awrap(query(SQL(_templateObject5(), petID)));
 
         case 8:
           updateAdoptionStatus = _context3.sent;
@@ -120,7 +284,7 @@ exports.fosterToAdopt = function _callee4(req, res) {
           _context4.prev = 0;
           petID = req.body.petID;
           _context4.next = 4;
-          return regeneratorRuntime.awrap(query("UPDATE pets SET adoption_status = \"adopted\"  WHERE pet_ID = \"".concat(petID, "\"")));
+          return regeneratorRuntime.awrap(query(SQL(_templateObject6(), petID)));
 
         case 4:
           updateAdoptionStatus = _context4.sent;
@@ -152,7 +316,7 @@ exports.unsavePet = function _callee5(req, res) {
           petID = req.params.petID;
           userID = req.decoded.userID;
           _context5.next = 5;
-          return regeneratorRuntime.awrap(query("DELETE FROM savedPets WHERE user_ID = \"".concat(userID, "\" AND pet_ID = \"").concat(petID, "\";")));
+          return regeneratorRuntime.awrap(query(SQL(_templateObject7(), userID, petID)));
 
         case 5:
           deleteFromSavedPetsArray = _context5.sent;
@@ -184,7 +348,7 @@ exports.savePet = function _callee6(req, res) {
           petID = req.body.petID;
           userID = req.decoded.userID;
           _context6.next = 5;
-          return regeneratorRuntime.awrap(query("INSERT INTO savedPets (user_ID, pet_ID) VALUES (\"".concat(userID, "\", \"").concat(petID, "\")")));
+          return regeneratorRuntime.awrap(query(SQL(_templateObject8(), userID, petID)));
 
         case 5:
           savePet = _context6.sent;
@@ -216,12 +380,12 @@ exports.adoptPet = function _callee7(req, res) {
           petID = req.body.petID;
           userID = req.decoded.userID;
           _context7.next = 5;
-          return regeneratorRuntime.awrap(query("INSERT INTO adoptedPets (user_ID, pet_ID) VALUES (\"".concat(userID, "\", \"").concat(petID, "\")")));
+          return regeneratorRuntime.awrap(query(SQL(_templateObject9(), userID, petID)));
 
         case 5:
           adoptPet = _context7.sent;
           _context7.next = 8;
-          return regeneratorRuntime.awrap(query("UPDATE pets SET adoption_status = \"adopted\", availability = FALSE WHERE pet_ID = \"".concat(petID, "\"")));
+          return regeneratorRuntime.awrap(query(SQL(_templateObject10(), petID)));
 
         case 8:
           availabilityChange = _context7.sent;
@@ -253,12 +417,12 @@ exports.fosterPet = function _callee8(req, res) {
           petID = req.body.petID;
           userID = req.decoded.userID;
           _context8.next = 5;
-          return regeneratorRuntime.awrap(query("INSERT INTO adoptedPets (user_ID, pet_ID) VALUES (\"".concat(userID, "\", \"").concat(petID, "\")")));
+          return regeneratorRuntime.awrap(query(SQL(_templateObject11(), userID, petID)));
 
         case 5:
           fosterPet = _context8.sent;
           _context8.next = 8;
-          return regeneratorRuntime.awrap(query("UPDATE pets SET adoption_status = \"fostered\", availability = FALSE WHERE pet_ID = \"".concat(petID, "\"")));
+          return regeneratorRuntime.awrap(query(SQL(_templateObject12(), petID)));
 
         case 8:
           availabilityChange = _context8.sent;
@@ -289,7 +453,7 @@ exports.basicSearch = function _callee9(req, res) {
           _context9.prev = 0;
           type = req.query.type;
           _context9.next = 4;
-          return regeneratorRuntime.awrap(query("SELECT * FROM pets WHERE type = \"".concat(type, "\"")));
+          return regeneratorRuntime.awrap(query(SQL(_templateObject13(), type)));
 
         case 4:
           searchResults = _context9.sent;
@@ -322,7 +486,7 @@ exports.advanceSearch = function _callee10(req, res) {
           _req$params = req.params, type = _req$params.type, adoptionStatus = _req$params.adoptionStatus, minHeight = _req$params.minHeight, maxHeight = _req$params.maxHeight, minWeight = _req$params.minWeight, maxWeight = _req$params.maxWeight;
           name = req.query.name;
           _context10.next = 5;
-          return regeneratorRuntime.awrap(query("SELECT * FROM pets WHERE type = \"".concat(type, "\" AND adoption_status = \"").concat(adoptionStatus, "\" AND weight >= ").concat(minWeight, " AND weight <= ").concat(maxWeight, " AND height >= ").concat(minHeight, " AND height <= ").concat(maxHeight, " AND name LIKE '%").concat(name, "%'")));
+          return regeneratorRuntime.awrap(query("SELECT * FROM pets WHERE type = \"".concat(type, "\" AND adoption_status = '").concat(adoptionStatus, "' AND weight >= ").concat(minWeight, " AND weight <= ").concat(maxWeight, " AND height >= ").concat(minHeight, " AND height <= ").concat(maxHeight, " AND name LIKE '%").concat(name, "%'")));
 
         case 5:
           searchResults = _context10.sent;
@@ -366,7 +530,7 @@ exports.addPet = function _callee11(req, res) {
           petID = uuidv4();
           date = new Date().toISOString().slice(0, 19).replace('T', ' ');
           _context11.next = 12;
-          return regeneratorRuntime.awrap(query("INSERT INTO pets (pet_ID, type, name, adoption_status, picture_path, height, weight, color, bio, hypoallergenic, availability, dietry_restrictions, breed, date_created) VALUES ('".concat(petID, "', '").concat(type, "', '").concat(name, "', '").concat(adoptionStatus, "', '").concat(filename, "', ").concat(parseHeight, ", ").concat(parseWeight, ", '").concat(colour, "', '").concat(bio, "', ").concat(parseHypoallergenic, ", ").concat(availability, ", '").concat(dietryRestrictions, "', '").concat(breed, "', '").concat(date, "')")));
+          return regeneratorRuntime.awrap(query(SQL(_templateObject14(), petID, type, name, adoptionStatus, filename, parseHeight, parseWeight, colour, bio, parseHypoallergenic, availability, dietryRestrictions, breed, date)));
 
         case 12:
           res.send("Added Successfully!");
@@ -406,7 +570,7 @@ exports.editPetWithNewPhoto = function _callee12(req, res) {
           }
 
           _context12.next = 10;
-          return regeneratorRuntime.awrap(query("UPDATE pets SET type = \"".concat(type, "\", adoption_status = \"").concat(adoptionStatus, "\", name = \"").concat(name, "\", color = \"").concat(colour, "\", picture_path = \"").concat(filename, "\", height = ").concat(parseHeight, ", weight = ").concat(parseWeight, ", bio = \"").concat(bio, "\", dietry_restrictions = \"").concat(dietryRestrictions, "\", hypoallergenic = ").concat(parseHypoallergenic, ", breed = \"").concat(breed, "\", availability = ").concat(availability, "  WHERE pet_ID = \"").concat(petID, "\"")));
+          return regeneratorRuntime.awrap(query(SQL(_templateObject15(), type, adoptionStatus, name, colour, filename, parseHeight, parseWeight, bio, dietryRestrictions, parseHypoallergenic, breed, availability, petID)));
 
         case 10:
           updatePet = _context12.sent;
@@ -444,7 +608,7 @@ exports.editPetWithoutNewPhoto = function _callee13(req, res) {
           }
 
           _context13.next = 6;
-          return regeneratorRuntime.awrap(query("UPDATE pets SET type = \"".concat(type, "\", adoption_status = \"").concat(adoptionStatus, "\", name = \"").concat(name, "\", color = \"").concat(colour, "\", height = ").concat(height, ", weight = ").concat(weight, ", bio = \"").concat(bio, "\", dietry_restrictions = \"").concat(dietryRestrictions, "\", hypoallergenic = ").concat(hypoallergenic, ", breed = \"").concat(breed, "\", availability = ").concat(availability, "  WHERE pet_ID = \"").concat(petID, "\"")));
+          return regeneratorRuntime.awrap(query(SQL(_templateObject16(), type, adoptionStatus, name, colour, height, weight, bio, dietryRestrictions, hypoallergenic, breed, availability, petID)));
 
         case 6:
           updatePet = _context13.sent;

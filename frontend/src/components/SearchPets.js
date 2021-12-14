@@ -8,6 +8,7 @@ import axios from "axios"
 
 
 
+
 function SearchPets() {
 
     const [displayAllPets, setDisplayAllPets] = useState(true)
@@ -22,7 +23,7 @@ function SearchPets() {
     const [minWeight, setMinWeight] = useState(0)
     const [maxWeight, setMaxWeight] = useState(50)
 
-    const { allPetsArray, tokenFromLocalforage, setLoadSpinner } = useContext(AppContext);
+    const { allPetsArray, tokenFromLocalforage, adminInfo } = useContext(AppContext);
 
     const showAllPets = () => {
         setDisplayAllPets(true)
@@ -83,7 +84,8 @@ function SearchPets() {
     return (
     <div>
         <div className={styles.searchWrapper}>
-            <h1 className={styles.header}>Search your new best friend here!</h1>
+            {!adminInfo && <h1 className={styles.header}>Search your new best friend here!</h1>}
+            {adminInfo && <h1 className={styles.header}>Search pet to Edit!</h1>}
 
             {basicSearch ? <button className={styles.button} onClick={searchSwitch}>Advanced</button> :
             <button className={styles.button} onClick={searchSwitch}>Basic</button>}
@@ -134,7 +136,7 @@ function SearchPets() {
                 <button className={styles.submit} type="submit">Search</button>
             </form>}
         </div>
-        <div>
+        <div className={styles.petsArrayWrapper}>
             {displayAllPets ? allPetsArray.map((pet, index) => {  
                     return   (
                             <div className={styles.petHolder} key={index}>

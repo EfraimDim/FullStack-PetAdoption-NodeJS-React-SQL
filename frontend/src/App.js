@@ -103,11 +103,15 @@ function App() {
     setLoadSpinner(false) 
     }
   }
-
+  const firstRender = useRef(true);
   useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
     getUsersPetsArrays()
   },[loggedInInfo]);
-
+ 
   
   const navigate = useNavigate();
 

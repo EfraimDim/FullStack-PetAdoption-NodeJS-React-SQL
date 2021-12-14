@@ -5,23 +5,9 @@ import styles from '../styles/LoginSignUp.module.css'
 import axios from "axios"
 import localforage from 'localforage'
 import { TextField } from '@mui/material';
+import { customStyles, inputStyles} from '../styles/MaterialUIStyles'
 
-const customStyles = {
-    content: {
-    padding: 'none',
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-      width: '40vw',
-      height: 'fit-content'
-    },
-  };
-const inputStyles = {
-     margin: "1px", transform: "scale(0.7)", width: "250px"
-}
+
   Modal.setAppElement('#root');
 
 function ModalLoginSignUp() {
@@ -126,7 +112,8 @@ function ModalLoginSignUp() {
           setPhoneNumber('')
         }catch(e){
             console.log(e)
-            setLoadSpinner(false) 
+            setLoadSpinner(false)
+            alert(e) 
             }
     }
     const signUpAdmin = async(e) => {
@@ -154,6 +141,7 @@ function ModalLoginSignUp() {
         }catch(e){
             console.log(e)
             setLoadSpinner(false) 
+            alert(e)
             }
     }
     const getAllPublicUsers = async() => {
@@ -206,7 +194,8 @@ function ModalLoginSignUp() {
             setEmailLogin('')
         }catch(e){
             console.log(e)
-            setLoadSpinner(false) 
+            setLoadSpinner(false)
+            alert(e) 
             }
     }
     
@@ -232,13 +221,13 @@ function ModalLoginSignUp() {
                 {isAdmin  ? 
                 <> 
                     <form onSubmit={signUpAdmin} className={styles.form}>
-                        <TextField className={styles.input} required type="email" value={emailAdmin} maxLength={"50"} onChange={handleEmailAdmin} label="email address" />
-                        <input className={styles.input} required type="password" value={passwordAdmin} minLength={"6"} maxLength={"20"} onChange={handlePasswordAdmin} placeholder="password" />
-                        <input className={styles.input} required type="password" value={rePasswordAdmin} minLength={"6"} maxLength={"20"} onChange={handleRepasswordAdmin} placeholder="re password" />
-                        <input className={styles.input} required type="text" value={firstNameAdmin} maxLength={"20"} onChange={handleFirstNameAdmin} placeholder="first name" />
-                        <input className={styles.input} required type="text" value={lastNameAdmin} maxLength={"20"} onChange={handleLastNameAdmin} placeholder="last name" />
-                        <input className={styles.input} required type="text" value={phoneNumberAdmin} minLength={"10"} maxLength={"10"} onChange={handlePhoneNumberAdmin} placeholder="phone number" />
-                        <input className={styles.input} required type="password" value={adminCode} onChange={handleAdminCode} placeholder="admin code" />
+                        <TextField size="small" required type="email" value={emailAdmin} onChange={handleEmailAdmin} inputProps={{ maxLength: 50 }} sx={inputStyles} label="email address" />
+                        <TextField size="small" required type="password" value={passwordAdmin} onChange={handlePasswordAdmin} inputProps={{ minLength: 6, maxLength: 20 }} sx={inputStyles} label="password" />
+                        <TextField size="small" required type="password" value={rePasswordAdmin}  onChange={handleRepasswordAdmin} inputProps={{ minLength: 6, maxLength: 20 }} sx={inputStyles} label="re password" />
+                        <TextField size="small" required type="text" value={firstNameAdmin} onChange={handleFirstNameAdmin} inputProps={{ maxLength: 20 }} sx={inputStyles} label="first name" />
+                        <TextField size="small" required type="text" value={lastNameAdmin}  onChange={handleLastNameAdmin} inputProps={{ maxLength: 20 }} sx={inputStyles} label="last name" />
+                        <TextField size="small" required type="text" value={phoneNumberAdmin} onChange={handlePhoneNumberAdmin} inputProps={{ minLength: 10, maxLength: 10 }} sx={inputStyles} label="phone number" />
+                        <TextField size="small" required type="password" value={adminCode} onChange={handleAdminCode} sx={inputStyles} label="admin code" />
                         <button className={styles.submit} type="submit">Sign Up</button>
                     </form> 
                 </> 
@@ -247,19 +236,19 @@ function ModalLoginSignUp() {
                     {isSignUp ? 
                     <>
                         <form onSubmit={signUp} className={styles.form}>
-                            <input className={styles.input} required type="email" value={email} maxLength={"50"} onChange={handleEmail} placeholder="email address" />
-                            <input className={styles.input} required type="password" value={password} minLength={"6"} maxLength={"20"} onChange={handlePassword} placeholder="password" />
-                            <input className={styles.input} required type="password" value={rePassword} minLength={"6"} maxLength={"20"} onChange={handleRepassword} placeholder="re password" />
-                            <input className={styles.input} required type="text" value={firstName} maxLength={"20"} onChange={handleFirstName} placeholder="first name" />
-                            <input className={styles.input} required type="text" value={lastName} maxLength={"20"} onChange={handleLastName} placeholder="last name" />
-                            <input className={styles.input} required type="text" value={phoneNumber} minLength={"10"} maxLength={"10"}  onChange={handlePhoneNumber} placeholder="phone number" />
+                            <TextField size="small"  required type="email" value={email}  onChange={handleEmail} inputProps={{ maxLength: 50 }} sx={inputStyles} label="email address" />
+                            <TextField size="small"  required type="password" value={password}  maxLength={"20"} onChange={handlePassword} inputProps={{ minLength: 6, maxLength: 20 }} sx={inputStyles} label="password" />
+                            <TextField size="small"  required type="password" value={rePassword}  onChange={handleRepassword} inputProps={{ minLength: 6, maxLength: 20 }} sx={inputStyles} label="re password" />
+                            <TextField size="small"  required type="text" value={firstName}  onChange={handleFirstName} inputProps={{maxLength: 20 }} sx={inputStyles} label="first name" />
+                            <TextField size="small"  required type="text" value={lastName}  onChange={handleLastName} inputProps={{ maxLength: 20 }} sx={inputStyles} label="last name" />
+                            <TextField size="small"  required type="text" value={phoneNumber}   onChange={handlePhoneNumber} inputProps={{ minLength: 10, maxLength: 10 }} sx={inputStyles} label="phone number" />
                             <button className={styles.submit} type="submit">Sign Up</button>
                         </form> 
                     </>
                     :
                         <form onSubmit={login} className={styles.form}>
-                            <TextField size="small"  required type="email" value={emailLogin} onChange={handleEmailLogin} inputProps={{ maxLength: 50 }} label="email address" sx={inputStyles} />
-                            <TextField size="small" classes={styles.input} required type="password" value={passwordLogin} inputProps={{ minLength: 6, maxLength: 20 }} sx={inputStyles}  onChange={handlePasswordLogin} label="password" />
+                            <TextField size="small"  required type="email" value={emailLogin} onChange={handleEmailLogin} inputProps={{ maxLength: 50 }}  sx={inputStyles} label="email address"/>
+                            <TextField size="small"  required type="password" value={passwordLogin} onChange={handlePasswordLogin} inputProps={{ minLength: 6, maxLength: 20 }} sx={inputStyles}   label="password" />
                             <button  className={styles.submit} type="submit">Login</button>
                         </form>
                     }

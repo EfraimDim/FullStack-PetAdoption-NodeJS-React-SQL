@@ -1,20 +1,13 @@
-const express = require('express');
-const app = express();
-require('dotenv').config()
+const app = require('./app')
+
+const {postgrator} = require('./lib/mysql')
 const port = process.env.PORT || 5000;
-const cors = require('cors')
-app.use(express.json());
-app.use(cors())
 
 
-const usersRoute = require('./routes/usersRoute');
-const petRoute = require('./routes/petRoute')
 
-
-app.use('/users', usersRoute);
-app.use('/pets', petRoute);
-
-
-app.listen(port, () => {
-    console.log(`Listening on port ${port}...`)
-})
+postgrator.migrate().then((result )=>{
+    console.log(`migrated succesfully!`, result)
+    app.listen(port, () => {
+        console.log(`Listening on port ${port}...`)
+    })})
+    .catch((error)=>console.error(error));

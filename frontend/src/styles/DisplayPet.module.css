@@ -3,7 +3,7 @@
     flex-direction: column;
 }
 .reduceMargin{
-    margin-top: -18px;
+    margin-top: -15px;
     margin-left: 5px
 }
 .field{
@@ -11,10 +11,35 @@
     font-weight: bold;
     font-size: 15px;
 }
-.info {
-    margin:5px
+.info, .mainInfo {
+    margin:5px;
+    height:fit-content
 }
-.imgage{
-width: 100px;
-height: 100px;
+.mainInfo {
+    text-align: center;
+}
+.image{
+width: 400px;
+height: 300px;
+border-radius: 50px;
+margin: auto;
+align-self: center;
+}
+.extraInfoWrapper{
+    display: flex;
+    flex-direction: row;
+    margin:auto;
+    width:80%;
+    height: fit-content;
+
+}
+.extraInfo{
+    margin: 20px;
+}
+.petInfo{
+    margin:auto;
+    align-content: center;
+    align-items: center;
+    align-self: center;
+    text-align: center;
 }

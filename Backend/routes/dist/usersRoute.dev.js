@@ -19,15 +19,6 @@ var _require = require('../middleware/middleware'),
     checkAdminAccountCreated = _require.checkAdminAccountCreated,
     checkAdminForAllReq = _require.checkAdminForAllReq;
 
-var _require2 = require('../models/queryModel'),
-    query = _require2.query;
-
-query("CREATE TABLE IF NOT EXISTS users (\n        id INT(200) AUTO_INCREMENT,\n        user_ID VARCHAR(50) NOT NULL,\n        email VARCHAR(50) NOT NULL,\n        password VARCHAR(100) NOT NULL,\n        first_name VARCHAR(20) NOT NULL,\n        last_name VARCHAR(20) NOT NULL,\n        phone INT(10) NOT NULL,\n        admin_status BOOLEAN NOT NULL,\n        date_created DATE DEFAULT (CURRENT_DATE),\n        bio VARCHAR(200) NOT NULL,\n        PRIMARY KEY (id))").then(function () {
-  return console.log("Table Created");
-})["catch"](function (err) {
-  return console.log(err);
-});
-
 var Schemas = require('../schemas/allSchemas');
 
 router.post('/login', validateBody(Schemas.loginSchemaAJV), decryptPwd, createToken, usersController.login);

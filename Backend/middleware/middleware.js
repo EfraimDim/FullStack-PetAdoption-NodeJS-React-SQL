@@ -4,8 +4,7 @@ const addFormats = require('ajv-formats');
 addFormats(ajv);
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const dotenv = require('dotenv').config();
-const {query} = require('../models/queryModel')
+const {query} = require('../lib/mysql')
 
 
 

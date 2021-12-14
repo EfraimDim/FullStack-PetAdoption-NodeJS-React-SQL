@@ -1,9 +1,73 @@
 "use strict";
 
+function _templateObject6() {
+  var data = _taggedTemplateLiteral(["SELECT * FROM pets JOIN adoptedPets on pets.pet_ID = adoptedPets.pet_ID WHERE user_ID = ", ""]);
+
+  _templateObject6 = function _templateObject6() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject5() {
+  var data = _taggedTemplateLiteral(["SELECT user_ID, email, first_name, last_name, phone, bio, date_created, admin_status FROM users where admin_status = 1"]);
+
+  _templateObject5 = function _templateObject5() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject4() {
+  var data = _taggedTemplateLiteral(["SELECT user_ID, email, first_name, last_name, phone, bio, date_created, admin_status FROM users where admin_status = 0"]);
+
+  _templateObject4 = function _templateObject4() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject3() {
+  var data = _taggedTemplateLiteral(["UPDATE users SET email = ", ", first_name = ", ", last_name = ", ", phone = ", ", bio = ", " WHERE user_ID = ", ""]);
+
+  _templateObject3 = function _templateObject3() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject2() {
+  var data = _taggedTemplateLiteral(["UPDATE users SET password = ", " WHERE user_ID = ", ""]);
+
+  _templateObject2 = function _templateObject2() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject() {
+  var data = _taggedTemplateLiteral(["INSERT INTO users (user_ID, email, password, first_name, last_name, phone, admin_status, date_created, bio) VALUES (", ", ", ", ", ", ", ", ", ", ", ", ", ", ", ", '')"]);
+
+  _templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+var SQL = require('@nearform/sql');
+
 var _require = require('uuid'),
     uuidv4 = _require.v4;
 
-var _require2 = require('../models/queryModel'),
+var _require2 = require('../lib/mysql'),
     query = _require2.query;
 
 exports.login = function (req, res) {
@@ -32,7 +96,7 @@ exports.signUpUser = function _callee(req, res) {
           date = new Date().toISOString().slice(0, 19).replace('T', ' ');
           userID = uuidv4();
           _context.next = 6;
-          return regeneratorRuntime.awrap(query("INSERT INTO users (user_ID, email, password, first_name, last_name, phone, admin_status, date_created, bio) VALUES ('".concat(userID, "', '").concat(email.toLowerCase(), "', '").concat(password, "', '").concat(firstName, "', '").concat(lastName, "', '").concat(phoneNumber, "', ").concat(admin, ", '").concat(date, "', '')")));
+          return regeneratorRuntime.awrap(query(SQL(_templateObject(), userID, email.toLowerCase(), password, firstName, lastName, phoneNumber, admin, date)));
 
         case 6:
           res.send("Register Succesful!");
@@ -63,7 +127,7 @@ exports.updateUserPassword = function _callee2(req, res) {
           password = req.body.password;
           userID = req.decoded.userID;
           _context2.next = 5;
-          return regeneratorRuntime.awrap(query("UPDATE users SET password = \"".concat(password, "\" WHERE user_ID = \"").concat(userID, "\"")));
+          return regeneratorRuntime.awrap(query(SQL(_templateObject2(), password, userID)));
 
         case 5:
           res.send("Updated Password Succesfully!");
@@ -95,7 +159,7 @@ exports.updateUserProfile = function _callee3(req, res) {
           _req$body2 = req.body, email = _req$body2.email, firstName = _req$body2.firstName, lastName = _req$body2.lastName, phoneNumber = _req$body2.phoneNumber, bio = _req$body2.bio;
           userID = req.decoded.userID;
           _context3.next = 5;
-          return regeneratorRuntime.awrap(query("UPDATE users SET email = \"".concat(email, "\", first_name = \"").concat(firstName, "\", last_name = \"").concat(lastName, "\", phone = \"").concat(phoneNumber, "\", bio = \"").concat(bio, "\" WHERE user_ID = \"").concat(userID, "\"")));
+          return regeneratorRuntime.awrap(query(SQL(_templateObject3(), email, firstName, lastName, phoneNumber, bio, userID)));
 
         case 5:
           updateQuery = _context3.sent;
@@ -125,7 +189,7 @@ exports.getAllPublicUsers = function _callee4(req, res) {
         case 0:
           _context4.prev = 0;
           _context4.next = 3;
-          return regeneratorRuntime.awrap(query("SELECT user_ID, email, first_name, last_name, phone, bio, date_created, admin_status FROM users where admin_status = 0"));
+          return regeneratorRuntime.awrap(query(SQL(_templateObject4())));
 
         case 3:
           publicUsersArray = _context4.sent;
@@ -155,7 +219,7 @@ exports.getAllAdminUsers = function _callee5(req, res) {
         case 0:
           _context5.prev = 0;
           _context5.next = 3;
-          return regeneratorRuntime.awrap(query("SELECT user_ID, email, first_name, last_name, phone, bio, date_created, admin_status FROM users where admin_status = 1"));
+          return regeneratorRuntime.awrap(query(SQL(_templateObject5())));
 
         case 3:
           adminUsersArray = _context5.sent;
@@ -186,7 +250,7 @@ exports.getViewedUsersPets = function _callee6(req, res) {
           _context6.prev = 0;
           viewedUserID = req.query.viewedUserID;
           _context6.next = 4;
-          return regeneratorRuntime.awrap(query("SELECT * FROM pets JOIN adoptedPets on pets.pet_ID = adoptedPets.pet_ID WHERE user_ID = \"".concat(viewedUserID, "\"")));
+          return regeneratorRuntime.awrap(query(SQL(_templateObject6(), viewedUserID)));
 
         case 4:
           viewedUsersPets = _context6.sent;

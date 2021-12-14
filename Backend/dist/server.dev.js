@@ -1,24 +1,16 @@
 "use strict";
 
-var express = require('express');
+var app = require('./app');
 
-var app = express();
-
-require('dotenv').config();
+var _require = require('./lib/mysql'),
+    postgrator = _require.postgrator;
 
 var port = process.env.PORT || 5000;
-
-var cors = require('cors');
-
-app.use(express.json());
-app.use(cors());
-
-var usersRoute = require('./routes/usersRoute');
-
-var petRoute = require('./routes/petRoute');
-
-app.use('/users', usersRoute);
-app.use('/pets', petRoute);
-app.listen(port, function () {
-  console.log("Listening on port ".concat(port, "..."));
+postgrator.migrate().then(function (result) {
+  console.log("migrated succesfully!", result);
+  app.listen(port, function () {
+    console.log("Listening on port ".concat(port, "..."));
+  });
+})["catch"](function (error) {
+  return console.error(error);
 });
