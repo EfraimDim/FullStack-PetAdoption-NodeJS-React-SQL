@@ -6,6 +6,7 @@ import axios from "axios"
 import localforage from 'localforage'
 import { TextField } from '@mui/material';
 import { customStyles, inputStyles} from '../styles/MaterialUIStyles'
+import swal from 'sweetalert'
 
 
   Modal.setAppElement('#root');
@@ -104,6 +105,12 @@ function ModalLoginSignUp() {
             admin: false
           })
           setLoadSpinner(false)
+          swal({
+            title: "Sign Up Success!",
+            text: `Welcome ${firstName} ${lastName}`,
+            icon: "success",
+            button: "continue!",
+          });
           setEmail('')
           setPassword('')
           setRePassword('')
@@ -113,7 +120,12 @@ function ModalLoginSignUp() {
         }catch(e){
             console.log(e)
             setLoadSpinner(false)
-            alert(e) 
+            swal({
+                title: "Sign Up Failed!",
+                text: `${e}`,
+                icon: "error",
+                button: "okay",
+              }); 
             }
     }
     const signUpAdmin = async(e) => {
@@ -131,6 +143,12 @@ function ModalLoginSignUp() {
             adminCode: adminCode
           })
           setLoadSpinner(false)
+          swal({
+            title: "Sign Up Success!",
+            text: `Welcome ${firstName} ${lastName}`,
+            icon: "success",
+            button: "continue!",
+          });
           setEmailAdmin('')
           setPasswordAdmin('')
           setRePasswordAdmin('')
@@ -141,7 +159,12 @@ function ModalLoginSignUp() {
         }catch(e){
             console.log(e)
             setLoadSpinner(false) 
-            alert(e)
+            swal({
+                title: "Sign Up Failed!",
+                text: `${e}`,
+                icon: "error",
+                button: "okay",
+              });
             }
     }
     const getAllPublicUsers = async() => {
@@ -189,13 +212,23 @@ function ModalLoginSignUp() {
                 setLoggedInInfo(loginUser.data.userInfo)
                 }
             setLoadSpinner(false)
+            swal({
+                title: "Log in Success!",
+                icon: "success",
+                button: "continue!",
+              });
             setModalIsOpen(false)
             setPasswordLogin('')
             setEmailLogin('')
         }catch(e){
             console.log(e)
             setLoadSpinner(false)
-            alert(e) 
+            swal({
+                title: "Login Failed!",
+                text: `${e}`,
+                icon: "error",
+                button: "okay",
+              });
             }
     }
     

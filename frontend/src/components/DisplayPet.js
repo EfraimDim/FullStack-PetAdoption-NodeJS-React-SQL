@@ -3,7 +3,7 @@ import {AppContext} from "./AppContext"
 import styles from "../styles/DisplayPet.module.css"
 import ShowMore from 'react-show-more';
 import axios from 'axios'
-
+import swal from 'sweetalert'
 
 
 
@@ -19,36 +19,78 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
 
     const returnForAdoption = async(petID, index) => {
     try{
-        const headers = await tokenFromLocalforage()
-        const returnForAdoption = await axios.delete(`http://localhost:5000/pets/returnForAdoption/${petID}`, {headers:headers})
-        const newPetsArray = myPetsArray.filter(pet => pet.pet_ID !== petID)
-        setMyPetsArray(newPetsArray)
-        alert(returnForAdoption.data)
-        const newAllPetsArray = [...allPetsArray]
-        const indexFromAllPets = newAllPetsArray.findIndex(pet => pet.pet_ID === petID)
-        const petToUpdate = newAllPetsArray[indexFromAllPets]
-        petToUpdate.availability = 1
-        petToUpdate.adoption_status = "available"
-        newAllPetsArray[indexFromAllPets] = petToUpdate
-        setAllPetsArray(newAllPetsArray)
+        swal({
+            title: "Are you sure?",
+            text: "Return pet for adoption",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then(async(willReturn) => {
+            if (willReturn) {
+                const headers = await tokenFromLocalforage()
+                const returnForAdoption = await axios.delete(`http://localhost:5000/pets/returnForAdoption/${petID}`, {headers:headers})
+                const newPetsArray = myPetsArray.filter(pet => pet.pet_ID !== petID)
+                setMyPetsArray(newPetsArray)
+                const newAllPetsArray = [...allPetsArray]
+                const indexFromAllPets = newAllPetsArray.findIndex(pet => pet.pet_ID === petID)
+                const petToUpdate = newAllPetsArray[indexFromAllPets]
+                petToUpdate.availability = 1
+                petToUpdate.adoption_status = "available"
+                newAllPetsArray[indexFromAllPets] = petToUpdate
+                setAllPetsArray(newAllPetsArray)
+              swal("Pet Returned!", {
+                icon: "success",
+              });
+            } else {
+              swal("Your pet is still with you!");
+            }
+          });
     }catch(e){
         console.log(e) 
+        swal({
+            title: "Return Failed!",
+            text: `Error: ${e}`,
+            icon: "error",
+            button: "return",
+          });
         }
     }
     const fosterToAdopt = async(petID, index) => {
     try{
-        const headers = await tokenFromLocalforage()
-        const changeFromFosterToAdopt = await axios.put(`http://localhost:5000/pets/fosterToAdopt`, {
-            petID: petID
-        }, {headers:headers})
-        const newPetsArray = [...myPetsArray]
-        const petToChange = newPetsArray.find(pet => pet.pet_ID === petID)
-        petToChange.adoption_status = "adopted"
-        newPetsArray[index] = petToChange
-        setMyPetsArray(newPetsArray)
-        alert(changeFromFosterToAdopt.data)
+        swal({
+            title: "Are you sure?",
+            text: "Change from fostering to adopting",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then(async(willAdopt) => {
+            if (willAdopt) {
+                const headers = await tokenFromLocalforage()
+                const changeFromFosterToAdopt = await axios.put(`http://localhost:5000/pets/fosterToAdopt`, {
+                    petID: petID
+                }, {headers:headers})
+                const newPetsArray = [...myPetsArray]
+                const petToChange = newPetsArray.find(pet => pet.pet_ID === petID)
+                petToChange.adoption_status = "adopted"
+                newPetsArray[index] = petToChange
+                setMyPetsArray(newPetsArray)
+              swal("Adoption Success!", {
+                icon: "success",
+              });
+            } else {
+              swal("Adoption Cancelled!");
+            }
+          });
     }catch(e){
         console.log(e)
+        swal({
+            title: "Adoption Failed!",
+            text: `Error: ${e}`,
+            icon: "error",
+            button: "return",
+          });
         }
     }
     const unsavePet = async(petID, index) => {
@@ -57,9 +99,19 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
         const unsavePet = await axios.delete(`http://localhost:5000/pets/unsavePet/${petID}`, {headers:headers})
         const newSavedPetsArray = savedPetsArray.filter(pet => pet.pet_ID !== petID)
         setSavedPetsArray(newSavedPetsArray)
-        alert(unsavePet.data)
+        swal({
+            title: "Pet Unsaved!",
+            icon: "success",
+            button: "return",
+          });
     }catch(e){
         console.log(e)
+        swal({
+            title: "Unsave Failed!",
+            text: `Error: ${e}`,
+            icon: "error",
+            button: "return",
+          });
         }
     }
     const savePet = async(petID, pet) => {
@@ -69,39 +121,92 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
             petID: petID
         }, {headers:headers})
         setSavedPetsArray([...savedPetsArray, pet])
-        alert(savePet.data)
+        swal({
+            title: "Pet Saved!",
+            icon: "success",
+            button: "return",
+          });
     }catch(e){
-        console.log(e) 
+        console.log(e)
+        swal({
+            title: "Save Failed!",
+            text: `Error: ${e}`,
+            icon: "error",
+            button: "return",
+          }); 
         }
     }
 
     const adoptPet = async(petID, pet) => {
     try{
-        const headers = await tokenFromLocalforage()
-        const adoptPet = await axios.post(`http://localhost:5000/pets/adoptPet`, {
-            petID: petID
-        }, {headers:headers})
-        pet.adoption_status = "adopted"
-        pet.availability = 0
-        setMyPetsArray([...myPetsArray, pet])
-        alert(adoptPet.data)
+        swal({
+            title: "Are you sure?",
+            text: "Adopting a pet is a big commitment!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then(async(willAdopt) => {
+            if (willAdopt) {
+                const headers = await tokenFromLocalforage()
+                const adoptPet = await axios.post(`http://localhost:5000/pets/adoptPet`, {
+                    petID: petID
+                }, {headers:headers})
+                pet.adoption_status = "adopted"
+                pet.availability = 0
+                setMyPetsArray([...myPetsArray, pet])
+              swal(`Congratulations! You adopted ${pet.name}`, {
+                icon: "success",
+              });
+            } else {
+              swal("Adoption cancelled!");
+            }
+          });
+
     }catch(e){
         console.log(e) 
+        swal({
+            title: "Adoption Failed!",
+            text: `Error: ${e}`,
+            icon: "error",
+            button: "return",
+          });
         }
     }
 
     const fosterPet = async(petID, pet) => {
     try{
-        const headers = await tokenFromLocalforage()
-        const fosterPet = await axios.post(`http://localhost:5000/pets/fosterPet`, {
-            petID: petID
-        }, {headers:headers})
-        pet.adoption_status = "fostered"
-        pet.availability = 0
-        setMyPetsArray([...myPetsArray, pet])
-        alert(fosterPet.data)
+        swal({
+            title: "Are you sure?",
+            text: "Fostering a pet is a big commitment!!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then(async(willFoster) => {
+            if (willFoster) {
+                const headers = await tokenFromLocalforage()
+                const fosterPet = await axios.post(`http://localhost:5000/pets/fosterPet`, {
+                    petID: petID
+                }, {headers:headers})
+                pet.adoption_status = "fostered"
+                pet.availability = 0
+                setMyPetsArray([...myPetsArray, pet])
+              swal(`Congratulations! You are now fostering ${pet.name}`, {
+                icon: "success",
+              });
+            } else {
+              swal("Foster Cancelled!");
+            }
+          });
     }catch(e){
-        console.log(e) 
+        console.log(e)
+        swal({
+            title: "Foster Failed!",
+            text: `Error: ${e}`,
+            icon: "error",
+            button: "return",
+          }); 
         }
     }
 

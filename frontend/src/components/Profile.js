@@ -5,7 +5,7 @@ import axios from "axios"
 import localforage from 'localforage'
 import { TextField } from '@mui/material';
 import { inputStyles} from '../styles/MaterialUIStyles'
-
+import swal from 'sweetalert'
 
 function Profile() {
     const { loggedInInfo, setLoggedInInfo, setLoadSpinner, tokenFromLocalforage } = useContext(AppContext);
@@ -46,44 +46,80 @@ function Profile() {
     const updatedPassword = async(e) => {
     try{
         e.preventDefault()
-        setLoadSpinner(true)
-        const headers = await tokenFromLocalforage()
-        const updateUserPassword = await axios.put("http://localhost:5000/users/updatePassword", {
-            oldPassword: oldPassword,
-            password: newPassword,
-            rePassword: reNewPassword,
-          }, {headers: headers})
-        setLoadSpinner(false)
-        alert(updateUserPassword.data) 
-        setOldPassword('')
-        setNewPassword('')
-        setReNewPassword('')
+        swal({
+            title: "Are you sure?",
+            text: "Dont forget new password after updated!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then(async(willUpdate) => {
+            if (willUpdate) {
+                const headers = await tokenFromLocalforage()
+                const updateUserPassword = await axios.put("http://localhost:5000/users/updatePassword", {
+                    oldPassword: oldPassword,
+                    password: newPassword,
+                    rePassword: reNewPassword,
+                  }, {headers: headers})
+                setOldPassword('')
+                setNewPassword('')
+                setReNewPassword('')
+              swal("Password Updated!", {
+                icon: "success",
+              });
+            } else {
+              swal("Your password hasn't been changed!");
+            }
+          });
     }catch(e){
-        console.log(e)
-        setLoadSpinner(false) 
+        swal({
+            title: "Updated Failed!",
+            text: `Error: ${e}`,
+            icon: "error",
+            button: "return",
+          });
+          console.log(e)
         }
     }
 
     const updatedProfile = async(e) => {
     try{
         e.preventDefault()
-        setLoadSpinner(true)
-        const tokenString = await localforage.getItem('token');
-        const token = JSON.parse(tokenString)
-        const headers = {Authorization: `Bearer ${token}`}
-        const updateUserProfile = await axios.put("http://localhost:5000/users/updateProfile", {
-            email: email,
-            firstName: firstName,
-            lastName: lastName,
-            phoneNumber: JSON.stringify(phoneNumber),
-            bio: bio
-          }, {headers: headers})
-          setLoggedInInfo({...loggedInInfo, email:email, first_name:firstName, last_name:lastName, phone:phoneNumber, bio:bio})
-          setLoadSpinner(false)
-          alert(updateUserProfile.data) 
+        swal({
+            title: "Are you sure?",
+            text: "Update profile to new details",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then(async(willUpdate) => {
+            if (willUpdate) {
+                const tokenString = await localforage.getItem('token');
+                const token = JSON.parse(tokenString)
+                const headers = {Authorization: `Bearer ${token}`}
+                const updateUserProfile = await axios.put("http://localhost:5000/users/updateProfile", {
+                    email: email,
+                    firstName: firstName,
+                    lastName: lastName,
+                    phoneNumber: JSON.stringify(phoneNumber),
+                    bio: bio
+                  }, {headers: headers})
+                  setLoggedInInfo({...loggedInInfo, email:email, first_name:firstName, last_name:lastName, phone:phoneNumber, bio:bio})
+              swal("Profile details Updated!", {
+                icon: "success",
+              });
+            } else {
+              swal("Profile details unchanged!");
+            }
+          });
     }catch(e){
         console.log(e)
-        setLoadSpinner(false) 
+        swal({
+            title: "Updated Failed!",
+            text: `Error: ${e}`,
+            icon: "error",
+            button: "return",
+          });
             }
     }
 

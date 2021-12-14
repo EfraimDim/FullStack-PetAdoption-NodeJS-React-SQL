@@ -6,6 +6,7 @@ import { createRef } from 'react'
 import styles from '../styles/AddPet.module.css';
 import { TextField, InputLabel } from '@mui/material';
 import { inputStyles} from '../styles/MaterialUIStyles'
+import swal from 'sweetalert'
 
 
 function AddPet() {
@@ -64,30 +65,54 @@ function AddPet() {
     const addPet = async(e) =>{
     try{
         e.preventDefault()
-        setLoadSpinner(true)
-        const tokenString = await localforage.getItem('token');
-        const token = JSON.parse(tokenString)
-        const headers = {Authorization: `Bearer ${token}`,
-        'Content-Type': 'multipart/form-data'}
-        const fd = new FormData();
-        fd.append('image', selectedFile, `${selectedFile.name}`);
-        fd.append('type', type);
-        fd.append('adoptionStatus', adoptionStatus)
-        fd.append('name', petName);
-        fd.append('colour', colour)
-        fd.append('height', height);
-        fd.append('weight', weight)
-        fd.append('bio', bio)
-        fd.append('dietryRestrictions', dietryRestrictions);
-        fd.append('hypoallergenic', hypoallergenic);
-        fd.append('breed', breed)
-        const addPet = await axios.post("http://localhost:5000/pets/addPet", fd ,{headers:headers})
-        setLoadSpinner(false)
-        alert(addPet.data)
+        swal({
+            title: "Are you sure?",
+            text: "Add new Pet to database",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then(async(willUpload) => {
+            if (willUpload) {
+                setLoadSpinner(true)
+                const tokenString = await localforage.getItem('token');
+                const token = JSON.parse(tokenString)
+                const headers = {Authorization: `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data'}
+                const fd = new FormData();
+                fd.append('image', selectedFile, `${selectedFile.name}`);
+                fd.append('type', type);
+                fd.append('adoptionStatus', adoptionStatus)
+                fd.append('name', petName);
+                fd.append('colour', colour)
+                fd.append('height', height);
+                fd.append('weight', weight)
+                fd.append('bio', bio)
+                fd.append('dietryRestrictions', dietryRestrictions);
+                fd.append('hypoallergenic', hypoallergenic);
+                fd.append('breed', breed)
+                const addPet = await axios.post("http://localhost:5000/pets/addPet", fd ,{headers:headers})
+                setLoadSpinner(false)
+                swal({
+                    title: "Upload Success!",
+                    text: `Pet added to Database`,
+                    icon: "success",
+                    button: "continue!",
+                });
+            } else {
+              swal("Pet not added!");
+            }
+          });
+        
     }catch(e){
         console.log(e)
         setLoadSpinner(false) 
-        alert("Upload Failed!")
+        swal({
+            title: "Upload Failed!",
+            text: `Error: ${e}`,
+            icon: "error",
+            button: "return",
+          });
         }
     }
 

@@ -6,6 +6,7 @@ import localforage from 'localforage'
 import { createRef } from 'react'
 import { TextField, InputLabel } from '@mui/material';
 import { inputStyles} from '../styles/MaterialUIStyles'
+import swal from 'sweetalert'
 
 function EditPetForm() {
 
@@ -71,73 +72,94 @@ function EditPetForm() {
   const editPet = async(e) => {
     e.preventDefault()
     try{
-    setLoadSpinner(true)
-    if(selectedFile === null){
-        const headers = await tokenFromLocalforage()
-        const editPetWithoutNewPhoto = await axios.put("http://localhost:5000/pets/editPetWithoutNewPhoto", {
-            type: type,
-            adoptionStatus: adoptionStatus,
-            name: petName,
-            colour: colour,
-            height: height,
-            weight: weight,
-            bio: bio,
-            dietryRestrictions: dietryRestrictions,
-            hypoallergenic: hypoallergenic,
-            breed: breed,
-            petID: petDetailsToEdit.pet_ID
-        } ,{headers:headers})
-        const newAllPetsArray = [...allPetsArray]
-        const indexFromAllPets = newAllPetsArray.findIndex(oldPet => oldPet.pet_ID === petDetailsToEdit.pet_ID)
-        const petToUpdate = newAllPetsArray[indexFromAllPets]
-        let availability = 0
-        if(adoptionStatus === "available"){
-            availability = 1
-        }
-        petToUpdate.type = type
-        petToUpdate.adoption_status = adoptionStatus
-        petToUpdate.name = petName
-        petToUpdate.color = colour
-        petToUpdate.height = height
-        petToUpdate.weight = weight
-        petToUpdate.bio = bio
-        petToUpdate.dietry_restrictions = dietryRestrictions
-        petToUpdate.hypoallergenic = hypoallergenic
-        petToUpdate.breed = breed
-        petToUpdate.availability = availability
-        newAllPetsArray[indexFromAllPets] = petToUpdate
-        setAllPetsArray(newAllPetsArray)
-        setLoadSpinner(false) 
-        alert(editPetWithoutNewPhoto.data)
-        setPetDetailsToEdit(null)
-    }else{
-        const tokenString = await localforage.getItem('token');
-        const token = JSON.parse(tokenString)
-        const headers = {Authorization: `Bearer ${token}`,
-        'Content-Type': 'multipart/form-data'}
-        const fd = new FormData();
-        fd.append('image', selectedFile, `${selectedFile.name}`);
-        fd.append('type', type);
-        fd.append('adoptionStatus', adoptionStatus)
-        fd.append('name', petName);
-        fd.append('colour', colour)
-        fd.append('height', height);
-        fd.append('weight', weight)
-        fd.append('bio', bio)
-        fd.append('dietryRestrictions', dietryRestrictions);
-        fd.append('hypoallergenic', hypoallergenic);
-        fd.append('breed', breed)
-        fd.append('petID', petDetailsToEdit.pet_ID)
-        const editPetWithNewPhoto = await axios.put("http://localhost:5000/pets/editPetWithNewPhoto", fd ,{headers:headers})
-        setLoadSpinner(false) 
-        alert(editPetWithNewPhoto.data)
-        setPetDetailsToEdit(null)
-    }  
+        swal({
+            title: "Are you sure?",
+            text: "this will edit pet details",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then(async(willEdit) => {
+            if (willEdit) {
+                setLoadSpinner(true)
+                if(selectedFile === null){
+                    const headers = await tokenFromLocalforage()
+                    const editPetWithoutNewPhoto = await axios.put("http://localhost:5000/pets/editPetWithoutNewPhoto", {
+                        type: type,
+                        adoptionStatus: adoptionStatus,
+                        name: petName,
+                        colour: colour,
+                        height: height,
+                        weight: weight,
+                        bio: bio,
+                        dietryRestrictions: dietryRestrictions,
+                        hypoallergenic: hypoallergenic,
+                        breed: breed,
+                        petID: petDetailsToEdit.pet_ID
+                    } ,{headers:headers})
+                    const newAllPetsArray = [...allPetsArray]
+                    const indexFromAllPets = newAllPetsArray.findIndex(oldPet => oldPet.pet_ID === petDetailsToEdit.pet_ID)
+                    const petToUpdate = newAllPetsArray[indexFromAllPets]
+                    let availability = 0
+                    if(adoptionStatus === "available"){
+                        availability = 1
+                    }
+                    petToUpdate.type = type
+                    petToUpdate.adoption_status = adoptionStatus
+                    petToUpdate.name = petName
+                    petToUpdate.color = colour
+                    petToUpdate.height = height
+                    petToUpdate.weight = weight
+                    petToUpdate.bio = bio
+                    petToUpdate.dietry_restrictions = dietryRestrictions
+                    petToUpdate.hypoallergenic = hypoallergenic
+                    petToUpdate.breed = breed
+                    petToUpdate.availability = availability
+                    newAllPetsArray[indexFromAllPets] = petToUpdate
+                    setAllPetsArray(newAllPetsArray)
+                    setLoadSpinner(false) 
+                    setPetDetailsToEdit(null)
+                }else{
+                    const tokenString = await localforage.getItem('token');
+                    const token = JSON.parse(tokenString)
+                    const headers = {Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data'}
+                    const fd = new FormData();
+                    fd.append('image', selectedFile, `${selectedFile.name}`);
+                    fd.append('type', type);
+                    fd.append('adoptionStatus', adoptionStatus)
+                    fd.append('name', petName);
+                    fd.append('colour', colour)
+                    fd.append('height', height);
+                    fd.append('weight', weight)
+                    fd.append('bio', bio)
+                    fd.append('dietryRestrictions', dietryRestrictions);
+                    fd.append('hypoallergenic', hypoallergenic);
+                    fd.append('breed', breed)
+                    fd.append('petID', petDetailsToEdit.pet_ID)
+                    const editPetWithNewPhoto = await axios.put("http://localhost:5000/pets/editPetWithNewPhoto", fd ,{headers:headers})
+                    setLoadSpinner(false) 
+                    setPetDetailsToEdit(null)
+                }
+              swal("Pet Details Edited!", {
+                icon: "success",
+              });
+            } else {
+              swal("Pet Details Unchanged!");
+            }
+          });    
     }catch(e){
         console.log(e)
         setLoadSpinner(false) 
+        swal({
+            title: "Edit Failed!",
+            text: `Error: ${e}`,
+            icon: "error",
+            button: "return",
+          });
         }
-  }
+        }
+  
 
 
   return (
