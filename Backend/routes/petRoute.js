@@ -28,13 +28,13 @@ router.get(
     petController.getAllPetsArray
 )
 router.delete(
-    '/returnForAdoption/:petID',
+    '/returnForAdoption/:petID/:petName/:petType/:userEmail',
     authorization,
     petController.returnForAdoption
 )
 router.put(
     '/fosterToAdopt',
-    validateBody(Schemas.petIDSchemaAJV),
+    validateBody(Schemas.fosterAndAdoptionSchemaAJV),
     authorization,
     petController.fosterToAdopt
 )
@@ -54,7 +54,7 @@ router.post(
 
 router.post(
     '/adoptPet',
-    validateBody(Schemas.petIDSchemaAJV),
+    validateBody(Schemas.fosterAndAdoptionSchemaAJV),
     authorization,
     checkIfStillAvailable,
     petController.adoptPet
@@ -62,7 +62,7 @@ router.post(
 
 router.post(
     '/fosterPet',
-    validateBody(Schemas.petIDSchemaAJV),
+    validateBody(Schemas.fosterAndAdoptionSchemaAJV),
     authorization,
     checkIfStillAvailable,
     petController.fosterPet
@@ -102,6 +102,12 @@ router.put(
     petController.editPetWithNewPhoto
 )
 
+router.delete(
+    '/deletePet/:petID/:petName/:petType/:adminEmail',
+    authorization,
+    checkAdminForAllReq,
+    petController.deletePet
+)
 
 
 

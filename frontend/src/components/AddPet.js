@@ -23,7 +23,7 @@ function AddPet() {
     const [breed, setBreed] = useState('')
     const [selectedFile, setSelectedFile] = useState(null);
 
-    const { setLoadSpinner } = useContext(AppContext);
+    const { setLoadSpinner, adminInfo } = useContext(AppContext);
     const fileInputRef = createRef()
 
     const handleType = (e) => {
@@ -91,6 +91,7 @@ function AddPet() {
                 fd.append('dietryRestrictions', dietryRestrictions);
                 fd.append('hypoallergenic', hypoallergenic);
                 fd.append('breed', breed)
+                fd.append('adminEmail', adminInfo.email)
                 const addPet = await axios.post("http://localhost:5000/pets/addPet", fd ,{headers:headers})
                 setLoadSpinner(false)
                 swal({
@@ -136,9 +137,9 @@ function AddPet() {
                 </select>
                 <TextField size="small" required type="text" value={petName} inputProps={{ maxLength: 15 }} onChange={handlePetName} sx={inputStyles} label="name" />
                 <TextField size="small" required type="text" value={colour} inputProps={{ maxLength: 30 }} onChange={handleColour} sx={inputStyles} label="colour" />
-                <InputLabel id="demo-simple-select-label">Weight</InputLabel>        
-                <input className={styles.input}  required min={0} max={200} type="number" value={height} onChange={handleHeight} placeholder="height (cm)" />
                 <InputLabel id="demo-simple-select-label">Height</InputLabel>        
+                <input className={styles.input}  required min={0} max={200} type="number" value={height} onChange={handleHeight} placeholder="height (cm)" />
+                <InputLabel id="demo-simple-select-label">Weight</InputLabel>        
                 <input className={styles.input}  required min={0} max={50} type="number" value={weight} onChange={handleWeight} placeholder="weight (kg)" />
                 <TextField size="small" multiline={true}  required type="text" value={bio} inputProps={{ maxLength: 200 }} onChange={handleBio} sx={inputStyles} label="pet bio" />
                 <InputLabel id="demo-simple-select-label">Hypoallergenic</InputLabel>        

@@ -56,3 +56,8 @@ align-self: center;
     cursor:pointer;
     margin: 10px
 }
+.buttonWrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}

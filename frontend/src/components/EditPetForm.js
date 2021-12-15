@@ -11,7 +11,7 @@ import swal from 'sweetalert'
 function EditPetForm() {
 
 
-  const { setPetDetailsToEdit, petDetailsToEdit, petImages, tokenFromLocalforage, allPetsArray, setAllPetsArray, setLoadSpinner } = useContext(AppContext);
+  const { setPetDetailsToEdit, petDetailsToEdit, petImages, tokenFromLocalforage, allPetsArray, setAllPetsArray, setLoadSpinner, adminInfo } = useContext(AppContext);
 
   const [picturePath, setPicturePath] = useState(petDetailsToEdit.picture_path)
   const [type, setType] = useState(petDetailsToEdit.type)
@@ -95,7 +95,8 @@ function EditPetForm() {
                         dietryRestrictions: dietryRestrictions,
                         hypoallergenic: hypoallergenic,
                         breed: breed,
-                        petID: petDetailsToEdit.pet_ID
+                        petID: petDetailsToEdit.pet_ID,
+                        adminEmail: adminInfo
                     } ,{headers:headers})
                     const newAllPetsArray = [...allPetsArray]
                     const indexFromAllPets = newAllPetsArray.findIndex(oldPet => oldPet.pet_ID === petDetailsToEdit.pet_ID)
@@ -137,6 +138,7 @@ function EditPetForm() {
                     fd.append('hypoallergenic', hypoallergenic);
                     fd.append('breed', breed)
                     fd.append('petID', petDetailsToEdit.pet_ID)
+                    fd.append('adminEmail', adminInfo.email)
                     const editPetWithNewPhoto = await axios.put("http://localhost:5000/pets/editPetWithNewPhoto", fd ,{headers:headers})
                     setLoadSpinner(false) 
                     setPetDetailsToEdit(null)
@@ -175,7 +177,7 @@ function EditPetForm() {
                      <option defaultValue={petDetailsToEdit.type === "bird"} value="bird">Bird</option>
                      <option defaultValue={petDetailsToEdit.type === "fish"}  value="fish">Fish</option>
                  </select>
-                 <InputLabel id="demo-simple-select-label">Type</InputLabel>
+                 <InputLabel id="demo-simple-select-label">Status</InputLabel>
                  <select className={styles.input} required value={adoptionStatus} onChange={handleAdoptionStatus}>
                      <option defaultValue={petDetailsToEdit.adoption_status === "available"} value="available">Available</option>
                      <option defaultValue={petDetailsToEdit.adoption_status === "adopted"} value="adopted">Adopted</option>
@@ -183,9 +185,9 @@ function EditPetForm() {
                  </select>
                  <TextField size="small" required  type="text" value={petName} inputProps={{ maxLength: 15 }} onChange={handlePetName} sx={inputStyles} label="name" />
                  <TextField size="small" required  type="text" value={colour} inputProps={{ maxLength: 30 }} onChange={handleColour} sx={inputStyles} label="colour" />
-                 <InputLabel id="demo-simple-select-label">Type</InputLabel>
+                 <InputLabel id="demo-simple-select-label">Height</InputLabel>
                  <input required className={styles.input} min={0} max={200} type="number" value={height} onChange={handleHeight} placeholder="height (cm)" />
-                 <InputLabel id="demo-simple-select-label">Type</InputLabel>
+                 <InputLabel id="demo-simple-select-label">Weight</InputLabel>
                  <input required className={styles.input} min={0} max={50} type="number" value={weight} onChange={handleWeight} placeholder="weight (kg)" />
                  <TextField size="small" multiline={true} required type="text" value={bio} inputProps={{ maxLength: 200 }} onChange={handleBio} sx={inputStyles} label="pet bio" />
                  <InputLabel id="demo-simple-select-label">Hypoallergenic</InputLabel>

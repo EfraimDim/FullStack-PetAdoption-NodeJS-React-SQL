@@ -21,7 +21,8 @@
     "react-show-more": "^2.0.0",
     "react-truncate": "^2.4.0",
     "sweetalert": "^2.1.2",
-    "web-vitals": "^1.0.1"
+    "web-vitals": "^1.0.1",
+    "websocket": "^1.0.34"
   },
   "scripts": {
     "start": "react-scripts start",

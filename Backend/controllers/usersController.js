@@ -20,6 +20,10 @@ exports.signUpUser = async(req, res) => {
         const date = new Date().toISOString().slice(0, 19).replace('T', ' ')
         const userID = uuidv4()
         await query(SQL `INSERT INTO users (user_ID, email, password, first_name, last_name, phone, admin_status, date_created, bio) VALUES (${userID}, ${email.toLowerCase()}, ${password}, ${firstName}, ${lastName}, ${phoneNumber}, ${admin}, ${date}, '')`)
+        if(admin === true){
+        const updateNewsFeedAdminUser = await query(`INSERT INTO newsfeed (news) VALUES ("New Admin User! Email: ${email} Name: ${firstName} ${lastName}!")`)}
+        else{
+        const updateNewsFeedPublicUser = await query(`INSERT INTO newsfeed (news) VALUES ("New Public User! Email: ${email} Name: ${firstName} ${lastName}!")`)}
         res.send("Register Succesful!")
     } catch (e) {
         console.log(e)
@@ -31,7 +35,7 @@ exports.signUpUser = async(req, res) => {
 exports.updateUserPassword = async(req, res) => {
     try {
         const {password} = req.body;
-        const {userID } = req.decoded
+        const { userID } = req.decoded
         await query(SQL `UPDATE users SET password = ${password} WHERE user_ID = ${userID}`)
         res.send("Updated Password Succesfully!")
     } catch (e) {
@@ -52,20 +56,11 @@ exports.updateUserProfile = async(req, res) => {
     }
 }
 
-exports.getAllPublicUsers = async(req, res) => {
+exports.adminUserNewsfeedArrays = async(req, res) => {
     try {
-        const publicUsersArray = await query(SQL `SELECT user_ID, email, first_name, last_name, phone, bio, date_created, admin_status FROM users where admin_status = 0`)
-        res.send(publicUsersArray)
-    } catch (e) {
-        console.log(e)
-        res.status(500).send(e.message)
-    }
-}
-
-exports.getAllAdminUsers = async(req, res) => {
-    try {
-        const adminUsersArray = await query(SQL `SELECT user_ID, email, first_name, last_name, phone, bio, date_created, admin_status FROM users where admin_status = 1`)
-        res.send(adminUsersArray)
+        const usersArray = await query(SQL `SELECT user_ID, email, first_name, last_name, phone, bio, date_created, admin_status FROM users`)
+        const newsfeedArray = await query(SQL `SELECT * FROM newsfeed`)
+        res.send({usersArray: usersArray, newsfeedArray: newsfeedArray})
     } catch (e) {
         console.log(e)
         res.status(500).send(e.message)

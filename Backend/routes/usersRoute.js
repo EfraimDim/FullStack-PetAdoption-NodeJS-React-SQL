@@ -55,18 +55,12 @@ router.put(
 )
 
 router.get(
-    '/allPublicUsers',
+    '/usersAndNewsfeedArraysForAdmin',
     authorization,
     checkAdminForAllReq,
-    usersController.getAllPublicUsers
+    usersController.adminUserNewsfeedArrays
 )
 
-router.get(
-    '/allAdminUsers',
-    authorization,
-    checkAdminForAllReq,
-    usersController.getAllAdminUsers
-)
 router.get(
     '/viewedUsersPets',
     authorization,

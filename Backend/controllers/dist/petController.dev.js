@@ -1,5 +1,35 @@
 "use strict";
 
+function _templateObject19() {
+  var data = _taggedTemplateLiteral(["DELETE FROM savedPets WHERE pet_ID = ", " "]);
+
+  _templateObject19 = function _templateObject19() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject18() {
+  var data = _taggedTemplateLiteral(["DELETE FROM adoptedPets WHERE pet_ID = ", " "]);
+
+  _templateObject18 = function _templateObject18() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject17() {
+  var data = _taggedTemplateLiteral(["DELETE FROM pets WHERE pet_ID = ", " "]);
+
+  _templateObject17 = function _templateObject17() {
+    return data;
+  };
+
+  return data;
+}
+
 function _templateObject16() {
   var data = _taggedTemplateLiteral(["UPDATE pets SET type = ", ", adoption_status = ", ", name = ", ", color = ", ", height = ", ", weight = ", ", bio = ", ", dietry_restrictions = ", ", hypoallergenic = ", ", breed = ", ", availability = ", "  WHERE pet_ID = ", ""]);
 
@@ -239,13 +269,14 @@ exports.getAllPetsArray = function _callee2(req, res) {
 };
 
 exports.returnForAdoption = function _callee3(req, res) {
-  var petID, userID, deleteFromMyPetsArray, updateAdoptionStatus;
+  var _req$params, petID, petName, petType, userEmail, userID, deleteFromMyPetsArray, updateAdoptionStatus, updateNewsFeed;
+
   return regeneratorRuntime.async(function _callee3$(_context3) {
     while (1) {
       switch (_context3.prev = _context3.next) {
         case 0:
           _context3.prev = 0;
-          petID = req.params.petID;
+          _req$params = req.params, petID = _req$params.petID, petName = _req$params.petName, petType = _req$params.petType, userEmail = _req$params.userEmail;
           userID = req.decoded.userID;
           _context3.next = 5;
           return regeneratorRuntime.awrap(query(SQL(_templateObject4(), userID, petID)));
@@ -257,53 +288,64 @@ exports.returnForAdoption = function _callee3(req, res) {
 
         case 8:
           updateAdoptionStatus = _context3.sent;
+          _context3.next = 11;
+          return regeneratorRuntime.awrap(query("INSERT INTO newsfeed (news) VALUES (\"".concat(userEmail, " has returned ").concat(petName, " the ").concat(petType, " back for adoption\")")));
+
+        case 11:
+          updateNewsFeed = _context3.sent;
           res.send("Returned Succesfully!");
-          _context3.next = 16;
+          _context3.next = 19;
           break;
 
-        case 12:
-          _context3.prev = 12;
+        case 15:
+          _context3.prev = 15;
           _context3.t0 = _context3["catch"](0);
           console.error(_context3.t0);
           res.status(500).send(_context3.t0.message);
 
-        case 16:
+        case 19:
         case "end":
           return _context3.stop();
       }
     }
-  }, null, null, [[0, 12]]);
+  }, null, null, [[0, 15]]);
 };
 
 exports.fosterToAdopt = function _callee4(req, res) {
-  var petID, updateAdoptionStatus;
+  var _req$body, petID, name, type, userEmail, updateAdoptionStatus, updateNewsFeed;
+
   return regeneratorRuntime.async(function _callee4$(_context4) {
     while (1) {
       switch (_context4.prev = _context4.next) {
         case 0:
           _context4.prev = 0;
-          petID = req.body.petID;
+          _req$body = req.body, petID = _req$body.petID, name = _req$body.name, type = _req$body.type, userEmail = _req$body.userEmail;
           _context4.next = 4;
           return regeneratorRuntime.awrap(query(SQL(_templateObject6(), petID)));
 
         case 4:
           updateAdoptionStatus = _context4.sent;
+          _context4.next = 7;
+          return regeneratorRuntime.awrap(query("INSERT INTO newsfeed (news) VALUES (\"".concat(userEmail, " had now adopted ").concat(name, " the ").concat(type, " from fostering!\")")));
+
+        case 7:
+          updateNewsFeed = _context4.sent;
           res.send("Updated Succesfully!");
-          _context4.next = 12;
+          _context4.next = 15;
           break;
 
-        case 8:
-          _context4.prev = 8;
+        case 11:
+          _context4.prev = 11;
           _context4.t0 = _context4["catch"](0);
           console.error(_context4.t0);
           res.status(500).send(_context4.t0.message);
 
-        case 12:
+        case 15:
         case "end":
           return _context4.stop();
       }
     }
-  }, null, null, [[0, 8]]);
+  }, null, null, [[0, 11]]);
 };
 
 exports.unsavePet = function _callee5(req, res) {
@@ -371,13 +413,14 @@ exports.savePet = function _callee6(req, res) {
 };
 
 exports.adoptPet = function _callee7(req, res) {
-  var petID, userID, adoptPet, availabilityChange;
+  var _req$body2, petID, name, type, userEmail, userID, adoptPet, availabilityChange, updateNewsFeed;
+
   return regeneratorRuntime.async(function _callee7$(_context7) {
     while (1) {
       switch (_context7.prev = _context7.next) {
         case 0:
           _context7.prev = 0;
-          petID = req.body.petID;
+          _req$body2 = req.body, petID = _req$body2.petID, name = _req$body2.name, type = _req$body2.type, userEmail = _req$body2.userEmail;
           userID = req.decoded.userID;
           _context7.next = 5;
           return regeneratorRuntime.awrap(query(SQL(_templateObject9(), userID, petID)));
@@ -389,32 +432,38 @@ exports.adoptPet = function _callee7(req, res) {
 
         case 8:
           availabilityChange = _context7.sent;
+          _context7.next = 11;
+          return regeneratorRuntime.awrap(query("INSERT INTO newsfeed (news) VALUES (\"".concat(userEmail, " had now adopted ").concat(name, " the ").concat(type, "!\")")));
+
+        case 11:
+          updateNewsFeed = _context7.sent;
           res.send("Adoption Success!");
-          _context7.next = 16;
+          _context7.next = 19;
           break;
 
-        case 12:
-          _context7.prev = 12;
+        case 15:
+          _context7.prev = 15;
           _context7.t0 = _context7["catch"](0);
           console.error(_context7.t0);
           res.status(500).send(_context7.t0.message);
 
-        case 16:
+        case 19:
         case "end":
           return _context7.stop();
       }
     }
-  }, null, null, [[0, 12]]);
+  }, null, null, [[0, 15]]);
 };
 
 exports.fosterPet = function _callee8(req, res) {
-  var petID, userID, fosterPet, availabilityChange;
+  var _req$body3, petID, name, type, userEmail, userID, fosterPet, availabilityChange, updateNewsFeed;
+
   return regeneratorRuntime.async(function _callee8$(_context8) {
     while (1) {
       switch (_context8.prev = _context8.next) {
         case 0:
           _context8.prev = 0;
-          petID = req.body.petID;
+          _req$body3 = req.body, petID = _req$body3.petID, name = _req$body3.name, type = _req$body3.type, userEmail = _req$body3.userEmail;
           userID = req.decoded.userID;
           _context8.next = 5;
           return regeneratorRuntime.awrap(query(SQL(_templateObject11(), userID, petID)));
@@ -426,22 +475,27 @@ exports.fosterPet = function _callee8(req, res) {
 
         case 8:
           availabilityChange = _context8.sent;
+          _context8.next = 11;
+          return regeneratorRuntime.awrap(query("INSERT INTO newsfeed (news) VALUES (\"".concat(userEmail, " is now fostering ").concat(name, " the ").concat(type, "!\")")));
+
+        case 11:
+          updateNewsFeed = _context8.sent;
           res.send("Foster Success!");
-          _context8.next = 16;
+          _context8.next = 19;
           break;
 
-        case 12:
-          _context8.prev = 12;
+        case 15:
+          _context8.prev = 15;
           _context8.t0 = _context8["catch"](0);
           console.error(_context8.t0);
           res.status(500).send(_context8.t0.message);
 
-        case 16:
+        case 19:
         case "end":
           return _context8.stop();
       }
     }
-  }, null, null, [[0, 12]]);
+  }, null, null, [[0, 15]]);
 };
 
 exports.basicSearch = function _callee9(req, res) {
@@ -476,14 +530,14 @@ exports.basicSearch = function _callee9(req, res) {
 };
 
 exports.advanceSearch = function _callee10(req, res) {
-  var _req$params, type, adoptionStatus, minHeight, maxHeight, minWeight, maxWeight, name, searchResults;
+  var _req$params2, type, adoptionStatus, minHeight, maxHeight, minWeight, maxWeight, name, searchResults;
 
   return regeneratorRuntime.async(function _callee10$(_context10) {
     while (1) {
       switch (_context10.prev = _context10.next) {
         case 0:
           _context10.prev = 0;
-          _req$params = req.params, type = _req$params.type, adoptionStatus = _req$params.adoptionStatus, minHeight = _req$params.minHeight, maxHeight = _req$params.maxHeight, minWeight = _req$params.minWeight, maxWeight = _req$params.maxWeight;
+          _req$params2 = req.params, type = _req$params2.type, adoptionStatus = _req$params2.adoptionStatus, minHeight = _req$params2.minHeight, maxHeight = _req$params2.maxHeight, minWeight = _req$params2.minWeight, maxWeight = _req$params2.maxWeight;
           name = req.query.name;
           _context10.next = 5;
           return regeneratorRuntime.awrap(query("SELECT * FROM pets WHERE type = \"".concat(type, "\" AND adoption_status = '").concat(adoptionStatus, "' AND weight >= ").concat(minWeight, " AND weight <= ").concat(maxWeight, " AND height >= ").concat(minHeight, " AND height <= ").concat(maxHeight, " AND name LIKE '%").concat(name, "%'")));
@@ -509,7 +563,7 @@ exports.advanceSearch = function _callee10(req, res) {
 };
 
 exports.addPet = function _callee11(req, res) {
-  var filename, _req$body, type, adoptionStatus, name, colour, height, weight, bio, dietryRestrictions, hypoallergenic, breed, parseHeight, parseWeight, parseHypoallergenic, availability, petID, date;
+  var filename, _req$body4, type, adoptionStatus, name, colour, height, weight, bio, dietryRestrictions, hypoallergenic, breed, adminEmail, parseHeight, parseWeight, parseHypoallergenic, availability, petID, date, updateNewsFeed;
 
   return regeneratorRuntime.async(function _callee11$(_context11) {
     while (1) {
@@ -517,7 +571,7 @@ exports.addPet = function _callee11(req, res) {
         case 0:
           _context11.prev = 0;
           filename = req.file.filename;
-          _req$body = req.body, type = _req$body.type, adoptionStatus = _req$body.adoptionStatus, name = _req$body.name, colour = _req$body.colour, height = _req$body.height, weight = _req$body.weight, bio = _req$body.bio, dietryRestrictions = _req$body.dietryRestrictions, hypoallergenic = _req$body.hypoallergenic, breed = _req$body.breed;
+          _req$body4 = req.body, type = _req$body4.type, adoptionStatus = _req$body4.adoptionStatus, name = _req$body4.name, colour = _req$body4.colour, height = _req$body4.height, weight = _req$body4.weight, bio = _req$body4.bio, dietryRestrictions = _req$body4.dietryRestrictions, hypoallergenic = _req$body4.hypoallergenic, breed = _req$body4.breed, adminEmail = _req$body4.adminEmail;
           parseHeight = JSON.parse(height);
           parseWeight = JSON.parse(weight);
           parseHypoallergenic = JSON.parse(hypoallergenic);
@@ -533,25 +587,30 @@ exports.addPet = function _callee11(req, res) {
           return regeneratorRuntime.awrap(query(SQL(_templateObject14(), petID, type, name, adoptionStatus, filename, parseHeight, parseWeight, colour, bio, parseHypoallergenic, availability, dietryRestrictions, breed, date)));
 
         case 12:
+          _context11.next = 14;
+          return regeneratorRuntime.awrap(query("INSERT INTO newsfeed (news) VALUES (\"Admin: ".concat(adminEmail, " has added ").concat(name, " the ").concat(type, " to the database!\")")));
+
+        case 14:
+          updateNewsFeed = _context11.sent;
           res.send("Added Successfully!");
-          _context11.next = 18;
+          _context11.next = 21;
           break;
 
-        case 15:
-          _context11.prev = 15;
+        case 18:
+          _context11.prev = 18;
           _context11.t0 = _context11["catch"](0);
           res.status(500).send(_context11.t0.message);
 
-        case 18:
+        case 21:
         case "end":
           return _context11.stop();
       }
     }
-  }, null, null, [[0, 15]]);
+  }, null, null, [[0, 18]]);
 };
 
 exports.editPetWithNewPhoto = function _callee12(req, res) {
-  var filename, _req$body2, petID, type, adoptionStatus, name, colour, height, weight, bio, dietryRestrictions, hypoallergenic, breed, parseHeight, parseWeight, parseHypoallergenic, availability, updatePet;
+  var filename, _req$body5, petID, type, adoptionStatus, name, colour, height, weight, bio, dietryRestrictions, hypoallergenic, breed, adminEmail, parseHeight, parseWeight, parseHypoallergenic, availability, updatePet, updateNewsFeed;
 
   return regeneratorRuntime.async(function _callee12$(_context12) {
     while (1) {
@@ -559,7 +618,7 @@ exports.editPetWithNewPhoto = function _callee12(req, res) {
         case 0:
           _context12.prev = 0;
           filename = req.file.filename;
-          _req$body2 = req.body, petID = _req$body2.petID, type = _req$body2.type, adoptionStatus = _req$body2.adoptionStatus, name = _req$body2.name, colour = _req$body2.colour, height = _req$body2.height, weight = _req$body2.weight, bio = _req$body2.bio, dietryRestrictions = _req$body2.dietryRestrictions, hypoallergenic = _req$body2.hypoallergenic, breed = _req$body2.breed;
+          _req$body5 = req.body, petID = _req$body5.petID, type = _req$body5.type, adoptionStatus = _req$body5.adoptionStatus, name = _req$body5.name, colour = _req$body5.colour, height = _req$body5.height, weight = _req$body5.weight, bio = _req$body5.bio, dietryRestrictions = _req$body5.dietryRestrictions, hypoallergenic = _req$body5.hypoallergenic, breed = _req$body5.breed, adminEmail = _req$body5.adminEmail;
           parseHeight = JSON.parse(height);
           parseWeight = JSON.parse(weight);
           parseHypoallergenic = JSON.parse(hypoallergenic);
@@ -574,33 +633,38 @@ exports.editPetWithNewPhoto = function _callee12(req, res) {
 
         case 10:
           updatePet = _context12.sent;
+          _context12.next = 13;
+          return regeneratorRuntime.awrap(query("INSERT INTO newsfeed (news) VALUES (\"Admin: ".concat(adminEmail, " has edited the information of ").concat(name, " the ").concat(type, " and added a new photo!\")")));
+
+        case 13:
+          updateNewsFeed = _context12.sent;
           res.send("Updated Successfully!");
-          _context12.next = 18;
+          _context12.next = 21;
           break;
 
-        case 14:
-          _context12.prev = 14;
+        case 17:
+          _context12.prev = 17;
           _context12.t0 = _context12["catch"](0);
           console.log(_context12.t0);
           res.status(500).send(_context12.t0.message);
 
-        case 18:
+        case 21:
         case "end":
           return _context12.stop();
       }
     }
-  }, null, null, [[0, 14]]);
+  }, null, null, [[0, 17]]);
 };
 
 exports.editPetWithoutNewPhoto = function _callee13(req, res) {
-  var _req$body3, petID, type, adoptionStatus, name, colour, height, weight, bio, dietryRestrictions, hypoallergenic, breed, availability, updatePet;
+  var _req$body6, petID, type, adoptionStatus, name, colour, height, weight, bio, dietryRestrictions, hypoallergenic, breed, adminEmail, availability, updatePet, updateNewsFeed;
 
   return regeneratorRuntime.async(function _callee13$(_context13) {
     while (1) {
       switch (_context13.prev = _context13.next) {
         case 0:
           _context13.prev = 0;
-          _req$body3 = req.body, petID = _req$body3.petID, type = _req$body3.type, adoptionStatus = _req$body3.adoptionStatus, name = _req$body3.name, colour = _req$body3.colour, height = _req$body3.height, weight = _req$body3.weight, bio = _req$body3.bio, dietryRestrictions = _req$body3.dietryRestrictions, hypoallergenic = _req$body3.hypoallergenic, breed = _req$body3.breed;
+          _req$body6 = req.body, petID = _req$body6.petID, type = _req$body6.type, adoptionStatus = _req$body6.adoptionStatus, name = _req$body6.name, colour = _req$body6.colour, height = _req$body6.height, weight = _req$body6.weight, bio = _req$body6.bio, dietryRestrictions = _req$body6.dietryRestrictions, hypoallergenic = _req$body6.hypoallergenic, breed = _req$body6.breed, adminEmail = _req$body6.adminEmail;
           availability = false;
 
           if (adoptionStatus === "available") {
@@ -612,20 +676,72 @@ exports.editPetWithoutNewPhoto = function _callee13(req, res) {
 
         case 6:
           updatePet = _context13.sent;
+          _context13.next = 9;
+          return regeneratorRuntime.awrap(query("INSERT INTO newsfeed (news) VALUES (\"Admin: ".concat(adminEmail, " has edited the information of ").concat(name, " the ").concat(type, "!\")")));
+
+        case 9:
+          updateNewsFeed = _context13.sent;
           res.send("Updated Successfully!");
-          _context13.next = 14;
+          _context13.next = 17;
           break;
 
-        case 10:
-          _context13.prev = 10;
+        case 13:
+          _context13.prev = 13;
           _context13.t0 = _context13["catch"](0);
           console.log(_context13.t0);
           res.status(500).send(_context13.t0.message);
 
-        case 14:
+        case 17:
         case "end":
           return _context13.stop();
       }
     }
-  }, null, null, [[0, 10]]);
+  }, null, null, [[0, 13]]);
+};
+
+exports.deletePet = function _callee14(req, res) {
+  var _req$params3, petID, petName, petType, adminEmail, deletePet, deletePetAdopted, deletePetSaved, updateNewsFeed;
+
+  return regeneratorRuntime.async(function _callee14$(_context14) {
+    while (1) {
+      switch (_context14.prev = _context14.next) {
+        case 0:
+          _context14.prev = 0;
+          _req$params3 = req.params, petID = _req$params3.petID, petName = _req$params3.petName, petType = _req$params3.petType, adminEmail = _req$params3.adminEmail;
+          _context14.next = 4;
+          return regeneratorRuntime.awrap(query(SQL(_templateObject17(), petID)));
+
+        case 4:
+          deletePet = _context14.sent;
+          _context14.next = 7;
+          return regeneratorRuntime.awrap(query(SQL(_templateObject18(), petID)));
+
+        case 7:
+          deletePetAdopted = _context14.sent;
+          _context14.next = 10;
+          return regeneratorRuntime.awrap(query(SQL(_templateObject19(), petID)));
+
+        case 10:
+          deletePetSaved = _context14.sent;
+          _context14.next = 13;
+          return regeneratorRuntime.awrap(query("INSERT INTO newsfeed (news) VALUES (\"Admin: ".concat(adminEmail, " has deleted ").concat(petName, " the ").concat(petType, " from all databases!\")")));
+
+        case 13:
+          updateNewsFeed = _context14.sent;
+          res.send("Delete Succesful!");
+          _context14.next = 21;
+          break;
+
+        case 17:
+          _context14.prev = 17;
+          _context14.t0 = _context14["catch"](0);
+          console.error(_context14.t0);
+          res.status(500).send(_context14.t0.message);
+
+        case 21:
+        case "end":
+          return _context14.stop();
+      }
+    }
+  }, null, null, [[0, 17]]);
 };

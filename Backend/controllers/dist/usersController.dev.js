@@ -11,7 +11,7 @@ function _templateObject6() {
 }
 
 function _templateObject5() {
-  var data = _taggedTemplateLiteral(["SELECT user_ID, email, first_name, last_name, phone, bio, date_created, admin_status FROM users where admin_status = 1"]);
+  var data = _taggedTemplateLiteral(["SELECT * FROM newsfeed"]);
 
   _templateObject5 = function _templateObject5() {
     return data;
@@ -21,7 +21,7 @@ function _templateObject5() {
 }
 
 function _templateObject4() {
-  var data = _taggedTemplateLiteral(["SELECT user_ID, email, first_name, last_name, phone, bio, date_created, admin_status FROM users where admin_status = 0"]);
+  var data = _taggedTemplateLiteral(["SELECT user_ID, email, first_name, last_name, phone, bio, date_created, admin_status FROM users"]);
 
   _templateObject4 = function _templateObject4() {
     return data;
@@ -85,7 +85,7 @@ exports.login = function (req, res) {
 };
 
 exports.signUpUser = function _callee(req, res) {
-  var _req$body, email, password, firstName, lastName, phoneNumber, admin, date, userID;
+  var _req$body, email, password, firstName, lastName, phoneNumber, admin, date, userID, updateNewsFeedAdminUser, updateNewsFeedPublicUser;
 
   return regeneratorRuntime.async(function _callee$(_context) {
     while (1) {
@@ -99,22 +99,43 @@ exports.signUpUser = function _callee(req, res) {
           return regeneratorRuntime.awrap(query(SQL(_templateObject(), userID, email.toLowerCase(), password, firstName, lastName, phoneNumber, admin, date)));
 
         case 6:
-          res.send("Register Succesful!");
-          _context.next = 13;
-          break;
+          if (!(admin === true)) {
+            _context.next = 12;
+            break;
+          }
+
+          _context.next = 9;
+          return regeneratorRuntime.awrap(query("INSERT INTO newsfeed (news) VALUES (\"New Admin User! Email: ".concat(email, " Name: ").concat(firstName, " ").concat(lastName, "!\")")));
 
         case 9:
-          _context.prev = 9;
+          updateNewsFeedAdminUser = _context.sent;
+          _context.next = 15;
+          break;
+
+        case 12:
+          _context.next = 14;
+          return regeneratorRuntime.awrap(query("INSERT INTO newsfeed (news) VALUES (\"New Public User! Email: ".concat(email, " Name: ").concat(firstName, " ").concat(lastName, "!\")")));
+
+        case 14:
+          updateNewsFeedPublicUser = _context.sent;
+
+        case 15:
+          res.send("Register Succesful!");
+          _context.next = 22;
+          break;
+
+        case 18:
+          _context.prev = 18;
           _context.t0 = _context["catch"](0);
           console.log(_context.t0);
           res.status(500).send(_context.t0.message);
 
-        case 13:
+        case 22:
         case "end":
           return _context.stop();
       }
     }
-  }, null, null, [[0, 9]]);
+  }, null, null, [[0, 18]]);
 };
 
 exports.updateUserPassword = function _callee2(req, res) {
@@ -181,8 +202,8 @@ exports.updateUserProfile = function _callee3(req, res) {
   }, null, null, [[0, 9]]);
 };
 
-exports.getAllPublicUsers = function _callee4(req, res) {
-  var publicUsersArray;
+exports.adminUserNewsfeedArrays = function _callee4(req, res) {
+  var usersArray, newsfeedArray;
   return regeneratorRuntime.async(function _callee4$(_context4) {
     while (1) {
       switch (_context4.prev = _context4.next) {
@@ -192,81 +213,59 @@ exports.getAllPublicUsers = function _callee4(req, res) {
           return regeneratorRuntime.awrap(query(SQL(_templateObject4())));
 
         case 3:
-          publicUsersArray = _context4.sent;
-          res.send(publicUsersArray);
-          _context4.next = 11;
+          usersArray = _context4.sent;
+          _context4.next = 6;
+          return regeneratorRuntime.awrap(query(SQL(_templateObject5())));
+
+        case 6:
+          newsfeedArray = _context4.sent;
+          res.send({
+            usersArray: usersArray,
+            newsfeedArray: newsfeedArray
+          });
+          _context4.next = 14;
           break;
 
-        case 7:
-          _context4.prev = 7;
+        case 10:
+          _context4.prev = 10;
           _context4.t0 = _context4["catch"](0);
           console.log(_context4.t0);
           res.status(500).send(_context4.t0.message);
 
-        case 11:
+        case 14:
         case "end":
           return _context4.stop();
       }
     }
-  }, null, null, [[0, 7]]);
+  }, null, null, [[0, 10]]);
 };
 
-exports.getAllAdminUsers = function _callee5(req, res) {
-  var adminUsersArray;
+exports.getViewedUsersPets = function _callee5(req, res) {
+  var viewedUserID, viewedUsersPets;
   return regeneratorRuntime.async(function _callee5$(_context5) {
     while (1) {
       switch (_context5.prev = _context5.next) {
         case 0:
           _context5.prev = 0;
-          _context5.next = 3;
-          return regeneratorRuntime.awrap(query(SQL(_templateObject5())));
+          viewedUserID = req.query.viewedUserID;
+          _context5.next = 4;
+          return regeneratorRuntime.awrap(query(SQL(_templateObject6(), viewedUserID)));
 
-        case 3:
-          adminUsersArray = _context5.sent;
-          res.send(adminUsersArray);
-          _context5.next = 11;
+        case 4:
+          viewedUsersPets = _context5.sent;
+          res.send(viewedUsersPets);
+          _context5.next = 12;
           break;
 
-        case 7:
-          _context5.prev = 7;
+        case 8:
+          _context5.prev = 8;
           _context5.t0 = _context5["catch"](0);
           console.log(_context5.t0);
           res.status(500).send(_context5.t0.message);
 
-        case 11:
-        case "end":
-          return _context5.stop();
-      }
-    }
-  }, null, null, [[0, 7]]);
-};
-
-exports.getViewedUsersPets = function _callee6(req, res) {
-  var viewedUserID, viewedUsersPets;
-  return regeneratorRuntime.async(function _callee6$(_context6) {
-    while (1) {
-      switch (_context6.prev = _context6.next) {
-        case 0:
-          _context6.prev = 0;
-          viewedUserID = req.query.viewedUserID;
-          _context6.next = 4;
-          return regeneratorRuntime.awrap(query(SQL(_templateObject6(), viewedUserID)));
-
-        case 4:
-          viewedUsersPets = _context6.sent;
-          res.send(viewedUsersPets);
-          _context6.next = 12;
-          break;
-
-        case 8:
-          _context6.prev = 8;
-          _context6.t0 = _context6["catch"](0);
-          console.log(_context6.t0);
-          res.status(500).send(_context6.t0.message);
-
         case 12:
         case "end":
-          return _context6.stop();
+          return _context5.stop();
       }
     }
   }, null, null, [[0, 8]]);

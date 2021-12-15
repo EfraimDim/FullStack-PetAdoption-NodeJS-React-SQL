@@ -34,6 +34,7 @@ function App() {
   const [petDetailsToEdit, setPetDetailsToEdit] = useState(null)
   const [searchBeforeLogin, setSearchBeforeLogin] = useState(false)
   const [loadSpinner, setLoadSpinner] = useState(false)
+  const [newsfeed, setNewsfeed] = useState([])
   const [sidebar, setSidebar] = useState({
     top: false,
     left: false,
@@ -200,7 +201,9 @@ function App() {
       toggleDrawer,
       sidebar,
       loadSpinner, 
-      setLoadSpinner
+      setLoadSpinner,
+      newsfeed,
+      setNewsfeed
 
     }}>
     

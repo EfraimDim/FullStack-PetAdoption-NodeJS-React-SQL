@@ -1,8 +1,6 @@
 import styles from '../styles/AdminPage.module.css';
 import { AppContext } from "../components/AppContext"
 import {useState, useEffect, useContext} from "react"
-import axios from 'axios'
-import localforage from 'localforage'
 import { Routes, Route, Link, useLocation } from "react-router-dom";
 import AddPet from './AddPet'
 import EditPet from './EditPet'
@@ -13,6 +11,7 @@ import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+import NewsfeedAdmin from './NewsfeedAdmin'
 
 function AdminPage() {
 
@@ -31,7 +30,8 @@ function AdminPage() {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        {[<Link to="/"><div className={styles.sideBarButtons}>Edit Pets</div></Link>, 
+        {[<Link to="/"><div className={styles.sideBarButtons}>Newsfeed</div></Link>,
+        <Link to="/editPets"><div className={styles.sideBarButtons}>Edit Pets</div></Link>, 
         <Link to="/addPets"><div className={styles.sideBarButtons}>Add Pet</div></Link>,  
         <Link to="/viewUsers"><div  className={styles.sideBarButtons}>Users</div></Link> ].map((text, index) => (
           <ListItem button key={index}>
@@ -66,9 +66,10 @@ function AdminPage() {
 
      <div className={styles.routesWrapper}>
       <Routes>
+    <Route path="/" element={<NewsfeedAdmin/>}></Route>
     <Route path="/viewUsers" element={<ViewUsers/>}></Route>
     <Route path='/addPets' element={<AddPet/>}></Route>
-    <Route path="/" element={<EditPet/>}></Route>
+    <Route path="/editPets" element={<EditPet/>}></Route>
     </Routes>
     </div>
     

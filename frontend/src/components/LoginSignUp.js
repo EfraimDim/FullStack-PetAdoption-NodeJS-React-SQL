@@ -31,7 +31,7 @@ function ModalLoginSignUp() {
     const [phoneNumberAdmin, setPhoneNumberAdmin] = useState('');
     const [adminCode, setAdminCode] = useState('')
 
-    const { modalIsOpen, setModalIsOpen, setLoadSpinner, setLoggedInInfo, setAdminInfo, setAdminLoggedIn, setAllPublicUsersArray, setAllAdminUsersArray, tokenFromLocalforage } = useContext(AppContext);
+    const { modalIsOpen, setModalIsOpen, setLoadSpinner, setLoggedInInfo, setAdminInfo, setAdminLoggedIn, setAllPublicUsersArray, setAllAdminUsersArray, tokenFromLocalforage, setNewsfeed } = useContext(AppContext);
 
 
     const handleEmail = (e) => {
@@ -167,25 +167,18 @@ function ModalLoginSignUp() {
               });
             }
     }
-    const getAllPublicUsers = async() => {
-    try{
-        setLoadSpinner(true)
-        const headers = await tokenFromLocalforage()
-        const allPublicUsers = await axios.get('http://localhost:5000/users/allPublicUsers', {headers:headers})
-        setAllPublicUsersArray(allPublicUsers.data)
-        setLoadSpinner(false)
-    }catch(e){
-        console.log(e)
-        setLoadSpinner(false) 
-        }
-      }
+
     
-      const getAllAdminUsers = async() => {
+      const adminGetUsersAndNewsfeedArrays = async() => {
         try{
         setLoadSpinner(true)
         const headers = await tokenFromLocalforage()
-        const allAdminUsers = await axios.get('http://localhost:5000/users/allAdminUsers', {headers:headers})
-        setAllAdminUsersArray(allAdminUsers.data)
+        const getArrays = await axios.get('http://localhost:5000/users/usersAndNewsfeedArraysForAdmin', {headers:headers})
+        const adminUsers = getArrays.data.usersArray.filter(user => user.admin_status === 1)
+        const publicUsers = getArrays.data.usersArray.filter(user => user.admin_status === 0)
+        setAllPublicUsersArray(publicUsers)
+        setAllAdminUsersArray(adminUsers)
+        setNewsfeed(getArrays.data.newsfeedArray)
         setLoadSpinner(false)
         }catch(e){
         console.log(e)
@@ -204,8 +197,7 @@ function ModalLoginSignUp() {
           })
             await localforage.setItem('token', JSON.stringify(loginUser.data.token));
             if(loginUser.data.userInfo.admin_status === 1){
-                await getAllPublicUsers()
-                await getAllAdminUsers()
+                await adminGetUsersAndNewsfeedArrays()
                 setAdminInfo(loginUser.data.userInfo)
                 setAdminLoggedIn(true)}
                 else{

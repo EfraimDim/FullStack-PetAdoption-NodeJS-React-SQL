@@ -39,9 +39,12 @@ exports.addOrEditPetSchemaAJV = {
     ,
     petID:{
       type:"string", maxLength: 50
+    },
+    adminEmail: {
+      type: "string", format: 'email', maxLength: 50
     }
   },
-  required: [ 'type', 'adoptionStatus', 'name', 'colour', 'height', 'weight', 'bio', 'hypoallergenic', 'dietryRestrictions', 'breed' ],
+  required: [ 'type', 'adoptionStatus', 'name', 'colour', 'height', 'weight', 'bio', 'hypoallergenic', 'dietryRestrictions', 'breed', 'adminEmail' ],
   additionalProperties: false,
 };
 
@@ -81,9 +84,12 @@ exports.editPetWithoutPhotoSchemaAJV = {
     ,
     petID:{
       type:"string", maxLength: 50
+    },
+    adminEmail: {
+      type: "string", format: 'email', maxLength: 50
     }
   },
-  required: [ 'type', 'adoptionStatus', 'name', 'colour', 'height', 'weight', 'bio', 'hypoallergenic', 'dietryRestrictions', 'breed' ],
+  required: [ 'type', 'adoptionStatus', 'name', 'colour', 'height', 'weight', 'bio', 'hypoallergenic', 'dietryRestrictions', 'breed', 'adminEmail' ],
   additionalProperties: false,
 };
 
@@ -95,6 +101,26 @@ exports.petIDSchemaAJV = {
     }
   },
   required: ['petID'],
+  additionalProperties: false,
+};
+
+exports.fosterAndAdoptionSchemaAJV = {
+  type: 'object',
+  properties: {
+    petID: {
+      type: "string", maxLength: 50
+    }, 
+    type: {
+      type: "string", maxLength: 15 
+    },
+    name: {
+      type: "string", maxLength: 15 
+    },
+    userEmail: {
+      type: "string", format: 'email', maxLength: 50
+    }
+  },
+  required: ['petID', 'type', 'name', 'userEmail'],
   additionalProperties: false,
 };
 
