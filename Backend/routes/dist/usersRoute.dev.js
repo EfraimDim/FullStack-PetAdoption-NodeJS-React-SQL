@@ -27,4 +27,8 @@ router.put('/updateProfile', validateBody(Schemas.updateProfileSchemaAJV), autho
 router.put('/updatePassword', validateBody(Schemas.updatePasswordSchemaAJV), authorization, checkPasswordsMatch, encryptPwd, checkOldPasswordCorrect, usersController.updateUserPassword);
 router.get('/usersAndNewsfeedArraysForAdmin', authorization, checkAdminForAllReq, usersController.adminUserNewsfeedArrays);
 router.get('/viewedUsersPets', authorization, checkAdminForAllReq, usersController.getViewedUsersPets);
+router.post('/sendEnquiry', validateBody(Schemas.enquiryPostSchemaAJV), authorization, usersController.sendEnquiry);
+router.put('/enquiryToInProgress', validateBody(Schemas.changeEnquiryStatusSchemaAJV), authorization, checkAdminForAllReq, usersController.enquiryToInProgress);
+router.put('/enquiryToResolved', validateBody(Schemas.changeEnquiryStatusSchemaAJV), authorization, checkAdminForAllReq, usersController.enquiryToResolved);
+router["delete"]('/enquiryToDelete/:enquiryID', authorization, checkAdminForAllReq, usersController.enquiryToDelete);
 module.exports = router;

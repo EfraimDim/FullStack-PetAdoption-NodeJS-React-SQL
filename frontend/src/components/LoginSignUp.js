@@ -31,7 +31,7 @@ function ModalLoginSignUp() {
     const [phoneNumberAdmin, setPhoneNumberAdmin] = useState('');
     const [adminCode, setAdminCode] = useState('')
 
-    const { modalIsOpen, setModalIsOpen, setLoadSpinner, setLoggedInInfo, setAdminInfo, setAdminLoggedIn, setAllPublicUsersArray, setAllAdminUsersArray, tokenFromLocalforage, setNewsfeed } = useContext(AppContext);
+    const { modalIsOpen, setModalIsOpen, setLoadSpinner, setLoggedInInfo, setAdminInfo, setAdminLoggedIn, setAllPublicUsersArray, setAllAdminUsersArray, tokenFromLocalforage, setNewsfeed, enquiryArray, setEnquiryArray } = useContext(AppContext);
 
 
     const handleEmail = (e) => {
@@ -171,18 +171,16 @@ function ModalLoginSignUp() {
     
       const adminGetUsersAndNewsfeedArrays = async() => {
         try{
-        setLoadSpinner(true)
         const headers = await tokenFromLocalforage()
         const getArrays = await axios.get('http://localhost:5000/users/usersAndNewsfeedArraysForAdmin', {headers:headers})
         const adminUsers = getArrays.data.usersArray.filter(user => user.admin_status === 1)
         const publicUsers = getArrays.data.usersArray.filter(user => user.admin_status === 0)
         setAllPublicUsersArray(publicUsers)
         setAllAdminUsersArray(adminUsers)
-        setNewsfeed(getArrays.data.newsfeedArray)
-        setLoadSpinner(false)
+        setNewsfeed(getArrays.data.newsfeedArray.reverse())
+        setEnquiryArray(getArrays.data.enquiryArray)
         }catch(e){
         console.log(e)
-        setLoadSpinner(false) 
         }
       }
 
@@ -193,7 +191,6 @@ function ModalLoginSignUp() {
         const loginUser = await axios.post("http://localhost:5000/users/login", {
             email: emailLogin,
             password: passwordLogin,
-         
           })
             await localforage.setItem('token', JSON.stringify(loginUser.data.token));
             if(loginUser.data.userInfo.admin_status === 1){

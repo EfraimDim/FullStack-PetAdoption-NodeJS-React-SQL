@@ -12,6 +12,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import NewsfeedAdmin from './NewsfeedAdmin'
+import Enquiries from './Enquiries'
 
 function AdminPage() {
 
@@ -33,7 +34,8 @@ function AdminPage() {
         {[<Link to="/"><div className={styles.sideBarButtons}>Newsfeed</div></Link>,
         <Link to="/editPets"><div className={styles.sideBarButtons}>Edit Pets</div></Link>, 
         <Link to="/addPets"><div className={styles.sideBarButtons}>Add Pet</div></Link>,  
-        <Link to="/viewUsers"><div  className={styles.sideBarButtons}>Users</div></Link> ].map((text, index) => (
+        <Link to="/viewUsers"><div  className={styles.sideBarButtons}>Users</div></Link>,
+        <Link to="/enquiries"><div  className={styles.sideBarButtons}>Enquiries</div></Link>  ].map((text, index) => (
           <ListItem button key={index}>
             <ListItemText sx={{ height: '100%', width: '100%'}} primary={text} />
           </ListItem>
@@ -70,6 +72,7 @@ function AdminPage() {
     <Route path="/viewUsers" element={<ViewUsers/>}></Route>
     <Route path='/addPets' element={<AddPet/>}></Route>
     <Route path="/editPets" element={<EditPet/>}></Route>
+    <Route path="/enquiries" element={<Enquiries/>}></Route>
     </Routes>
     </div>
     

@@ -212,6 +212,46 @@ exports.updatePasswordSchemaAJV = {
   additionalProperties: false,
 };
 
+exports.enquiryPostSchemaAJV = {
+  type: 'object',
+  properties: {
+    email: {
+      type: "string", format: 'email', maxLength: 50
+    },
+    firstName: {
+      type: "string", maxLength: 20
+    },
+    lastName: {
+      type: "string", maxLength: 20
+    },
+    phone: {
+      type: "string",  minLength: 10, maxLength: 10
+    },
+    enquiry: {
+      type: "string", maxLength: 300
+    }
+
+
+  },
+  required: ['email', 'firstName', 'lastName', 'phone', 'enquiry' ],
+  additionalProperties: false,
+};
+
+exports.changeEnquiryStatusSchemaAJV = {
+  type: 'object',
+  properties: {
+    adminEmail: {
+      type: "string", format: 'email', maxLength: 50
+    },
+    enquiryID: {
+      type: "string", maxLength: 50
+    }
+
+  },
+  required: ['adminEmail', 'enquiryID' ],
+  additionalProperties: false,
+};
+
 
 
 

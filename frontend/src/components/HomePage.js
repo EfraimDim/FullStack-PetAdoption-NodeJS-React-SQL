@@ -1,9 +1,6 @@
 import {useContext, useState, useEffect} from 'react'
 import {AppContext} from './AppContext'
 import styles from '../styles/HomePage.module.css'
-import axios from "axios"
-import localforage from 'localforage'
-
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import Profile from './Profile'
 import MyPetsPage from './MyPetsPage'
@@ -14,6 +11,7 @@ import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+import ContactForm from './ContactForm'
 
 
 
@@ -44,7 +42,8 @@ function HomePage() {
           {[<Link to="/"><div className={styles.sideBarButtons}>Home</div></Link>, 
           <Link to="/petsPage"><div  className={styles.sideBarButtons}>My Pets Page</div></Link>, 
           <Link to="/myProfile"><div className={styles.sideBarButtons}>Profile Settings</div></Link>, 
-          <Link to="/searchPets"><div className={styles.sideBarButtons}>Search Pets</div></Link> ].map((text, index) => (
+          <Link to="/searchPets"><div className={styles.sideBarButtons}>Search Pets</div></Link>,
+          <Link to="/contact"><div className={styles.sideBarButtons}>Contact</div></Link>  ].map((text, index) => (
             <ListItem button key={index}>
               <ListItemText sx={{ height: '100%', width: '100%'}} primary={text} />
             </ListItem>
@@ -81,6 +80,7 @@ function HomePage() {
     <Route path="/myProfile" element={<Profile/>}></Route> 
     <Route path="/petsPage" element={<MyPetsPage/>}></Route>
     <Route path="/searchPets" element={<SearchPets/>}></Route>
+    <Route path="/contact" element={<ContactForm/>}></Route>
     <Route path='/' element={<h1 className={styles.header}>Welcome {loggedInInfo.first_name} {loggedInInfo.last_name} to your pet adoption account!</h1>}></Route>
     </Routes>
     </div>

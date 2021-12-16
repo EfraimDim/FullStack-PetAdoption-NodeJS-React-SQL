@@ -7,14 +7,10 @@ import AdminPage from './components/AdminPage'
 import axios from 'axios'
 import localforage from 'localforage'
 import { useNavigate } from "react-router-dom";
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import Button from '@mui/material/Button';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
+import { Box, Drawer, Button, List, ListItem, ListItemText }from '@mui/material';
 import SearchPets from './components/SearchPets';
 import { LoadingButton } from '@mui/lab';
+import swal from 'sweetalert'
 
 
 
@@ -30,11 +26,13 @@ function App() {
   const [petImages, setPetImages] = useState([])
   const [allPublicUsersArray, setAllPublicUsersArray] = useState([])
   const [allAdminUsersArray, setAllAdminUsersArray] = useState([])
+  const [enquiryArray, setEnquiryArray] = useState([])
   const [viewedUserDetails, setViewedUserDetails] = useState(null)
   const [petDetailsToEdit, setPetDetailsToEdit] = useState(null)
   const [searchBeforeLogin, setSearchBeforeLogin] = useState(false)
   const [loadSpinner, setLoadSpinner] = useState(false)
   const [newsfeed, setNewsfeed] = useState([])
+  const [viewEnquiry, setViewEnquiry] = useState(null)
   const [sidebar, setSidebar] = useState({
     top: false,
     left: false,
@@ -126,7 +124,11 @@ function App() {
     setAdminInfo(null)
     setAdminLoggedIn(false)
     localforage.setItem('token', '');
-    alert("Logout Success!")
+    swal({
+      title: "Log Out Success!",
+      icon: "success",
+      button: "continue!",
+    });
     navigate('/')
 }
  
@@ -203,7 +205,11 @@ function App() {
       loadSpinner, 
       setLoadSpinner,
       newsfeed,
-      setNewsfeed
+      setNewsfeed,
+      enquiryArray, 
+      setEnquiryArray,
+      viewEnquiry, 
+      setViewEnquiry
 
     }}>
     

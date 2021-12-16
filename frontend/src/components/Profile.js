@@ -8,7 +8,7 @@ import { inputStyles} from '../styles/MaterialUIStyles'
 import swal from 'sweetalert'
 
 function Profile() {
-    const { loggedInInfo, setLoggedInInfo, setLoadSpinner, tokenFromLocalforage } = useContext(AppContext);
+    const { loggedInInfo, setLoggedInInfo, tokenFromLocalforage } = useContext(AppContext);
     const [email, setEmail] = useState(loggedInInfo.email);
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');

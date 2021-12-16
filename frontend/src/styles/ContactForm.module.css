@@ -1,0 +1,14 @@
+.form{
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: fit-content;
+    align-items: center;
+}
+.submit{
+    width: fit-content;
+    padding: 5px;
+    cursor:pointer;
+    margin: 10px;
+}

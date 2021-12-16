@@ -68,6 +68,36 @@ router.get(
     usersController.getViewedUsersPets
 )
 
+router.post(
+    '/sendEnquiry',
+    validateBody(Schemas.enquiryPostSchemaAJV),
+    authorization,
+    usersController.sendEnquiry
+)
+
+router.put(
+    '/enquiryToInProgress',
+    validateBody(Schemas.changeEnquiryStatusSchemaAJV),
+    authorization,
+    checkAdminForAllReq,
+    usersController.enquiryToInProgress
+)
+
+router.put(
+    '/enquiryToResolved',
+    validateBody(Schemas.changeEnquiryStatusSchemaAJV),
+    authorization,
+    checkAdminForAllReq,
+    usersController.enquiryToResolved
+)
+
+router.delete(
+    '/enquiryToDelete/:enquiryID',
+    authorization,
+    checkAdminForAllReq,
+    usersController.enquiryToDelete
+)
+
 
 
 module.exports = router;

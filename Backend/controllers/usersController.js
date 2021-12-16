@@ -17,9 +17,8 @@ exports.login = (req, res) => {
 exports.signUpUser = async(req, res) => {
     try {
         const {email, password, firstName, lastName, phoneNumber, admin} = req.body;
-        const date = new Date().toISOString().slice(0, 19).replace('T', ' ')
         const userID = uuidv4()
-        await query(SQL `INSERT INTO users (user_ID, email, password, first_name, last_name, phone, admin_status, date_created, bio) VALUES (${userID}, ${email.toLowerCase()}, ${password}, ${firstName}, ${lastName}, ${phoneNumber}, ${admin}, ${date}, '')`)
+        await query(SQL `INSERT INTO users (user_ID, email, password, first_name, last_name, phone, admin_status, bio) VALUES (${userID}, ${email.toLowerCase()}, ${password}, ${firstName}, ${lastName}, ${phoneNumber}, ${admin}, '')`)
         if(admin === true){
         const updateNewsFeedAdminUser = await query(`INSERT INTO newsfeed (news) VALUES ("New Admin User! Email: ${email} Name: ${firstName} ${lastName}!")`)}
         else{
@@ -60,7 +59,8 @@ exports.adminUserNewsfeedArrays = async(req, res) => {
     try {
         const usersArray = await query(SQL `SELECT user_ID, email, first_name, last_name, phone, bio, date_created, admin_status FROM users`)
         const newsfeedArray = await query(SQL `SELECT * FROM newsfeed`)
-        res.send({usersArray: usersArray, newsfeedArray: newsfeedArray})
+        const enquiryArray = await query(SQL `SELECT * FROM enquiry`)
+        res.send({usersArray: usersArray, newsfeedArray: newsfeedArray, enquiryArray: enquiryArray })
     } catch (e) {
         console.log(e)
         res.status(500).send(e.message)
@@ -72,6 +72,55 @@ exports.getViewedUsersPets = async(req, res) => {
         const {viewedUserID} = req.query
         const viewedUsersPets = await query(SQL `SELECT * FROM pets JOIN adoptedPets on pets.pet_ID = adoptedPets.pet_ID WHERE user_ID = ${viewedUserID}`)
         res.send(viewedUsersPets)
+    } catch (e) {
+        console.log(e)
+        res.status(500).send(e.message)
+    }
+}
+
+exports.sendEnquiry = async(req, res) => {
+    try {
+        const {email, firstName, lastName, phone, enquiry} = req.body;
+        const { userID } = req.decoded
+        const enquiryID = uuidv4()
+        const sendEnquiry = await query(SQL `INSERT INTO enquiry (user_ID, enquiry_ID, user_Email, first_name, last_name, phone, enquiry) VALUES (${userID}, ${enquiryID}, ${email}, ${firstName}, ${lastName}, ${phone}, ${enquiry})`)
+        const updateNewsFeedAdminUser = await query(`INSERT INTO newsfeed (news) VALUES ("New Enquiry! Email: ${email} Name: ${firstName} ${lastName} has sent an enquiry!")`)
+        res.send("Enquiry Sent Succesful!")
+    } catch (e) {
+        console.log(e)
+        res.status(500).send(e.message)
+    }
+}
+
+exports.enquiryToInProgress = async(req, res) => {
+    try {
+        const {enquiryID, adminEmail} = req.body;
+        const {userID} = req.decoded
+        const updateEnquiryQuery = await query(SQL `UPDATE enquiry SET admin_ID = ${userID}, admin_Email = ${adminEmail}, status = "in progress" WHERE enquiry_ID = ${enquiryID}`)
+        res.send("Updated Enquiry Succesfully!")
+    } catch (e) {
+        console.log(e)
+        res.status(500).send(e.message)
+    }
+}
+
+exports.enquiryToResolved = async(req, res) => {
+    try {
+        const {enquiryID, adminEmail} = req.body;
+        const {userID} = req.decoded
+        const updateEnquiryQuery = await query(SQL `UPDATE enquiry SET admin_ID = ${userID}, admin_Email = ${adminEmail}, status = "resolved" WHERE enquiry_ID = ${enquiryID}`)
+        res.send("Updated Enquiry Succesfully!")
+    } catch (e) {
+        console.log(e)
+        res.status(500).send(e.message)
+    }
+}
+
+exports.enquiryToDelete = async(req, res) => {
+    try {
+        const {enquiryID} = req.params;
+        const deleteEnquiryQuery = await query(SQL `DELETE FROM enquiry WHERE enquiry_ID = ${enquiryID}`)
+        res.send("Deleted Enquiry Succesfully!")
     } catch (e) {
         console.log(e)
         res.status(500).send(e.message)

@@ -1,4 +1,17 @@
 .update{
     margin: 10px;
     font-style: italic;
+    width: 40vw;
+    height: fit-content;
+}
+.date{
+    margin: 10px;
+    font-weight: bold;
+    width: 15vw;
+}
+.newsWrapper{
+    display: flex;
+    flex-direction: row;
+    width: 60vw;
+    border-bottom: solid black;
 }

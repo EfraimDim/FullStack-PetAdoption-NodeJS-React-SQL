@@ -1,0 +1,30 @@
+.label{
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 1rem;
+}
+.green{
+color: green;
+}
+.yellow{
+    color:rgb(210, 210, 0)
+}
+.red{
+    color: red;
+}
+
+.button {
+    width: fit-content;
+    padding: 5px;
+    cursor:pointer;
+    margin: 5px;
+}
+.infoWrapper{
+    margin: 10px;
+    font-size: 1rem;
+}
+.enquiry{
+    width: 75vw;
+    height: fit-content;
+    text-align: left;
+}
