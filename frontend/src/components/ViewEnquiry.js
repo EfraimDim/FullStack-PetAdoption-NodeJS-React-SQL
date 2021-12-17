@@ -14,19 +14,18 @@ const returnToAllEnquiries = () => {
     setViewEnquiry(null)
 }
 
-const enquiryToInProgress = async(enquiryID, adminEmail) => {
+const enquiryToInProgress = async(enquiryID, adminEmail, userEmail) => {
     try{
         const headers = await tokenFromLocalforage()
         const enquiryToInProgress = await axios.put(`http://localhost:5000/users/enquiryToInProgress`, {
             enquiryID: enquiryID,
-            adminEmail: adminEmail
+            adminEmail: adminEmail,
+            userEmail: userEmail
                 }, {headers:headers})
         const newEnquiriesArray = [...enquiryArray]
         const enquiryToChange = newEnquiriesArray.find(enquiry => enquiry.enquiry_ID === enquiryID)
-        const index = newEnquiriesArray.findIndex(enquiry => enquiry.enquiry_ID === enquiryID)
         enquiryToChange.status = "in progress"
         enquiryToChange.admin_Email = adminEmail
-        newEnquiriesArray[index] = enquiryToChange
         setEnquiryArray(newEnquiriesArray)
         swal({
             title: "Enquiry Updated!",
@@ -45,19 +44,18 @@ const enquiryToInProgress = async(enquiryID, adminEmail) => {
     }
 }
 
-const enquiryToResolved = async(enquiryID, adminEmail) => {
+const enquiryToResolved = async(enquiryID, adminEmail, userEmail) => {
     try{
         const headers = await tokenFromLocalforage()
         const enquiryToInProgress = await axios.put(`http://localhost:5000/users/enquiryToResolved`, {
             enquiryID: enquiryID,
-            adminEmail: adminEmail
+            adminEmail: adminEmail,
+            userEmail: userEmail
                 }, {headers:headers})
         const newEnquiriesArray = [...enquiryArray]
         const enquiryToChange = newEnquiriesArray.find(enquiry => enquiry.enquiry_ID === enquiryID)
-        const index = newEnquiriesArray.findIndex(enquiry => enquiry.enquiry_ID === enquiryID)
         enquiryToChange.status = "resolved"
         enquiryToChange.admin_Email = adminEmail
-        newEnquiriesArray[index] = enquiryToChange
         setEnquiryArray(newEnquiriesArray)
         swal({
             title: "Enquiry Resolved!",
@@ -89,8 +87,8 @@ const enquiryToResolved = async(enquiryID, adminEmail) => {
                         viewEnquiry.status === "in progress" && styles.yellow}>{viewEnquiry.status}</span></div>
 
         {viewEnquiry.admin_Email && <div><span className={styles.label}>Admin Responding: </span>{viewEnquiry.admin_Email}</div>}
-        {!viewEnquiry.admin_Email && <button onClick={() => enquiryToInProgress(viewEnquiry.enquiry_ID, adminInfo.email)} className={styles.button}>In Progress</button>}
-        {(!viewEnquiry.admin_Email || viewEnquiry.status === "in progress") && <button onClick={() => enquiryToResolved(viewEnquiry.enquiry_ID, adminInfo.email)} className={styles.button}>Resolved</button>}
+        {!viewEnquiry.admin_Email && <button onClick={() => enquiryToInProgress(viewEnquiry.enquiry_ID, adminInfo.email, viewEnquiry.user_Email)} className={styles.button}>In Progress</button>}
+        {(!viewEnquiry.admin_Email || viewEnquiry.status === "in progress") && <button onClick={() => enquiryToResolved(viewEnquiry.enquiry_ID, adminInfo.email, viewEnquiry.user_Email)} className={styles.button}>Resolved</button>}
         <InputLabel id="demo-simple-select-label" sx={{marginTop: "20px", marginBottom: "10px"}}>Enquiry</InputLabel>
         <div className={styles.enquiry}>{viewEnquiry.enquiry}</div>
  

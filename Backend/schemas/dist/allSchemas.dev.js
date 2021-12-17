@@ -178,8 +178,8 @@ exports.signUpSchemaAJV = {
     },
     phoneNumber: {
       type: "string",
-      minLength: 10,
-      maxLength: 10
+      minLength: 12,
+      maxLength: 12
     },
     admin: {
       type: "boolean"
@@ -226,8 +226,8 @@ exports.updateProfileSchemaAJV = {
     },
     phoneNumber: {
       type: "string",
-      minLength: 10,
-      maxLength: 10
+      minLength: 12,
+      maxLength: 12
     },
     bio: {
       type: "string",
@@ -277,8 +277,8 @@ exports.enquiryPostSchemaAJV = {
     },
     phone: {
       type: "string",
-      minLength: 10,
-      maxLength: 10
+      minLength: 12,
+      maxLength: 12
     },
     enquiry: {
       type: "string",
@@ -296,11 +296,37 @@ exports.changeEnquiryStatusSchemaAJV = {
       format: 'email',
       maxLength: 50
     },
+    userEmail: {
+      type: "string",
+      format: 'email',
+      maxLength: 50
+    },
     enquiryID: {
       type: "string",
       maxLength: 50
     }
   },
-  required: ['adminEmail', 'enquiryID'],
+  required: ['adminEmail', 'enquiryID', 'userEmail'],
+  additionalProperties: false
+};
+exports.makeAdminSchemaAJV = {
+  type: 'object',
+  properties: {
+    adminEmail: {
+      type: "string",
+      format: 'email',
+      maxLength: 50
+    },
+    publicUserEmail: {
+      type: "string",
+      format: 'email',
+      maxLength: 50
+    },
+    publicUserID: {
+      type: "string",
+      maxLength: 50
+    }
+  },
+  required: ['adminEmail', 'publicUserEmail', 'publicUserID'],
   additionalProperties: false
 };

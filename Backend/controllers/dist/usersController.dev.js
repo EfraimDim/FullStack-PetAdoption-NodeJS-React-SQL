@@ -1,5 +1,45 @@
 "use strict";
 
+function _templateObject15() {
+  var data = _taggedTemplateLiteral(["DELETE FROM adoptedPets WHERE user_ID = ", ""]);
+
+  _templateObject15 = function _templateObject15() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject14() {
+  var data = _taggedTemplateLiteral(["DELETE FROM savedPets WHERE user_ID = ", ""]);
+
+  _templateObject14 = function _templateObject14() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject13() {
+  var data = _taggedTemplateLiteral(["UPDATE pets JOIN adoptedPets on pets.pet_ID = adoptedPets.pet_ID SET adoption_status = \"available\", availability = true WHERE user_ID = ", " "]);
+
+  _templateObject13 = function _templateObject13() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject12() {
+  var data = _taggedTemplateLiteral(["UPDATE users SET admin_status = TRUE  WHERE user_ID = ", ""]);
+
+  _templateObject12 = function _templateObject12() {
+    return data;
+  };
+
+  return data;
+}
+
 function _templateObject11() {
   var data = _taggedTemplateLiteral(["DELETE FROM enquiry WHERE enquiry_ID = ", ""]);
 
@@ -31,7 +71,7 @@ function _templateObject9() {
 }
 
 function _templateObject8() {
-  var data = _taggedTemplateLiteral(["INSERT INTO enquiry (user_ID, enquiry_ID, user_Email, first_name, last_name, phone, enquiry) VALUES (", ", ", ", ", ", ", ", ", ", ", ", ", ")"]);
+  var data = _taggedTemplateLiteral(["INSERT INTO enquiry (user_ID, enquiry_ID, user_Email, first_name, last_name, phone, enquiry, date_created) VALUES (", ", ", ", ", ", ", ", ", ", ", ", ", ", ", ")"]);
 
   _templateObject8 = function _templateObject8() {
     return data;
@@ -327,7 +367,7 @@ exports.getViewedUsersPets = function _callee5(req, res) {
 };
 
 exports.sendEnquiry = function _callee6(req, res) {
-  var _req$body3, email, firstName, lastName, phone, enquiry, userID, enquiryID, sendEnquiry, updateNewsFeedAdminUser;
+  var _req$body3, email, firstName, lastName, phone, enquiry, userID, enquiryID, dateCreated, sendEnquiry, updateNewsFeedAdminUser;
 
   return regeneratorRuntime.async(function _callee6$(_context6) {
     while (1) {
@@ -337,98 +377,109 @@ exports.sendEnquiry = function _callee6(req, res) {
           _req$body3 = req.body, email = _req$body3.email, firstName = _req$body3.firstName, lastName = _req$body3.lastName, phone = _req$body3.phone, enquiry = _req$body3.enquiry;
           userID = req.decoded.userID;
           enquiryID = uuidv4();
-          _context6.next = 6;
-          return regeneratorRuntime.awrap(query(SQL(_templateObject8(), userID, enquiryID, email, firstName, lastName, phone, enquiry)));
+          dateCreated = new Date().toJSON().slice(0, 19).replace('T', ' ');
+          _context6.next = 7;
+          return regeneratorRuntime.awrap(query(SQL(_templateObject8(), userID, enquiryID, email, firstName, lastName, phone, enquiry, dateCreated)));
 
-        case 6:
+        case 7:
           sendEnquiry = _context6.sent;
-          _context6.next = 9;
+          _context6.next = 10;
           return regeneratorRuntime.awrap(query("INSERT INTO newsfeed (news) VALUES (\"New Enquiry! Email: ".concat(email, " Name: ").concat(firstName, " ").concat(lastName, " has sent an enquiry!\")")));
 
-        case 9:
+        case 10:
           updateNewsFeedAdminUser = _context6.sent;
           res.send("Enquiry Sent Succesful!");
-          _context6.next = 17;
+          _context6.next = 18;
           break;
 
-        case 13:
-          _context6.prev = 13;
+        case 14:
+          _context6.prev = 14;
           _context6.t0 = _context6["catch"](0);
           console.log(_context6.t0);
           res.status(500).send(_context6.t0.message);
 
-        case 17:
+        case 18:
         case "end":
           return _context6.stop();
       }
     }
-  }, null, null, [[0, 13]]);
+  }, null, null, [[0, 14]]);
 };
 
 exports.enquiryToInProgress = function _callee7(req, res) {
-  var _req$body4, enquiryID, adminEmail, userID, updateEnquiryQuery;
+  var _req$body4, enquiryID, adminEmail, userEmail, userID, updateEnquiryQuery, updateNewsFeed;
 
   return regeneratorRuntime.async(function _callee7$(_context7) {
     while (1) {
       switch (_context7.prev = _context7.next) {
         case 0:
           _context7.prev = 0;
-          _req$body4 = req.body, enquiryID = _req$body4.enquiryID, adminEmail = _req$body4.adminEmail;
+          _req$body4 = req.body, enquiryID = _req$body4.enquiryID, adminEmail = _req$body4.adminEmail, userEmail = _req$body4.userEmail;
           userID = req.decoded.userID;
           _context7.next = 5;
           return regeneratorRuntime.awrap(query(SQL(_templateObject9(), userID, adminEmail, enquiryID)));
 
         case 5:
           updateEnquiryQuery = _context7.sent;
+          _context7.next = 8;
+          return regeneratorRuntime.awrap(query("INSERT INTO newsfeed (news) VALUES (\"Enquiry Status Change! Admin: ".concat(adminEmail, " now resolving ").concat(userEmail, " enquiry\")")));
+
+        case 8:
+          updateNewsFeed = _context7.sent;
           res.send("Updated Enquiry Succesfully!");
-          _context7.next = 13;
+          _context7.next = 16;
           break;
 
-        case 9:
-          _context7.prev = 9;
+        case 12:
+          _context7.prev = 12;
           _context7.t0 = _context7["catch"](0);
           console.log(_context7.t0);
           res.status(500).send(_context7.t0.message);
 
-        case 13:
+        case 16:
         case "end":
           return _context7.stop();
       }
     }
-  }, null, null, [[0, 9]]);
+  }, null, null, [[0, 12]]);
 };
 
 exports.enquiryToResolved = function _callee8(req, res) {
-  var _req$body5, enquiryID, adminEmail, userID, updateEnquiryQuery;
+  var _req$body5, enquiryID, adminEmail, userEmail, userID, updateEnquiryQuery, updateNewsFeed;
 
   return regeneratorRuntime.async(function _callee8$(_context8) {
     while (1) {
       switch (_context8.prev = _context8.next) {
         case 0:
           _context8.prev = 0;
-          _req$body5 = req.body, enquiryID = _req$body5.enquiryID, adminEmail = _req$body5.adminEmail;
+          _req$body5 = req.body, enquiryID = _req$body5.enquiryID, adminEmail = _req$body5.adminEmail, userEmail = _req$body5.userEmail;
           userID = req.decoded.userID;
           _context8.next = 5;
           return regeneratorRuntime.awrap(query(SQL(_templateObject10(), userID, adminEmail, enquiryID)));
 
         case 5:
           updateEnquiryQuery = _context8.sent;
+          _context8.next = 8;
+          return regeneratorRuntime.awrap(query("INSERT INTO newsfeed (news) VALUES (\"Enquiry Status Change! Admin: ".concat(adminEmail, " has resolved ").concat(userEmail, " enquiry!\")")));
+
+        case 8:
+          updateNewsFeed = _context8.sent;
           res.send("Updated Enquiry Succesfully!");
-          _context8.next = 13;
+          _context8.next = 16;
           break;
 
-        case 9:
-          _context8.prev = 9;
+        case 12:
+          _context8.prev = 12;
           _context8.t0 = _context8["catch"](0);
           console.log(_context8.t0);
           res.status(500).send(_context8.t0.message);
 
-        case 13:
+        case 16:
         case "end":
           return _context8.stop();
       }
     }
-  }, null, null, [[0, 9]]);
+  }, null, null, [[0, 12]]);
 };
 
 exports.enquiryToDelete = function _callee9(req, res) {
@@ -460,4 +511,88 @@ exports.enquiryToDelete = function _callee9(req, res) {
       }
     }
   }, null, null, [[0, 8]]);
+};
+
+exports.enquirySearch = function _callee10(req, res) {
+  var _req$query, email, date, searchResults;
+
+  return regeneratorRuntime.async(function _callee10$(_context10) {
+    while (1) {
+      switch (_context10.prev = _context10.next) {
+        case 0:
+          _context10.prev = 0;
+          _req$query = req.query, email = _req$query.email, date = _req$query.date;
+          _context10.next = 4;
+          return regeneratorRuntime.awrap(query("SELECT * FROM enquiry WHERE user_Email LIKE '%".concat(email, "%' AND date_created LIKE '%").concat(date, "%'")));
+
+        case 4:
+          searchResults = _context10.sent;
+          res.send(searchResults);
+          _context10.next = 12;
+          break;
+
+        case 8:
+          _context10.prev = 8;
+          _context10.t0 = _context10["catch"](0);
+          console.log(_context10.t0);
+          res.status(500).send(_context10.t0.message);
+
+        case 12:
+        case "end":
+          return _context10.stop();
+      }
+    }
+  }, null, null, [[0, 8]]);
+};
+
+exports.makeAdmin = function _callee11(req, res) {
+  var _req$body6, adminEmail, publicUserEmail, publicUserID, updateToAdminQuery, updateNewAdminsPets, deleteSavedPets, deleteAdoptedPets, updateNewsFeed;
+
+  return regeneratorRuntime.async(function _callee11$(_context11) {
+    while (1) {
+      switch (_context11.prev = _context11.next) {
+        case 0:
+          _context11.prev = 0;
+          _req$body6 = req.body, adminEmail = _req$body6.adminEmail, publicUserEmail = _req$body6.publicUserEmail, publicUserID = _req$body6.publicUserID;
+          _context11.next = 4;
+          return regeneratorRuntime.awrap(query(SQL(_templateObject12(), publicUserID)));
+
+        case 4:
+          updateToAdminQuery = _context11.sent;
+          _context11.next = 7;
+          return regeneratorRuntime.awrap(query(SQL(_templateObject13(), publicUserID)));
+
+        case 7:
+          updateNewAdminsPets = _context11.sent;
+          _context11.next = 10;
+          return regeneratorRuntime.awrap(query(SQL(_templateObject14(), publicUserID)));
+
+        case 10:
+          deleteSavedPets = _context11.sent;
+          _context11.next = 13;
+          return regeneratorRuntime.awrap(query(SQL(_templateObject15(), publicUserID)));
+
+        case 13:
+          deleteAdoptedPets = _context11.sent;
+          _context11.next = 16;
+          return regeneratorRuntime.awrap(query("INSERT INTO newsfeed (news) VALUES (\"Admin: ".concat(adminEmail, " has made ").concat(publicUserEmail, " an admin!\")")));
+
+        case 16:
+          updateNewsFeed = _context11.sent;
+          res.send("Updated Admin Succesfully!");
+          _context11.next = 24;
+          break;
+
+        case 20:
+          _context11.prev = 20;
+          _context11.t0 = _context11["catch"](0);
+          console.log(_context11.t0);
+          res.status(500).send(_context11.t0.message);
+
+        case 24:
+        case "end":
+          return _context11.stop();
+      }
+    }
+  }, null, null, [[0, 20]]);
 };

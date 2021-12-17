@@ -31,7 +31,7 @@ function ModalLoginSignUp() {
     const [phoneNumberAdmin, setPhoneNumberAdmin] = useState('');
     const [adminCode, setAdminCode] = useState('')
 
-    const { modalIsOpen, setModalIsOpen, setLoadSpinner, setLoggedInInfo, setAdminInfo, setAdminLoggedIn, setAllPublicUsersArray, setAllAdminUsersArray, tokenFromLocalforage, setNewsfeed, enquiryArray, setEnquiryArray } = useContext(AppContext);
+    const { modalIsOpen, setModalIsOpen, setLoadSpinner, setLoggedInInfo, setAdminInfo, setAdminLoggedIn, setAllPublicUsersArray, setAllAdminUsersArray, tokenFromLocalforage, setNewsfeed,  setEnquiryArray, setPaginationCount, setPaginationNewsfeedArray, newsfeed } = useContext(AppContext);
 
 
     const handleEmail = (e) => {
@@ -145,7 +145,7 @@ function ModalLoginSignUp() {
           setLoadSpinner(false)
           swal({
             title: "Sign Up Success!",
-            text: `Welcome ${firstName} ${lastName}`,
+            text: `Welcome ${firstNameAdmin} ${lastNameAdmin}`,
             icon: "success",
             button: "continue!",
           });
@@ -175,9 +175,12 @@ function ModalLoginSignUp() {
         const getArrays = await axios.get('http://localhost:5000/users/usersAndNewsfeedArraysForAdmin', {headers:headers})
         const adminUsers = getArrays.data.usersArray.filter(user => user.admin_status === 1)
         const publicUsers = getArrays.data.usersArray.filter(user => user.admin_status === 0)
+        const newsfeedArray = [...getArrays.data.newsfeedArray.reverse()]
         setAllPublicUsersArray(publicUsers)
         setAllAdminUsersArray(adminUsers)
-        setNewsfeed(getArrays.data.newsfeedArray.reverse())
+        setNewsfeed(newsfeedArray)
+        setPaginationCount(Math.ceil(newsfeedArray.length/10))
+        setPaginationNewsfeedArray(newsfeedArray.slice(0, 10))
         setEnquiryArray(getArrays.data.enquiryArray)
         }catch(e){
         console.log(e)
@@ -248,7 +251,7 @@ function ModalLoginSignUp() {
                         <TextField size="small" required type="password" value={rePasswordAdmin}  onChange={handleRepasswordAdmin} inputProps={{ minLength: 6, maxLength: 20 }} sx={inputStyles} label="re password" />
                         <TextField size="small" required type="text" value={firstNameAdmin} onChange={handleFirstNameAdmin} inputProps={{ maxLength: 20 }} sx={inputStyles} label="first name" />
                         <TextField size="small" required type="text" value={lastNameAdmin}  onChange={handleLastNameAdmin} inputProps={{ maxLength: 20 }} sx={inputStyles} label="last name" />
-                        <TextField size="small" required type="text" value={phoneNumberAdmin} onChange={handlePhoneNumberAdmin} inputProps={{ minLength: 10, maxLength: 10 }} sx={inputStyles} label="phone number" />
+                        <TextField size="small" required type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" value={phoneNumberAdmin} onChange={handlePhoneNumberAdmin} inputProps={{ minLength: 12, maxLength: 12 }} sx={inputStyles} label="phone number: [0-9]{3}-[0-9]{3}-[0-9]{4}" />
                         <TextField size="small" required type="password" value={adminCode} onChange={handleAdminCode} sx={inputStyles} label="admin code" />
                         <button className={styles.submit} type="submit">Sign Up</button>
                     </form> 
@@ -263,7 +266,7 @@ function ModalLoginSignUp() {
                             <TextField size="small"  required type="password" value={rePassword}  onChange={handleRepassword} inputProps={{ minLength: 6, maxLength: 20 }} sx={inputStyles} label="re password" />
                             <TextField size="small"  required type="text" value={firstName}  onChange={handleFirstName} inputProps={{maxLength: 20 }} sx={inputStyles} label="first name" />
                             <TextField size="small"  required type="text" value={lastName}  onChange={handleLastName} inputProps={{ maxLength: 20 }} sx={inputStyles} label="last name" />
-                            <TextField size="small"  required type="text" value={phoneNumber}   onChange={handlePhoneNumber} inputProps={{ minLength: 10, maxLength: 10 }} sx={inputStyles} label="phone number" />
+                            <TextField size="small"  required type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" value={phoneNumber}   onChange={handlePhoneNumber} inputProps={{ minLength: 12, maxLength: 12 }} sx={inputStyles} label="phone number: [0-9]{3}-[0-9]{3}-[0-9]{4}" />
                             <button className={styles.submit} type="submit">Sign Up</button>
                         </form> 
                     </>

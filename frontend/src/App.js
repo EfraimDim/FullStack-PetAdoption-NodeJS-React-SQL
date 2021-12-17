@@ -33,6 +33,8 @@ function App() {
   const [loadSpinner, setLoadSpinner] = useState(false)
   const [newsfeed, setNewsfeed] = useState([])
   const [viewEnquiry, setViewEnquiry] = useState(null)
+  const [paginationCount, setPaginationCount] = useState(1)
+  const [paginationNewsfeedArray, setPaginationNewsfeedArray] = useState([])
   const [sidebar, setSidebar] = useState({
     top: false,
     left: false,
@@ -209,7 +211,11 @@ function App() {
       enquiryArray, 
       setEnquiryArray,
       viewEnquiry, 
-      setViewEnquiry
+      setViewEnquiry,
+      paginationCount, 
+      setPaginationCount,
+      paginationNewsfeedArray, 
+      setPaginationNewsfeedArray
 
     }}>
     

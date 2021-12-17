@@ -5,12 +5,7 @@ import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import Profile from './Profile'
 import MyPetsPage from './MyPetsPage'
 import SearchPets from './SearchPets'
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import Button from '@mui/material/Button';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
+import {Box, Drawer, Button, List, ListItem, ListItemText } from '@mui/material';
 import ContactForm from './ContactForm'
 
 

@@ -83,7 +83,8 @@ exports.sendEnquiry = async(req, res) => {
         const {email, firstName, lastName, phone, enquiry} = req.body;
         const { userID } = req.decoded
         const enquiryID = uuidv4()
-        const sendEnquiry = await query(SQL `INSERT INTO enquiry (user_ID, enquiry_ID, user_Email, first_name, last_name, phone, enquiry) VALUES (${userID}, ${enquiryID}, ${email}, ${firstName}, ${lastName}, ${phone}, ${enquiry})`)
+        const dateCreated = new Date().toJSON().slice(0, 19).replace('T', ' ')
+        const sendEnquiry = await query(SQL `INSERT INTO enquiry (user_ID, enquiry_ID, user_Email, first_name, last_name, phone, enquiry, date_created) VALUES (${userID}, ${enquiryID}, ${email}, ${firstName}, ${lastName}, ${phone}, ${enquiry}, ${dateCreated})`)
         const updateNewsFeedAdminUser = await query(`INSERT INTO newsfeed (news) VALUES ("New Enquiry! Email: ${email} Name: ${firstName} ${lastName} has sent an enquiry!")`)
         res.send("Enquiry Sent Succesful!")
     } catch (e) {
@@ -94,9 +95,10 @@ exports.sendEnquiry = async(req, res) => {
 
 exports.enquiryToInProgress = async(req, res) => {
     try {
-        const {enquiryID, adminEmail} = req.body;
+        const {enquiryID, adminEmail, userEmail} = req.body;
         const {userID} = req.decoded
         const updateEnquiryQuery = await query(SQL `UPDATE enquiry SET admin_ID = ${userID}, admin_Email = ${adminEmail}, status = "in progress" WHERE enquiry_ID = ${enquiryID}`)
+        const updateNewsFeed = await query(`INSERT INTO newsfeed (news) VALUES ("Enquiry Status Change! Admin: ${adminEmail} now resolving ${userEmail} enquiry")`)
         res.send("Updated Enquiry Succesfully!")
     } catch (e) {
         console.log(e)
@@ -106,9 +108,10 @@ exports.enquiryToInProgress = async(req, res) => {
 
 exports.enquiryToResolved = async(req, res) => {
     try {
-        const {enquiryID, adminEmail} = req.body;
+        const {enquiryID, adminEmail, userEmail} = req.body;
         const {userID} = req.decoded
         const updateEnquiryQuery = await query(SQL `UPDATE enquiry SET admin_ID = ${userID}, admin_Email = ${adminEmail}, status = "resolved" WHERE enquiry_ID = ${enquiryID}`)
+        const updateNewsFeed = await query(`INSERT INTO newsfeed (news) VALUES ("Enquiry Status Change! Admin: ${adminEmail} has resolved ${userEmail} enquiry!")`)
         res.send("Updated Enquiry Succesfully!")
     } catch (e) {
         console.log(e)
@@ -127,5 +130,29 @@ exports.enquiryToDelete = async(req, res) => {
     }
 }
 
+exports.enquirySearch = async(req, res) =>{
+    try {
+        const {email, date} = req.query
+        const searchResults = await query(`SELECT * FROM enquiry WHERE user_Email LIKE '%${email}%' AND date_created LIKE '%${date}%'`)
+        res.send(searchResults)
+    } catch (e) {
+        console.log(e)
+        res.status(500).send(e.message)
+    }
+}
 
+exports.makeAdmin = async(req, res) => {
+    try {
+        const {adminEmail, publicUserEmail, publicUserID } = req.body;
+        const updateToAdminQuery = await query(SQL `UPDATE users SET admin_status = TRUE  WHERE user_ID = ${publicUserID}`)
+        const updateNewAdminsPets = await query(SQL `UPDATE pets JOIN adoptedPets on pets.pet_ID = adoptedPets.pet_ID SET adoption_status = "available", availability = true WHERE user_ID = ${publicUserID} `)
+        const deleteSavedPets = await query(SQL `DELETE FROM savedPets WHERE user_ID = ${publicUserID}`)
+        const deleteAdoptedPets = await query(SQL `DELETE FROM adoptedPets WHERE user_ID = ${publicUserID}`)
+        const updateNewsFeed = await query(`INSERT INTO newsfeed (news) VALUES ("Admin: ${adminEmail} has made ${publicUserEmail} an admin!")`)
+        res.send("Updated Admin Succesfully!")
+    } catch (e) {
+        console.log(e)
+        res.status(500).send(e.message)
+    }
+}
 

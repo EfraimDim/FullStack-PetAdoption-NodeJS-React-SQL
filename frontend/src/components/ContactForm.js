@@ -41,7 +41,7 @@ const handleEnquiry = (e) =>{
                 email: email,
                 firstName: firstName,
                 lastName: lastName,
-                phone: JSON.stringify(phoneNumber)
+                phone: phoneNumber
             } ,{headers:headers})
             setEnquiry('')
             swal({
@@ -67,7 +67,7 @@ const handleEnquiry = (e) =>{
         <TextField size="small"  required type="email" value={email}  onChange={handleEmail} inputProps={{ maxLength: 50 }} sx={{margin: "10px", width: "20vw"}} label="email address" />
         <TextField size="small" required type="text" value={firstName} inputProps={{ maxLength: 20 }} onChange={handleFirstName} sx={{margin: "10px", width: "20vw"}}   label="first name" />
         <TextField size="small" required type="text" value={lastName}  inputProps={{ maxLength: 20 }} onChange={handleLastName} sx={{margin: "10px", width: "20vw"}}  label="last name" />
-        <TextField size="small" required type="text" value={phoneNumber} inputProps={{ minLength: 10, maxLength: 10 }} onChange={handlePhoneNumber} sx={{margin: "10px", width: "20vw"}}  label="phone number" />
+        <TextField size="small" required type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" value={phoneNumber} inputProps={{ minLength: 12, maxLength: 12 }} onChange={handlePhoneNumber} sx={{margin: "10px", width: "20vw"}}  label="phone number" />
         <InputLabel id="demo-simple-select-label">Enquiry:</InputLabel>
         <TextField required multiline={true} type="text" value={enquiry} inputProps={{ maxLength: 300 }} onChange={handleEnquiry} sx={{width:"50vw", marginTop: "20px"}}  />
         <button className={styles.submit} type="submit">Send!</button>

@@ -31,4 +31,6 @@ router.post('/sendEnquiry', validateBody(Schemas.enquiryPostSchemaAJV), authoriz
 router.put('/enquiryToInProgress', validateBody(Schemas.changeEnquiryStatusSchemaAJV), authorization, checkAdminForAllReq, usersController.enquiryToInProgress);
 router.put('/enquiryToResolved', validateBody(Schemas.changeEnquiryStatusSchemaAJV), authorization, checkAdminForAllReq, usersController.enquiryToResolved);
 router["delete"]('/enquiryToDelete/:enquiryID', authorization, checkAdminForAllReq, usersController.enquiryToDelete);
+router.get('/enquirySearch', authorization, checkAdminForAllReq, usersController.enquirySearch);
+router.put('/makeAdmin', validateBody(Schemas.makeAdminSchemaAJV), authorization, checkAdminForAllReq, usersController.makeAdmin);
 module.exports = router;

@@ -98,6 +98,21 @@ router.delete(
     usersController.enquiryToDelete
 )
 
+router.get(
+    '/enquirySearch',
+    authorization,
+    checkAdminForAllReq,
+    usersController.enquirySearch
+)
+
+router.put(
+    '/makeAdmin',
+    validateBody(Schemas.makeAdminSchemaAJV),
+    authorization,
+    checkAdminForAllReq,
+    usersController.makeAdmin
+)
+
 
 
 module.exports = router;

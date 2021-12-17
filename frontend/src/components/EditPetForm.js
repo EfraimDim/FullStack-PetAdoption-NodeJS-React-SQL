@@ -96,11 +96,10 @@ function EditPetForm() {
                         hypoallergenic: hypoallergenic,
                         breed: breed,
                         petID: petDetailsToEdit.pet_ID,
-                        adminEmail: adminInfo
+                        adminEmail: adminInfo.email
                     } ,{headers:headers})
                     const newAllPetsArray = [...allPetsArray]
-                    const indexFromAllPets = newAllPetsArray.findIndex(oldPet => oldPet.pet_ID === petDetailsToEdit.pet_ID)
-                    const petToUpdate = newAllPetsArray[indexFromAllPets]
+                    const petToUpdate = newAllPetsArray.find(oldPet => oldPet.pet_ID === petDetailsToEdit.pet_ID)
                     let availability = 0
                     if(adoptionStatus === "available"){
                         availability = 1
@@ -116,7 +115,6 @@ function EditPetForm() {
                     petToUpdate.hypoallergenic = hypoallergenic
                     petToUpdate.breed = breed
                     petToUpdate.availability = availability
-                    newAllPetsArray[indexFromAllPets] = petToUpdate
                     setAllPetsArray(newAllPetsArray)
                     setLoadSpinner(false) 
                     setPetDetailsToEdit(null)

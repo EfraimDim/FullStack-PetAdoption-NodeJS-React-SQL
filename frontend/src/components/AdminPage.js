@@ -5,12 +5,7 @@ import { Routes, Route, Link, useLocation } from "react-router-dom";
 import AddPet from './AddPet'
 import EditPet from './EditPet'
 import ViewUsers from './ViewUsers'
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import Button from '@mui/material/Button';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
+import {Box, Drawer, Button, List, ListItem, ListItemText } from '@mui/material';
 import NewsfeedAdmin from './NewsfeedAdmin'
 import Enquiries from './Enquiries'
 

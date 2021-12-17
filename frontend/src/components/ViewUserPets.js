@@ -32,6 +32,7 @@ function ViewUserPets() {
       
       {viewedUserDetails.usersPets && <div className={styles.petArrayWrapper}>
       <h2 className={styles.header}>Users Pets:</h2>
+      {viewedUserDetails.usersPets && viewedUserDetails.usersPets.length === 0 && <div className={styles.noPets}>User has no pets</div>}
       {viewedUserDetails.usersPets && viewedUserDetails.usersPets.map((pet, index) => {  
                     return   (
                             <div className={styles.petHolder} key={index}>

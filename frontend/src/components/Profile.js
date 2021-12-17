@@ -2,7 +2,6 @@ import {useContext, useState} from 'react'
 import {AppContext} from './AppContext'
 import styles from '../styles/Profile.module.css'
 import axios from "axios"
-import localforage from 'localforage'
 import { TextField } from '@mui/material';
 import { inputStyles} from '../styles/MaterialUIStyles'
 import swal from 'sweetalert'
@@ -94,14 +93,12 @@ function Profile() {
           })
           .then(async(willUpdate) => {
             if (willUpdate) {
-                const tokenString = await localforage.getItem('token');
-                const token = JSON.parse(tokenString)
-                const headers = {Authorization: `Bearer ${token}`}
+                const headers = await tokenFromLocalforage()
                 const updateUserProfile = await axios.put("http://localhost:5000/users/updateProfile", {
                     email: email,
                     firstName: firstName,
                     lastName: lastName,
-                    phoneNumber: JSON.stringify(phoneNumber),
+                    phoneNumber: phoneNumber,
                     bio: bio
                   }, {headers: headers})
                   setLoggedInInfo({...loggedInInfo, email:email, first_name:firstName, last_name:lastName, phone:phoneNumber, bio:bio})
@@ -129,7 +126,7 @@ function Profile() {
         <TextField size="small" required type="email" value={email}  onChange={handleEmail} inputProps={{ maxLength: 50 }} sx={inputStyles} label="email address" />
         <TextField size="small" required type="text" value={firstName} inputProps={{ maxLength: 20 }} onChange={handleFirstName} sx={inputStyles} label="first name" />
         <TextField size="small" required type="text" value={lastName}  inputProps={{ maxLength: 20 }} onChange={handleLastName} sx={inputStyles} label="last name" />
-        <TextField size="small" required type="text" value={phoneNumber} inputProps={{ minLength: 10, maxLength: 10 }} onChange={handlePhoneNumber} sx={inputStyles} label="phone number" />
+        <TextField size="small" required type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" value={phoneNumber} inputProps={{ minLength: 12, maxLength: 12 }} onChange={handlePhoneNumber} sx={inputStyles} label="phone number" />
         <TextField size="small" multiline={true} required type="text" value={bio} inputProps={{maxLength: 200 }} onChange={handleBio} sx={inputStyles} label="Bio" />
         <button className={styles.submit} type="submit">Update Profile</button>
        </form>

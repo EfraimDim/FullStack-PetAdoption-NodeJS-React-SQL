@@ -28,11 +28,9 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
                 const newPetsArray = myPetsArray.filter(pets => pets.pet_ID !== pet.pet_ID)
                 setMyPetsArray(newPetsArray)
                 const newAllPetsArray = [...allPetsArray]
-                const indexFromAllPets = newAllPetsArray.findIndex(pets => pets.pet_ID === pet.pet_ID)
-                const petToUpdate = newAllPetsArray[indexFromAllPets]
+                const petToUpdate = newAllPetsArray.find(pets => pets.pet_ID === pet.pet_ID)
                 petToUpdate.availability = 1
                 petToUpdate.adoption_status = "available"
-                newAllPetsArray[indexFromAllPets] = petToUpdate
                 setAllPetsArray(newAllPetsArray)
               swal("Pet Returned!", {
                 icon: "success",
@@ -72,7 +70,6 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
                 const newPetsArray = [...myPetsArray]
                 const petToChange = newPetsArray.find(pets => pets.pet_ID === pet.pet_ID)
                 petToChange.adoption_status = "adopted"
-                newPetsArray[index] = petToChange
                 setMyPetsArray(newPetsArray)
               swal("Adoption Success!", {
                 icon: "success",
@@ -236,8 +233,7 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
           setLoadSpinner(true)
           const headers = await tokenFromLocalforage()
           const deletePet = await axios.delete(`http://localhost:5000/pets/deletePet/${pet.pet_ID}/${pet.name}/${pet.type}/${adminInfo.email}`, {headers:headers})
-          const oldAllPetsArray = [...allPetsArray] 
-          const newAllPetsArray = oldAllPetsArray.filter(pets => pets.pet_ID !== pet.pet_ID)
+          const newAllPetsArray = allPetsArray.filter(pets => pets.pet_ID !== pet.pet_ID)
           setAllPetsArray(newAllPetsArray)
           setLoadSpinner(false)
           swal(`${pet.name} has been deleted!`, {
