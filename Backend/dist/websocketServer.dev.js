@@ -1,19 +1,5 @@
 "use strict";
 
-var app = require('./app');
-
-var _require = require('./lib/mysql'),
-    postgrator = _require.postgrator;
-
-var port = process.env.PORT || 5000;
-postgrator.migrate().then(function (result) {
-  console.log("migrated succesfully!", result);
-  app.listen(port, function () {
-    console.log("Listening on port ".concat(port, "..."));
-  });
-})["catch"](function (error) {
-  return console.error(error);
-});
 var webSocketsServerPort = 8000;
 
 var webSocketServer = require('websocket').server;
@@ -47,11 +33,10 @@ wsServer.on('request', function (request) {
   connection.on('message', function (message) {
     if (message.type === 'utf8') {
       console.log('Received Message: ', message.utf8Data); // broadcasting message to all connected clients
-
-      for (key in clients) {
-        clients[key].sendUTF(message.utf8Data);
-        console.log('sent Message to: ', clients[key]);
-      }
+      //   for(key in clients) {
+      //     clients[key].sendUTF(message.utf8Data);
+      //     console.log('sent Message to: ', clients[key]);
+      //   }
     }
   });
 });

@@ -47,3 +47,12 @@
    text-align: center;
     
 }
+.recentleyAdded{
+    margin-left: 15px;
+    height: fit-content;
+    width: fit-content;
+    padding: 5px 10px 5px 10px;
+    background-color: red;
+    border-radius: 100%;
+    text-align: center;
+}

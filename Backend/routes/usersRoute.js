@@ -112,6 +112,12 @@ router.put(
     checkAdminForAllReq,
     usersController.makeAdmin
 )
+router.put(
+    '/lastSeenPets',
+    validateBody(Schemas.lastSeenPetsSchemaAJV),
+    authorization,
+    usersController.lastSeenPets
+)
 
 
 

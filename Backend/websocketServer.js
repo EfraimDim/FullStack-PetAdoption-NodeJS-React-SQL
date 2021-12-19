@@ -1,17 +1,3 @@
-const app = require('./app')
-
-const {postgrator} = require('./lib/mysql')
-const port = process.env.PORT || 5000;
-
-
-postgrator.migrate().then((result )=>{
-    console.log(`migrated succesfully!`, result)
-    app.listen(port, () => {
-        console.log(`Listening on port ${port}...`)
-    })})
-    .catch((error)=>console.error(error));
-
-
 const webSocketsServerPort = 8000;
 const webSocketServer = require('websocket').server;
 const http = require('http');
@@ -48,10 +34,11 @@ wsServer.on('request', function (request) {
       console.log('Received Message: ', message.utf8Data);
 
       // broadcasting message to all connected clients
-      for(key in clients) {
-        clients[key].sendUTF(message.utf8Data);
-        console.log('sent Message to: ', clients[key]);
-      }
+      
+    //   for(key in clients) {
+    //     clients[key].sendUTF(message.utf8Data);
+    //     console.log('sent Message to: ', clients[key]);
+    //   }
     }
   })
 });

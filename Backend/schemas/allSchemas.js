@@ -272,6 +272,17 @@ exports.makeAdminSchemaAJV = {
   additionalProperties: false,
 };
 
+exports.lastSeenPetsSchemaAJV = {
+  type: 'object',
+  properties: {
+    allPetArrayIDsString: {
+      type: "string"
+    }
+  },
+  required: ['allPetArrayIDsString'],
+  additionalProperties: false,
+};
+
 
 
 

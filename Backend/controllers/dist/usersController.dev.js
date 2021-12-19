@@ -1,5 +1,15 @@
 "use strict";
 
+function _templateObject16() {
+  var data = _taggedTemplateLiteral(["UPDATE users SET last_seen_pet_IDs = ", " WHERE user_ID = ", ""]);
+
+  _templateObject16 = function _templateObject16() {
+    return data;
+  };
+
+  return data;
+}
+
 function _templateObject15() {
   var data = _taggedTemplateLiteral(["DELETE FROM adoptedPets WHERE user_ID = ", ""]);
 
@@ -595,4 +605,36 @@ exports.makeAdmin = function _callee11(req, res) {
       }
     }
   }, null, null, [[0, 20]]);
+};
+
+exports.lastSeenPets = function _callee12(req, res) {
+  var allPetArrayIDsString, userID, updateEnquiryQuery;
+  return regeneratorRuntime.async(function _callee12$(_context12) {
+    while (1) {
+      switch (_context12.prev = _context12.next) {
+        case 0:
+          _context12.prev = 0;
+          allPetArrayIDsString = req.body.allPetArrayIDsString;
+          userID = req.decoded.userID;
+          _context12.next = 5;
+          return regeneratorRuntime.awrap(query(SQL(_templateObject16(), allPetArrayIDsString, userID)));
+
+        case 5:
+          updateEnquiryQuery = _context12.sent;
+          res.send("Updated Succesfully!");
+          _context12.next = 13;
+          break;
+
+        case 9:
+          _context12.prev = 9;
+          _context12.t0 = _context12["catch"](0);
+          console.log(_context12.t0);
+          res.status(500).send(_context12.t0.message);
+
+        case 13:
+        case "end":
+          return _context12.stop();
+      }
+    }
+  }, null, null, [[0, 9]]);
 };

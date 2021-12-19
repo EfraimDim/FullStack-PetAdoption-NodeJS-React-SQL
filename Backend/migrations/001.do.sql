@@ -8,5 +8,6 @@ CREATE TABLE IF NOT EXISTS users (
         phone VARCHAR(12) NOT NULL,
         admin_status BOOLEAN NOT NULL,
         date_created DATE DEFAULT (CURRENT_DATE),
-        bio VARCHAR(200) NOT NULL,
+        bio VARCHAR(200) NULL,
+        last_seen_pet_IDs TEXT NULL,
         PRIMARY KEY (id))

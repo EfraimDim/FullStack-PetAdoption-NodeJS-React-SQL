@@ -330,3 +330,13 @@ exports.makeAdminSchemaAJV = {
   required: ['adminEmail', 'publicUserEmail', 'publicUserID'],
   additionalProperties: false
 };
+exports.lastSeenPetsSchemaAJV = {
+  type: 'object',
+  properties: {
+    allPetArrayIDsString: {
+      type: "string"
+    }
+  },
+  required: ['allPetArrayIDsString'],
+  additionalProperties: false
+};

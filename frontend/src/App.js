@@ -19,7 +19,6 @@ function App() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [loggedInInfo, setLoggedInInfo] = useState(null)
   const [adminInfo, setAdminInfo] = useState(null)
-  const [adminLoggedIn, setAdminLoggedIn] = useState(false)
   const [allPetsArray, setAllPetsArray] = useState([])
   const [savedPetsArray, setSavedPetsArray] = useState([])
   const [myPetsArray, setMyPetsArray] = useState([])
@@ -35,6 +34,7 @@ function App() {
   const [viewEnquiry, setViewEnquiry] = useState(null)
   const [paginationCount, setPaginationCount] = useState(1)
   const [paginationNewsfeedArray, setPaginationNewsfeedArray] = useState([])
+  const [recentleyAddedPets, setRecentleyAddedPets] = useState([])
   const [sidebar, setSidebar] = useState({
     top: false,
     left: false,
@@ -121,10 +121,18 @@ function App() {
   },[])
 
  
-  const signOut = () => {
+  const signOut = async() => {
+    try{
+    if(loggedInInfo){
+    const allPetArrayIDs = allPetsArray.map(pets => pets.pet_ID);
+    const allPetArrayIDsString = JSON.stringify(allPetArrayIDs)
+    const headers = await tokenFromLocalforage()
+    const petIDsToDatabase = await axios.put('http://localhost:5000/users/lastSeenPets', {
+      allPetArrayIDsString: allPetArrayIDsString
+    }, {headers:headers})
+  }
     setLoggedInInfo(null)
     setAdminInfo(null)
-    setAdminLoggedIn(false)
     localforage.setItem('token', '');
     swal({
       title: "Log Out Success!",
@@ -132,7 +140,16 @@ function App() {
       button: "continue!",
     });
     navigate('/')
-}
+}catch(e){
+  console.log(e)
+  setLoadSpinner(false)
+  swal({
+      title: "Log Out Failed!",
+      text: `Error: ${e}`,
+      icon: "error",
+      button: "return",
+    }); 
+  }}
  
 
   function openModal() {
@@ -189,7 +206,6 @@ function App() {
       tokenFromLocalforage,
       setAdminInfo,
       adminInfo,
-      setAdminLoggedIn,
       signOut,
       petImages,
       setAllPublicUsersArray,
@@ -215,13 +231,15 @@ function App() {
       paginationCount, 
       setPaginationCount,
       paginationNewsfeedArray, 
-      setPaginationNewsfeedArray
+      setPaginationNewsfeedArray,
+      recentleyAddedPets, 
+      setRecentleyAddedPets
 
     }}>
     
     <div>
       {loadSpinner ? <div className={styles.loadingButton}><LoadingButton loading={loadSpinner} sx={{transform: "scale(3)" }} /></div> :<>
-      {adminLoggedIn ? <AdminPage /> :
+      {adminInfo ? <AdminPage /> :
       <>
       {loggedInInfo ? <HomePage /> :<>
         

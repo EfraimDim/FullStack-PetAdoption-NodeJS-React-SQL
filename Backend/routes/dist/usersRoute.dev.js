@@ -33,4 +33,5 @@ router.put('/enquiryToResolved', validateBody(Schemas.changeEnquiryStatusSchemaA
 router["delete"]('/enquiryToDelete/:enquiryID', authorization, checkAdminForAllReq, usersController.enquiryToDelete);
 router.get('/enquirySearch', authorization, checkAdminForAllReq, usersController.enquirySearch);
 router.put('/makeAdmin', validateBody(Schemas.makeAdminSchemaAJV), authorization, checkAdminForAllReq, usersController.makeAdmin);
+router.put('/lastSeenPets', validateBody(Schemas.lastSeenPetsSchemaAJV), authorization, usersController.lastSeenPets);
 module.exports = router;

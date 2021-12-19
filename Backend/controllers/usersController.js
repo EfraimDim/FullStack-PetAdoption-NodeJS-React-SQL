@@ -156,3 +156,14 @@ exports.makeAdmin = async(req, res) => {
     }
 }
 
+exports.lastSeenPets = async(req, res) => {
+    try {
+        const { allPetArrayIDsString } = req.body;
+        const {userID} = req.decoded
+        const updateEnquiryQuery = await query(SQL `UPDATE users SET last_seen_pet_IDs = ${allPetArrayIDsString} WHERE user_ID = ${userID}`)
+        res.send("Updated Succesfully!")
+    } catch (e) {
+        console.log(e)
+        res.status(500).send(e.message)
+    }
+}

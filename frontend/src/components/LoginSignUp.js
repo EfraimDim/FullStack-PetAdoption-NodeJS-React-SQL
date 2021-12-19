@@ -31,7 +31,7 @@ function ModalLoginSignUp() {
     const [phoneNumberAdmin, setPhoneNumberAdmin] = useState('');
     const [adminCode, setAdminCode] = useState('')
 
-    const { modalIsOpen, setModalIsOpen, setLoadSpinner, setLoggedInInfo, setAdminInfo, setAdminLoggedIn, setAllPublicUsersArray, setAllAdminUsersArray, tokenFromLocalforage, setNewsfeed,  setEnquiryArray, setPaginationCount, setPaginationNewsfeedArray, newsfeed } = useContext(AppContext);
+    const { modalIsOpen, setModalIsOpen, setLoadSpinner, setLoggedInInfo, setAdminInfo, setAllPublicUsersArray, setAllAdminUsersArray, tokenFromLocalforage, setNewsfeed,  setEnquiryArray, setPaginationCount, setPaginationNewsfeedArray, allPetsArray, setRecentleyAddedPets } = useContext(AppContext);
 
 
     const handleEmail = (e) => {
@@ -199,19 +199,43 @@ function ModalLoginSignUp() {
             if(loginUser.data.userInfo.admin_status === 1){
                 await adminGetUsersAndNewsfeedArrays()
                 setAdminInfo(loginUser.data.userInfo)
-                setAdminLoggedIn(true)}
-                else{
-                setLoggedInInfo(loginUser.data.userInfo)
+                setLoadSpinner(false)
+                swal({
+                    title: "Log in Success!",
+                    icon: "success",
+                    button: "continue!",
+                  });
+                setModalIsOpen(false)
+                setPasswordLogin('')
+                setEmailLogin('')
+               }
+                else{     
+                    const unseenPetsArray = []
+                    const lastSeenPetIDsArray = JSON.parse(loginUser.data.userInfo.last_seen_pet_IDs)
+                    const currentPetIDsArray = allPetsArray.map(pets => pets.pet_ID);
+                    const waitForForEach = new Promise((resolve, reject) => {
+                        currentPetIDsArray.forEach(petIDs => {
+                            if(lastSeenPetIDsArray.includes(petIDs) === false){
+                                const unseenPet = allPetsArray.find(pet => pet.pet_ID === petIDs)
+                                unseenPetsArray.push(unseenPet)  
+                            }  resolve()
+                        })
+                    });
+                    waitForForEach.then(() => {
+                        setRecentleyAddedPets(unseenPetsArray)
+                        setLoggedInInfo(loginUser.data.userInfo)
+                        setLoadSpinner(false)
+                        swal({
+                            title: "Log in Success!",
+                            icon: "success",
+                            button: "continue!",
+                          });
+                        setModalIsOpen(false)
+                        setPasswordLogin('')
+                        setEmailLogin('')
+                    });
                 }
-            setLoadSpinner(false)
-            swal({
-                title: "Log in Success!",
-                icon: "success",
-                button: "continue!",
-              });
-            setModalIsOpen(false)
-            setPasswordLogin('')
-            setEmailLogin('')
+
         }catch(e){
             console.log(e)
             setLoadSpinner(false)
