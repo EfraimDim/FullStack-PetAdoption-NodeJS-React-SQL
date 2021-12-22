@@ -4,6 +4,7 @@ import { Card, Avatar, Input, Typography } from 'antd';
 import 'antd/dist/antd.css';
 import styles from '../styles/WebsocketsChat.module.css'
 import {AppContext} from './AppContext'
+import axios from 'axios'
 
 const { Search } = Input;
 const { Text } = Typography;
@@ -30,6 +31,7 @@ function WebsocketChat() {
   useEffect(()=>{
     client.onopen = () => {
         console.log('WebSocket Client Connected');
+       
       };
       client.onmessage = (message) => {
         const dataFromServer = JSON.parse(message.data);

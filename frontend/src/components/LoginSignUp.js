@@ -212,6 +212,7 @@ function ModalLoginSignUp() {
                 else{     
                     const unseenPetsArray = []
                     const lastSeenPetIDsArray = JSON.parse(loginUser.data.userInfo.last_seen_pet_IDs)
+                    if(lastSeenPetIDsArray !== null){
                     const currentPetIDsArray = allPetsArray.map(pets => pets.pet_ID);
                     const waitForForEach = new Promise((resolve, reject) => {
                         currentPetIDsArray.forEach(petIDs => {
@@ -223,19 +224,20 @@ function ModalLoginSignUp() {
                     });
                     waitForForEach.then(() => {
                         setRecentleyAddedPets(unseenPetsArray)
-                        setLoggedInInfo(loginUser.data.userInfo)
-                        setLoadSpinner(false)
-                        swal({
-                            title: "Log in Success!",
-                            icon: "success",
-                            button: "continue!",
-                          });
-                        setModalIsOpen(false)
-                        setPasswordLogin('')
-                        setEmailLogin('')
-                    });
+                    });}else{
+                        setRecentleyAddedPets(allPetsArray)
+                    }
+                    setLoggedInInfo(loginUser.data.userInfo)
+                    setLoadSpinner(false)
+                    swal({
+                        title: "Log in Success!",
+                        icon: "success",
+                        button: "continue!",
+                      });
+                    setModalIsOpen(false)
+                    setPasswordLogin('')
+                    setEmailLogin('')
                 }
-
         }catch(e){
             console.log(e)
             setLoadSpinner(false)

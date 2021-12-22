@@ -1,3 +1,6 @@
+const express = require('express');
+const router = express.Router();
+
 const webSocketsServerPort = 8000;
 const webSocketServer = require('websocket').server;
 const http = require('http');
@@ -11,7 +14,7 @@ console.log('listening on port 8000');
 const wsServer = new webSocketServer({
   httpServer: server
 });
-
+router.wsServer
 const clients = {};
 
 // This code generates unique userid for everyuser.
