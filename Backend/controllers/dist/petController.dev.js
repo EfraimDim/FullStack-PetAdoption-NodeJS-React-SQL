@@ -200,6 +200,10 @@ var _require = require('../lib/mysql'),
 var _require2 = require('uuid'),
     uuidv4 = _require2.v4;
 
+var fs = require('fs');
+
+var path = require('path');
+
 exports.usersPetArrays = function _callee(req, res) {
   var userID, savedPetsArray, adoptedPetsArray;
   return regeneratorRuntime.async(function _callee$(_context) {
@@ -610,7 +614,7 @@ exports.addPet = function _callee11(req, res) {
 };
 
 exports.editPetWithNewPhoto = function _callee12(req, res) {
-  var filename, _req$body5, petID, type, adoptionStatus, name, colour, height, weight, bio, dietryRestrictions, hypoallergenic, breed, adminEmail, parseHeight, parseWeight, parseHypoallergenic, availability, updatePet, updateNewsFeed;
+  var filename, _req$body5, petID, type, adoptionStatus, name, colour, height, weight, bio, dietryRestrictions, hypoallergenic, breed, adminEmail, oldPicturePath, parseHeight, parseWeight, parseHypoallergenic, availability, updatePet, updateNewsFeed;
 
   return regeneratorRuntime.async(function _callee12$(_context12) {
     while (1) {
@@ -618,7 +622,7 @@ exports.editPetWithNewPhoto = function _callee12(req, res) {
         case 0:
           _context12.prev = 0;
           filename = req.file.filename;
-          _req$body5 = req.body, petID = _req$body5.petID, type = _req$body5.type, adoptionStatus = _req$body5.adoptionStatus, name = _req$body5.name, colour = _req$body5.colour, height = _req$body5.height, weight = _req$body5.weight, bio = _req$body5.bio, dietryRestrictions = _req$body5.dietryRestrictions, hypoallergenic = _req$body5.hypoallergenic, breed = _req$body5.breed, adminEmail = _req$body5.adminEmail;
+          _req$body5 = req.body, petID = _req$body5.petID, type = _req$body5.type, adoptionStatus = _req$body5.adoptionStatus, name = _req$body5.name, colour = _req$body5.colour, height = _req$body5.height, weight = _req$body5.weight, bio = _req$body5.bio, dietryRestrictions = _req$body5.dietryRestrictions, hypoallergenic = _req$body5.hypoallergenic, breed = _req$body5.breed, adminEmail = _req$body5.adminEmail, oldPicturePath = _req$body5.oldPicturePath;
           parseHeight = JSON.parse(height);
           parseWeight = JSON.parse(weight);
           parseHypoallergenic = JSON.parse(hypoallergenic);
@@ -633,27 +637,28 @@ exports.editPetWithNewPhoto = function _callee12(req, res) {
 
         case 10:
           updatePet = _context12.sent;
-          _context12.next = 13;
+          fs.unlinkSync("../frontend/src/images/".concat(oldPicturePath));
+          _context12.next = 14;
           return regeneratorRuntime.awrap(query("INSERT INTO newsfeed (news) VALUES (\"Admin: ".concat(adminEmail, " has edited the information of ").concat(name, " the ").concat(type, " and added a new photo!\")")));
 
-        case 13:
+        case 14:
           updateNewsFeed = _context12.sent;
           res.send("Updated Successfully!");
-          _context12.next = 21;
+          _context12.next = 22;
           break;
 
-        case 17:
-          _context12.prev = 17;
+        case 18:
+          _context12.prev = 18;
           _context12.t0 = _context12["catch"](0);
           console.log(_context12.t0);
           res.status(500).send(_context12.t0.message);
 
-        case 21:
+        case 22:
         case "end":
           return _context12.stop();
       }
     }
-  }, null, null, [[0, 17]]);
+  }, null, null, [[0, 18]]);
 };
 
 exports.editPetWithoutNewPhoto = function _callee13(req, res) {
@@ -700,14 +705,14 @@ exports.editPetWithoutNewPhoto = function _callee13(req, res) {
 };
 
 exports.deletePet = function _callee14(req, res) {
-  var _req$params3, petID, petName, petType, adminEmail, deletePet, deletePetAdopted, deletePetSaved, updateNewsFeed;
+  var _req$params3, petID, petName, petType, adminEmail, picture_path, deletePet, deletePetAdopted, deletePetSaved, updateNewsFeed;
 
   return regeneratorRuntime.async(function _callee14$(_context14) {
     while (1) {
       switch (_context14.prev = _context14.next) {
         case 0:
           _context14.prev = 0;
-          _req$params3 = req.params, petID = _req$params3.petID, petName = _req$params3.petName, petType = _req$params3.petType, adminEmail = _req$params3.adminEmail;
+          _req$params3 = req.params, petID = _req$params3.petID, petName = _req$params3.petName, petType = _req$params3.petType, adminEmail = _req$params3.adminEmail, picture_path = _req$params3.picture_path;
           _context14.next = 4;
           return regeneratorRuntime.awrap(query(SQL(_templateObject17(), petID)));
 
@@ -728,20 +733,21 @@ exports.deletePet = function _callee14(req, res) {
 
         case 13:
           updateNewsFeed = _context14.sent;
+          fs.unlinkSync("../frontend/src/images/".concat(picture_path));
           res.send("Delete Succesful!");
-          _context14.next = 21;
+          _context14.next = 22;
           break;
 
-        case 17:
-          _context14.prev = 17;
+        case 18:
+          _context14.prev = 18;
           _context14.t0 = _context14["catch"](0);
           console.error(_context14.t0);
           res.status(500).send(_context14.t0.message);
 
-        case 21:
+        case 22:
         case "end":
           return _context14.stop();
       }
     }
-  }, null, null, [[0, 17]]);
+  }, null, null, [[0, 18]]);
 };

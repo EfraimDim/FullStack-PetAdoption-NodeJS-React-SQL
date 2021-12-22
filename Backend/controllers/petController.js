@@ -1,6 +1,8 @@
 const SQL = require('@nearform/sql');
 const {query} = require('../lib/mysql')
 const { v4: uuidv4 } = require('uuid');
+const fs = require('fs')
+const path = require('path');
 
 
 
@@ -148,7 +150,7 @@ exports.addPet = async(req, res) =>{
 exports.editPetWithNewPhoto = async(req, res) =>{
     try {
         const { filename } = req.file
-        const { petID, type, adoptionStatus, name, colour, height, weight, bio, dietryRestrictions, hypoallergenic, breed, adminEmail } = req.body
+        const { petID, type, adoptionStatus, name, colour, height, weight, bio, dietryRestrictions, hypoallergenic, breed, adminEmail, oldPicturePath } = req.body
         const parseHeight = JSON.parse(height)
         const parseWeight = JSON.parse(weight)
         const parseHypoallergenic = JSON.parse(hypoallergenic)
@@ -157,6 +159,7 @@ exports.editPetWithNewPhoto = async(req, res) =>{
             availability = true
         }
         const updatePet = await query(SQL `UPDATE pets SET type = ${type}, adoption_status = ${adoptionStatus}, name = ${name}, color = ${colour}, picture_path = ${filename}, height = ${parseHeight}, weight = ${parseWeight}, bio = ${bio}, dietry_restrictions = ${dietryRestrictions}, hypoallergenic = ${parseHypoallergenic}, breed = ${breed}, availability = ${availability}  WHERE pet_ID = ${petID}`)
+        fs.unlinkSync(`../frontend/src/images/${oldPicturePath}`);
         const updateNewsFeed = await query(`INSERT INTO newsfeed (news) VALUES ("Admin: ${adminEmail} has edited the information of ${name} the ${type} and added a new photo!")`)
         res.send("Updated Successfully!")
     } catch (e) {
@@ -183,11 +186,13 @@ exports.editPetWithoutNewPhoto = async(req, res) =>{
 
 exports.deletePet  = async(req, res) => {
     try{
-        const { petID, petName, petType, adminEmail } = req.params
+    const { petID, petName, petType, adminEmail, picture_path } = req.params
     const deletePet = await query(SQL `DELETE FROM pets WHERE pet_ID = ${petID} `)
     const deletePetAdopted = await query(SQL `DELETE FROM adoptedPets WHERE pet_ID = ${petID} `)
     const deletePetSaved = await query(SQL `DELETE FROM savedPets WHERE pet_ID = ${petID} `)
     const updateNewsFeed = await query(`INSERT INTO newsfeed (news) VALUES ("Admin: ${adminEmail} has deleted ${petName} the ${petType} from all databases!")`)
+    fs.unlinkSync(`../frontend/src/images/${picture_path}`);
+
     res.send("Delete Succesful!")
 }catch (e) {
     console.error(e)

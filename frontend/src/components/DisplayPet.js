@@ -232,7 +232,7 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
         if (willDelete) {
           setLoadSpinner(true)
           const headers = await tokenFromLocalforage()
-          const deletePet = await axios.delete(`http://localhost:5000/pets/deletePet/${pet.pet_ID}/${pet.name}/${pet.type}/${adminInfo.email}`, {headers:headers})
+          const deletePet = await axios.delete(`http://localhost:5000/pets/deletePet/${pet.pet_ID}/${pet.name}/${pet.type}/${adminInfo.email}/${pet.picture_path}`, {headers:headers})
           const newAllPetsArray = allPetsArray.filter(pets => pets.pet_ID !== pet.pet_ID)
           setAllPetsArray(newAllPetsArray)
           setLoadSpinner(false)

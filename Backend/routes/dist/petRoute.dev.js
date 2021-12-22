@@ -36,5 +36,5 @@ router.get('/advanceSearch/:type/:adoptionStatus/:minHeight/:maxHeight/:minWeigh
 router.post('/addPet', authorization, checkAdminForAllReq, upload.single('image'), validateBody(Schemas.addOrEditPetSchemaAJV), petController.addPet);
 router.put('/editPetWithoutNewPhoto', validateBody(Schemas.editPetWithoutPhotoSchemaAJV), authorization, checkAdminForAllReq, petController.editPetWithoutNewPhoto);
 router.put('/editPetWithNewPhoto', authorization, checkAdminForAllReq, upload.single('image'), validateBody(Schemas.addOrEditPetSchemaAJV), petController.editPetWithNewPhoto);
-router["delete"]('/deletePet/:petID/:petName/:petType/:adminEmail', authorization, checkAdminForAllReq, petController.deletePet);
+router["delete"]('/deletePet/:petID/:petName/:petType/:adminEmail/:picture_path', authorization, checkAdminForAllReq, petController.deletePet);
 module.exports = router;

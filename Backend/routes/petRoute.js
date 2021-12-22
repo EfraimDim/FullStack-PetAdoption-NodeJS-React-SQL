@@ -103,7 +103,7 @@ router.put(
 )
 
 router.delete(
-    '/deletePet/:petID/:petName/:petType/:adminEmail',
+    '/deletePet/:petID/:petName/:petType/:adminEmail/:picture_path',
     authorization,
     checkAdminForAllReq,
     petController.deletePet

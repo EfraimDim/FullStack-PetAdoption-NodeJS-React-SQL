@@ -57,6 +57,9 @@ exports.addOrEditPetSchemaAJV = {
       type: "string",
       format: 'email',
       maxLength: 50
+    },
+    oldPicturePath: {
+      type: "string"
     }
   },
   required: ['type', 'adoptionStatus', 'name', 'colour', 'height', 'weight', 'bio', 'hypoallergenic', 'dietryRestrictions', 'breed', 'adminEmail'],

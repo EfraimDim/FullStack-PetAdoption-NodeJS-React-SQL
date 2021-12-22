@@ -137,6 +137,7 @@ function EditPetForm() {
                     fd.append('breed', breed)
                     fd.append('petID', petDetailsToEdit.pet_ID)
                     fd.append('adminEmail', adminInfo.email)
+                    fd.append('oldPicturePath', picturePath)
                     const editPetWithNewPhoto = await axios.put("http://localhost:5000/pets/editPetWithNewPhoto", fd ,{headers:headers})
                     setLoadSpinner(false) 
                     setPetDetailsToEdit(null)
