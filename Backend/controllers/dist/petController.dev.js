@@ -202,8 +202,6 @@ var _require2 = require('uuid'),
 
 var fs = require('fs');
 
-var path = require('path');
-
 exports.usersPetArrays = function _callee(req, res) {
   var userID, savedPetsArray, adoptedPetsArray;
   return regeneratorRuntime.async(function _callee$(_context) {

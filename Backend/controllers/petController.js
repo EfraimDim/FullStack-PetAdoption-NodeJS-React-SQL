@@ -2,7 +2,7 @@ const SQL = require('@nearform/sql');
 const {query} = require('../lib/mysql')
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs')
-const path = require('path');
+
 
 
 
