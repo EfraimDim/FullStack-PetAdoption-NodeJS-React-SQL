@@ -9,6 +9,10 @@
     font-weight: bold;
     width: 10vw;
 }
+.dateInput{
+    margin-top: 1px;
+    height: 25px;
+}
 .enquiryWrapper{
     display: flex;
     flex-direction: row;
@@ -38,9 +42,23 @@
     color: red;
 }
 
-.delete{
-        width: fit-content;
-        padding: 5px;
-        cursor:pointer;
-        margin: 10px
+.delete, .button{
+    width: fit-content;
+    padding: 5px;
+    cursor:pointer;
+    border-radius: 10px;
+    background-color: rgb(160, 3, 160);
+    color: white;
+    border-style: none;
+    font-weight: bold;
+    margin: 10px
  }
+ .button{
+    margin: -10px;
+    margin-bottom: 10px
+ }
+ .header{
+    text-align: center;
+    font-family:fantasy;
+    text-decoration: underline;
+}

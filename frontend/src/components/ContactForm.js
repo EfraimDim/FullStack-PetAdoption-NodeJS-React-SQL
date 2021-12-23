@@ -62,7 +62,7 @@ const handleEnquiry = (e) =>{
 }
 
   return (<div>
-    <h1>Contact Us:</h1>
+    <h1 className={styles.header}>Contact Us:</h1>
     <form className={styles.form} onSubmit={sendEnquiry}>
         <TextField size="small"  required type="email" value={email}  onChange={handleEmail} inputProps={{ maxLength: 50 }} sx={{margin: "10px", width: "20vw"}} label="email address" />
         <TextField size="small" required type="text" value={firstName} inputProps={{ maxLength: 20 }} onChange={handleFirstName} sx={{margin: "10px", width: "20vw"}}   label="first name" />

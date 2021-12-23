@@ -11,7 +11,7 @@
     font-weight: bold;
     font-size: 15px;
 }
-.info, .mainInfo {
+.info, .mainInfo, .name {
     margin:5px;
     height:fit-content;
     
@@ -19,12 +19,21 @@
 .info{
     width: 15vw
 }
-.mainInfo {
+.mainInfo, .name {
     text-align: center;
+    font-style: italic;
+}
+.name{
+    font-size: larger;
+}
+.trim{
+    max-height:200px;
+     max-width: 100%;
+     overflow: hidden;
 }
 .image{
-width: 400px;
-height: 250px;
+width: 100%;
+height: 300px;
 border-radius: 50px;
 margin: auto;
 align-self: center;
@@ -49,12 +58,20 @@ align-self: center;
     align-items: center;
     align-self: center;
     text-align: center;
+    box-shadow: 0 0 20px #eee;
+    background-color:rgb(255, 251, 251);
+    border-radius: 50px;
 }
 
 .button{
     width: fit-content;
     padding: 5px;
     cursor:pointer;
+    border-radius: 10px;
+    background-color: rgb(160, 3, 160);
+    color: white;
+    border-style: none;
+    font-weight: bold;
     margin: 10px
 }
 .buttonWrapper{

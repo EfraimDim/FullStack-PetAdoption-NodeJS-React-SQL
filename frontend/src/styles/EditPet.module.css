@@ -8,6 +8,11 @@
     width: fit-content;
     padding: 5px;
     cursor:pointer;
+    border-radius: 10px;
+    background-color: rgb(160, 3, 160);
+    color: white;
+    border-style: none;
+    font-weight: bold;
     margin: 10px;
 }
 

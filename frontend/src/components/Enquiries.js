@@ -83,10 +83,10 @@ function Enquiries() {
 
   return (<div>
   {viewEnquiry ? <ViewEnquiry/> :<div>
-    <h1>Enquiries:</h1>
+    <h1 className={styles.header}>Enquiries:</h1>
     <form onSubmit={searchEnquiries}>
-    <input value={date} onChange={handleDate} type="date"/>
-    <TextField size="small" type="email" value={email}  onChange={handleEmail} inputProps={{ maxLength: 50 }} sx={{transform: "scale(0.7)", width: "250px", borderRadius: "20px", marginBottom: '10px', marginTop: '-10px'}} label="email address" />
+    <input className={styles.dateInput} value={date} onChange={handleDate} type="date"/>
+    <TextField size="small" type="email" value={email}  onChange={handleEmail} inputProps={{ maxLength: 50 }} sx={{transform: "scale(0.7)", width: "250px", borderRadius: "20px", marginBottom: '10px', marginTop: '-6px'}} label="email address" />
     <button className={styles.button} type="submit">Search</button>
     </form>
     <button className={styles.button} onClick={showAllEnquires}>Show All</button>

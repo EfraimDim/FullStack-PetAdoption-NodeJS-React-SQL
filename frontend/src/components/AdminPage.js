@@ -1,6 +1,6 @@
 import styles from '../styles/AdminPage.module.css';
 import { AppContext } from "../components/AppContext"
-import {useState, useEffect, useContext} from "react"
+import {useEffect, useContext} from "react"
 import { Routes, Route, Link, useLocation } from "react-router-dom";
 import AddPet from './AddPet'
 import EditPet from './EditPet'
@@ -20,7 +20,7 @@ function AdminPage() {
 
   const list = (anchor) => (
     <Box
-      sx={{ background: 'rgb(44, 44, 198)', height: '100vh', width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
+      sx={{ background: 'purple', height: '100vh', width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
       role="presentation"
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}

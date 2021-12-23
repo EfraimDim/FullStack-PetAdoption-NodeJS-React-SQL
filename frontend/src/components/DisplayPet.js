@@ -212,7 +212,7 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
     }
 
     const goToEditPage = (pet) => {
-        if(pet.hypoallergenic == 1)
+        if(pet.hypoallergenic === 1)
         pet.hypoallergenic = true
         else
         pet.hypoallergenic = false
@@ -256,8 +256,10 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
 
     return < >  
     <div id={pet.pet_ID} className={styles.petInfo}>
+        <div className={styles.trim}>
         <img className={styles.image} src={petImages[`${pet.picture_path}`].default} />
-        <div className={styles.mainInfo}><span className={styles.field}>Name:</span> {pet.name}</div>
+        </div>
+        <div className={styles.name}><span className={styles.field}>Name:</span> {pet.name}</div>
         <div className={styles.mainInfo}><span className={styles.field}>Status:</span> {pet.adoption_status}</div>
     <ShowMore
                 lines={1}

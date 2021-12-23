@@ -16,5 +16,8 @@
     border-bottom: solid black;
 }
 .header{
-    margin-top: -2rem
+    margin-top: -2rem;
+    text-align: center;
+    font-family:fantasy;
+    text-decoration: underline;
 }

@@ -94,14 +94,14 @@ function SearchPets() {
 
             {basicSearch ? 
             <form onSubmit={handleBasicSearch}>
-                <label className={styles.label}>Type:</label>
-                <select required value={typeBasic} onChange={handleTypeBasic}>
+                <label className={styles.label}>Type: </label>
+                <select styles={{margin:"10px"}} required value={typeBasic} onChange={handleTypeBasic}>
                     <option defaultValue={true} value="dog">Dog</option>
                     <option value="cat">Cat</option>
                     <option value="bird">Bird</option>
                     <option value="fish">Fish</option>
                     </select>
-                <button className={styles.submit} type="submit">Search</button>
+                <button className={styles.button} type="submit">Search</button>
                 </form> : 
             <form className={styles.advancedSearch} onSubmit={handleAdvanceSearch}>
                 <div className={styles.inputWrapper}>

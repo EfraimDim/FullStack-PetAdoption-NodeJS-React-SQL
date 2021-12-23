@@ -172,13 +172,13 @@ function App() {
   }
   const list = (anchor) => (
     <Box
-      sx={{ background: 'rgb(44, 44, 198)', height: '100vh', width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
+      sx={{ background: 'purple', height: '100vh', width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
       role="presentation"
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List  sx={{
-              background: 'rgb(44, 44, 198)',
+              background: 'purple',
             }}>
         {[<div className={styles.sideBarButtons} onClick={()=>navHome()}>Home</div>, <div className={styles.sideBarButtons} onClick={()=>navSearchBeforeLogin()}>Search Pets</div>].map((text, index) => (
           <ListItem button key={index}>

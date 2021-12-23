@@ -1,7 +1,7 @@
 .navBar {
     width: 100vw;
     height:5vh;
-    background-color: rgb(44, 44, 198);
+    background-color: purple;
     display: flex;
     flex-direction: row;
     justify-content: space-between;

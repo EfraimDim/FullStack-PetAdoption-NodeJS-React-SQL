@@ -134,10 +134,10 @@ exports.signUpSchemaAJV = {
       type: "string", format: 'email', maxLength: 50
     },
     password: {
-      type: "string",  minLength: 6, maxLength: 20 
+      type: "string",  minLength: 8, maxLength: 20, pattern: "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$" 
     },
     rePassword: {
-      type: "string",  minLength: 6, maxLength: 20
+      type: "string",  minLength: 8, maxLength: 20, pattern: "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$" 
     },
     firstName: {
       type: "string", maxLength: 20
@@ -146,7 +146,7 @@ exports.signUpSchemaAJV = {
       type: "string", maxLength: 20
     },
     phoneNumber: {
-      type: "string",  minLength: 12, maxLength: 12
+      type: "string",  minLength: 12, maxLength: 12, pattern: "[0-9]{3}-[0-9]{3}-[0-9]{4}"
     },
     admin: {
       type: "boolean"
@@ -167,7 +167,7 @@ exports.loginSchemaAJV = {
       type: "string", format: 'email', maxLength: 50
     },
     password: {
-      type: "string",  minLength: 6, maxLength: 20 
+      type: "string",  minLength: 8, maxLength: 20, pattern: "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$"  
     }
   },
   required: ['email', 'password'],
@@ -187,7 +187,7 @@ exports.updateProfileSchemaAJV = {
       type: "string", maxLength: 20
     },
     phoneNumber: {
-      type: "string",  minLength: 12, maxLength: 12
+      type: "string",  minLength: 12, maxLength: 12, pattern: "[0-9]{3}-[0-9]{3}-[0-9]{4}"
     },
     bio: {
       type: "string", maxLength: 200
@@ -202,13 +202,13 @@ exports.updatePasswordSchemaAJV = {
   type: 'object',
   properties: {
     oldPassword: {
-      type: "string",  minLength: 6, maxLength: 20 
+      type: "string",  minLength: 8, maxLength: 20, pattern: "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$"  
     },
     password: {
-      type: "string",  minLength: 6, maxLength: 20 
+      type: "string",  minLength: 8, maxLength: 20, pattern: "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$"  
     },
     rePassword: {
-      type: "string",  minLength: 6, maxLength: 20
+      type: "string",  minLength: 8, maxLength: 20, pattern: "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$" 
     }
   },
   required: ['oldPassword', 'password', 'rePassword'],
@@ -228,7 +228,7 @@ exports.enquiryPostSchemaAJV = {
       type: "string", maxLength: 20
     },
     phone: {
-      type: "string",  minLength: 12, maxLength: 12
+      type: "string",  minLength: 12, maxLength: 12, pattern: "[0-9]{3}-[0-9]{3}-[0-9]{4}"
     },
     enquiry: {
       type: "string", maxLength: 300

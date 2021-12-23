@@ -2,7 +2,7 @@ import {useContext, useState} from 'react'
 import {AppContext} from './AppContext'
 import styles from '../styles/Profile.module.css'
 import axios from "axios"
-import { TextField } from '@mui/material';
+import { TextField, InputLabel } from '@mui/material';
 import { inputStyles} from '../styles/MaterialUIStyles'
 import swal from 'sweetalert'
 
@@ -121,20 +121,22 @@ function Profile() {
     }
 
     return <div>
-        <h1>Update Profile:</h1>
+        <h1 className={styles.header} >Update Profile:</h1>
          <form className={styles.form} onSubmit={updatedProfile}>
         <TextField size="small" required type="email" value={email}  onChange={handleEmail} inputProps={{ maxLength: 50 }} sx={inputStyles} label="email address" />
         <TextField size="small" required type="text" value={firstName} inputProps={{ maxLength: 20 }} onChange={handleFirstName} sx={inputStyles} label="first name" />
         <TextField size="small" required type="text" value={lastName}  inputProps={{ maxLength: 20 }} onChange={handleLastName} sx={inputStyles} label="last name" />
-        <TextField size="small" required type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" value={phoneNumber} inputProps={{ minLength: 12, maxLength: 12 }} onChange={handlePhoneNumber} sx={inputStyles} label="phone number" />
-        <TextField size="small" multiline={true} required type="text" value={bio} inputProps={{maxLength: 200 }} onChange={handleBio} sx={inputStyles} label="Bio" />
+        <TextField size="small" required type="tel" value={phoneNumber} inputProps={{ minLength: 12, maxLength: 12 }} onChange={handlePhoneNumber} sx={inputStyles} label="phone number" />
+        <InputLabel sx={{fontSize: "12px", height:"fit-content", width:"250px", textAlign: "center"}} id="demo-simple-select-label">*[0-9](3)-[0-9](3)-[0-9](4)</InputLabel>
+        <TextField size="small" multiline={true} required type="text" value={bio} inputProps={{maxLength: 200 }} onChange={handleBio} sx={inputStyles} label="bio" />
         <button className={styles.submit} type="submit">Update Profile</button>
        </form>
-       <h1>Update Password:</h1>
+       <h1 className={styles.header} >Update Password:</h1>
        <form className={styles.form} onSubmit={updatedPassword}>
-        <TextField size="small" required type="password" value={oldPassword} inputProps={{ minLength: 6, maxLength: 20 }}  onChange={handleOldPassword} sx={inputStyles} label="old password" />
-        <TextField size="small" required type="password" value={newPassword} inputProps={{ minLength: 6, maxLength: 20 }}  onChange={handleNewPassword} sx={inputStyles} label="new password" />
-        <TextField size="small" required type="password" value={reNewPassword} inputProps={{ minLength: 6, maxLength: 20 }} onChange={handleReNewpassword} sx={inputStyles} label="re new password" />
+        <TextField size="small" required type="password" value={oldPassword} inputProps={{ minLength: 8, maxLength: 20 }}  onChange={handleOldPassword} sx={inputStyles} label="old password" />
+        <InputLabel sx={{fontSize: "8px", height:"fit-content", width:"250px", textAlign: "center"}} id="demo-simple-select-label">*requires one capital letter, number, special char</InputLabel>
+        <TextField size="small" required type="password" value={newPassword} inputProps={{ minLength: 8, maxLength: 20 }}  onChange={handleNewPassword} sx={inputStyles} label="new password" />
+        <TextField size="small" required type="password" value={reNewPassword} inputProps={{ minLength: 8, maxLength: 20 }} onChange={handleReNewpassword} sx={inputStyles} label="re new password" />
         <button className={styles.submit} type="submit">Update Password</button>
        </form>
       

@@ -56,7 +56,7 @@ function ViewUsers() {
 
   return (<>
     {viewedUserDetails ? <ViewUserPets />  :<div>
-          <h1>Admin Users</h1>
+          <h1 className={styles.header}>Admin Users</h1>
           <div className={styles.usersWrapper}>
           {allAdminUsersArray.map((user, index) => {  
                     return   (
@@ -65,7 +65,7 @@ function ViewUsers() {
                             </div>
                             )})}
             </div>
-          <h1>Public Users</h1>
+          <h1 className={styles.header}>Public Users</h1>
           <div className={styles.usersWrapper}>
           {allPublicUsersArray.map((user, index) => {  
                     return   (

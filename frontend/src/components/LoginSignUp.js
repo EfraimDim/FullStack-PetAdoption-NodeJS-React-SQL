@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 import styles from '../styles/LoginSignUp.module.css'
 import axios from "axios"
 import localforage from 'localforage'
-import { TextField } from '@mui/material';
+import { TextField, InputLabel } from '@mui/material';
 import { customStyles, inputStyles} from '../styles/MaterialUIStyles'
 import swal from 'sweetalert'
 
@@ -273,11 +273,13 @@ function ModalLoginSignUp() {
                 <> 
                     <form onSubmit={signUpAdmin} className={styles.form}>
                         <TextField size="small" required type="email" value={emailAdmin} onChange={handleEmailAdmin} inputProps={{ maxLength: 50 }} sx={inputStyles} label="email address" />
-                        <TextField size="small" required type="password" value={passwordAdmin} onChange={handlePasswordAdmin} inputProps={{ minLength: 6, maxLength: 20 }} sx={inputStyles} label="password" />
-                        <TextField size="small" required type="password" value={rePasswordAdmin}  onChange={handleRepasswordAdmin} inputProps={{ minLength: 6, maxLength: 20 }} sx={inputStyles} label="re password" />
+                        <TextField size="small" required type="password" value={passwordAdmin} onChange={handlePasswordAdmin} inputProps={{ minLength: 8, maxLength: 20 }} sx={inputStyles} label="password" />
+                        <InputLabel sx={{fontSize: "8px", height:"fit-content", width:"250px", textAlign: "center"}} id="demo-simple-select-label">*requires one capital letter, number, special char</InputLabel>
+                        <TextField size="small" required type="password" value={rePasswordAdmin}  onChange={handleRepasswordAdmin} inputProps={{ minLength: 8, maxLength: 20 }} sx={inputStyles} label="re password" />
                         <TextField size="small" required type="text" value={firstNameAdmin} onChange={handleFirstNameAdmin} inputProps={{ maxLength: 20 }} sx={inputStyles} label="first name" />
                         <TextField size="small" required type="text" value={lastNameAdmin}  onChange={handleLastNameAdmin} inputProps={{ maxLength: 20 }} sx={inputStyles} label="last name" />
-                        <TextField size="small" required type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" value={phoneNumberAdmin} onChange={handlePhoneNumberAdmin} inputProps={{ minLength: 12, maxLength: 12 }} sx={inputStyles} label="phone number: [0-9]{3}-[0-9]{3}-[0-9]{4}" />
+                        <TextField size="small" required type="tel" value={phoneNumberAdmin} onChange={handlePhoneNumberAdmin} inputProps={{ minLength: 12, maxLength: 12 }} sx={inputStyles} label="phone number" />
+                        <InputLabel sx={{fontSize: "12px", height:"fit-content", width:"250px", textAlign: "center"}} id="demo-simple-select-label">*[0-9](3)-[0-9](3)-[0-9](4)</InputLabel>
                         <TextField size="small" required type="password" value={adminCode} onChange={handleAdminCode} sx={inputStyles} label="admin code" />
                         <button className={styles.submit} type="submit">Sign Up</button>
                     </form> 
@@ -288,18 +290,20 @@ function ModalLoginSignUp() {
                     <>
                         <form onSubmit={signUp} className={styles.form}>
                             <TextField size="small"  required type="email" value={email}  onChange={handleEmail} inputProps={{ maxLength: 50 }} sx={inputStyles} label="email address" />
-                            <TextField size="small"  required type="password" value={password}  maxLength={"20"} onChange={handlePassword} inputProps={{ minLength: 6, maxLength: 20 }} sx={inputStyles} label="password" />
-                            <TextField size="small"  required type="password" value={rePassword}  onChange={handleRepassword} inputProps={{ minLength: 6, maxLength: 20 }} sx={inputStyles} label="re password" />
+                            <TextField size="small"  required type="password" value={password}  maxLength={"20"} onChange={handlePassword} inputProps={{ minLength: 8, maxLength: 20 }} sx={inputStyles} label="password" />
+                            <InputLabel sx={{fontSize: "8px", height:"fit-content", width:"250px", textAlign: "center"}} id="demo-simple-select-label">*requires one capital letter, number, special char</InputLabel>
+                            <TextField size="small"  required type="password" value={rePassword}  onChange={handleRepassword} inputProps={{ minLength: 8, maxLength: 20 }} sx={inputStyles} label="re password" />
                             <TextField size="small"  required type="text" value={firstName}  onChange={handleFirstName} inputProps={{maxLength: 20 }} sx={inputStyles} label="first name" />
                             <TextField size="small"  required type="text" value={lastName}  onChange={handleLastName} inputProps={{ maxLength: 20 }} sx={inputStyles} label="last name" />
-                            <TextField size="small"  required type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" value={phoneNumber}   onChange={handlePhoneNumber} inputProps={{ minLength: 12, maxLength: 12 }} sx={inputStyles} label="phone number: [0-9]{3}-[0-9]{3}-[0-9]{4}" />
+                            <TextField size="small"  required type="tel" value={phoneNumber}   onChange={handlePhoneNumber} inputProps={{ minLength: 12, maxLength: 12 }} sx={inputStyles} label="phone number: " />
+                            <InputLabel sx={{fontSize: "12px", height:"fit-content", width:"250px", textAlign: "center"}} id="demo-simple-select-label">*[0-9](3)-[0-9](3)-[0-9](4)</InputLabel>
                             <button className={styles.submit} type="submit">Sign Up</button>
                         </form> 
                     </>
                     :
                         <form onSubmit={login} className={styles.form}>
                             <TextField size="small"  required type="email" value={emailLogin} onChange={handleEmailLogin} inputProps={{ maxLength: 50 }}  sx={inputStyles} label="email address"/>
-                            <TextField size="small"  required type="password" value={passwordLogin} onChange={handlePasswordLogin} inputProps={{ minLength: 6, maxLength: 20 }} sx={inputStyles}   label="password" />
+                            <TextField size="small"  required type="password" value={passwordLogin} onChange={handlePasswordLogin} inputProps={{ minLength: 8, maxLength: 20 }} sx={inputStyles}   label="password" />
                             <button  className={styles.submit} type="submit">Login</button>
                         </form>
                     }
