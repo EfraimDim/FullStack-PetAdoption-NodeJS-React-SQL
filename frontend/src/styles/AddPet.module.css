@@ -16,6 +16,11 @@
     margin: 10px;
 }
 
+.submit:active{
+    background-color: white;
+    color: rgb(160, 3, 160);
+}
+
 .header{
     text-align: center;
     margin-top: -1rem;

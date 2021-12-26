@@ -19,6 +19,10 @@
     font-weight: bold;
     margin: 10px
 }
+.button:active{
+    background-color: white;
+    color: rgb(160, 3, 160);
+}
 .userInfo{
     margin: 1rem;
     margin-bottom: 5px;

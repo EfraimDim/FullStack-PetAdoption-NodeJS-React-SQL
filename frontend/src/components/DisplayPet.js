@@ -6,13 +6,13 @@ import axios from 'axios'
 import swal from 'sweetalert'
 
 
-function DisplayPet({pet, index, myPets, savedPets, allPets}) {
+function DisplayPet({pet, myPets, savedPets, allPets}) {
 
     const { loggedInInfo, petImages, setSavedPetsArray, setMyPetsArray, myPetsArray, savedPetsArray, allPetsArray, setAllPetsArray, tokenFromLocalforage,  setPetDetailsToEdit, adminInfo, setLoadSpinner } = useContext(AppContext);
 
 
 
-    const returnForAdoption = async(pet, index) => {
+    const returnForAdoption = async(pet) => {
     try{
         swal({
             title: "Are you sure?",
@@ -49,7 +49,7 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
           });
         }
     }
-    const fosterToAdopt = async(pet, index) => {
+    const fosterToAdopt = async(pet) => {
     try{
         swal({
             title: "Are you sure?",
@@ -88,14 +88,15 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
           });
         }
     }
-    const unsavePet = async(petID, index) => {
+    const unsavePet = async(pet) => {
     try{
         const headers = await tokenFromLocalforage()
-        const unsavePet = await axios.delete(`http://localhost:5000/pets/unsavePet/${petID}`, {headers:headers})
-        const newSavedPetsArray = savedPetsArray.filter(pet => pet.pet_ID !== petID)
+        const unsavePet = await axios.delete(`http://localhost:5000/pets/unsavePet/${pet.pet_ID}`, {headers:headers})
+        const newSavedPetsArray = savedPetsArray.filter(pets => pets.pet_ID !== pet.pet_ID)
         setSavedPetsArray(newSavedPetsArray)
         swal({
             title: "Pet Unsaved!",
+            text:`${pet.name} the ${pet.type} has been removed from your saved pets`,
             icon: "success",
             button: "return",
           });
@@ -109,15 +110,16 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
           });
         }
     }
-    const savePet = async(petID, pet) => {
+    const savePet = async(pet) => {
     try{
         const headers = await tokenFromLocalforage()
         const savePet = await axios.post(`http://localhost:5000/pets/savePet`, {
-            petID: petID
+            petID: pet.pet_ID
         }, {headers:headers})
         setSavedPetsArray([...savedPetsArray, pet])
         swal({
             title: "Pet Saved!",
+            text:`${pet.name} the ${pet.type} has been added to your saved pets`,
             icon: "success",
             button: "return",
           });
@@ -172,7 +174,7 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
         }
     }
 
-    const fosterPet = async(petID, pet) => {
+    const fosterPet = async(pet) => {
     try{
         swal({
             title: "Are you sure?",
@@ -261,11 +263,11 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
         </div>
         <div className={styles.name}><span className={styles.field}>Name:</span> {pet.name}</div>
         <div className={styles.mainInfo}><span className={styles.field}>Status:</span> {pet.adoption_status}</div>
-    <ShowMore
+    <ShowMore 
                 lines={1}
                 more='Show more'
                 less='Show less'
-                anchorClass=''
+                anchorClass={styles.showMore}
             > 
                 {<div className={styles.extraInfoWrapper}><br></br>
                 <div className={styles.extraInfo}>
@@ -286,24 +288,24 @@ function DisplayPet({pet, index, myPets, savedPets, allPets}) {
 
             
             </ShowMore>
-                {myPets && loggedInInfo && pet.adoption_status === "fostered" && <button className={styles.button} onClick={() =>fosterToAdopt(pet.pet_ID, index)}>Adopt</button>}
+                {myPets && loggedInInfo && pet.adoption_status === "fostered" && <button className={styles.button} onClick={() =>fosterToAdopt(pet)}>Adopt</button>}
 
-                {loggedInInfo && myPets && <button className={styles.button} onClick={() =>returnForAdoption(pet, index)}>Return to Adoption Centre</button>}
+                {loggedInInfo && myPets && <button className={styles.button} onClick={() =>returnForAdoption(pet)}>Return to Adoption Centre</button>}
 
-                {loggedInInfo && savedPets &&  <button className={styles.button} onClick={() =>unsavePet(pet.pet_ID, index)}>Unsave</button>}
+                {loggedInInfo && savedPets &&  <button className={styles.button} onClick={() =>unsavePet(pet)}>Unsave</button>}
 
                 {allPets && loggedInInfo && savedPetsArray.filter(savedPet => savedPet.pet_ID === pet.pet_ID).length === 0 && 
-                <button className={styles.button} onClick={() =>savePet(pet.pet_ID, pet)}>Save For Later</button>}
+                <button className={styles.button} onClick={() =>savePet(pet)}>Save For Later</button>}
 
                 {loggedInInfo && allPets && savedPetsArray.filter(savedPet => savedPet.pet_ID === pet.pet_ID).length !== 0 && 
-                <button className={styles.button} onClick={() =>unsavePet(pet.pet_ID, index)}>Unsave</button>}
+                <button className={styles.button} onClick={() =>unsavePet(pet)}>Unsave</button>}
 
                 {loggedInInfo && allPets && pet.adoption_status === "available" && <>
                 <button className={styles.button} onClick={() =>adoptPet(pet)}>Adopt</button>
-                <button className={styles.button} onClick={() =>fosterPet(pet.pet_ID, pet)}>Foster</button></>} 
+                <button className={styles.button} onClick={() =>fosterPet(pet)}>Foster</button></>} 
 
                 {loggedInInfo && allPets && myPetsArray.filter(myPet => myPet.pet_ID === pet.pet_ID).length !== 0 && pet.adoption_status === "fostered" &&
-                <button className={styles.button} onClick={() =>fosterToAdopt(pet, index)}>Adopt</button>}
+                <button className={styles.button} onClick={() =>fosterToAdopt(pet)}>Adopt</button>}
                 
                 {adminInfo && <div className={styles.buttonWrapper}> 
                 <button className={styles.button} onClick={() => goToEditPage(pet)}>Edit Pet</button>

@@ -41,4 +41,8 @@
     border-style: none;
     font-weight: bold;
 }
+.submit:active, .close:active{
+    background-color: white;
+    color: rgb(160, 3, 160);
+}
 

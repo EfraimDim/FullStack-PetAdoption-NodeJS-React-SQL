@@ -63,19 +63,28 @@ align-self: center;
     border-radius: 50px;
 }
 
-.button{
+.button, .showMore{
     width: fit-content;
     padding: 5px;
     cursor:pointer;
     border-radius: 10px;
-    background-color: rgb(160, 3, 160);
+    background-color: rgb(182, 0, 182);
     color: white;
     border-style: none;
     font-weight: bold;
     margin: 10px
 }
+.button:active, .showMore:active{
+    background-color: white;
+    color: rgb(201, 2, 201);
+}
 .buttonWrapper{
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+}
+.showMore{
+    text-decoration: none;
+    font-size: 12px;
+    margin: 10px;
 }

@@ -17,6 +17,10 @@
     font-weight: bold;
     margin: 10px;
 }
+.submit:active{
+    background-color: white;
+    color: rgb(160, 3, 160);
+}
 .header{
     text-align: center;
     font-family: fantasy;

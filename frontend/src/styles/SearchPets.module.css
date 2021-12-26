@@ -56,6 +56,10 @@
     margin: auto;
     cursor:pointer
 }
+.submit:active, .button:active{
+    background-color: white;
+    color: rgb(160, 3, 160);
+}
 
 .button{
     margin: 1rem;

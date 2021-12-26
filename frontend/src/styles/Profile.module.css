@@ -16,6 +16,10 @@
    font-weight: bold;
    align-self: center;
 }
+.submit:active{
+   background-color: white;
+   color: rgb(160, 3, 160);
+}
 .header{
    font-size: 27px;
    font-style: italic;

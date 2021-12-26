@@ -129,7 +129,7 @@ function SearchPets() {
                         <input required className={styles.inputNumber} min={0} max={200} type="number" value={maxHeight} onChange={handleMaxHeight} placeholder="max height (cm)" />
                         <label className={styles.label}>Min Weight:</label>
                         <input required className={styles.inputNumber} min={0} max={50} type="number" value={minWeight} onChange={handleMinWeight} placeholder="min weight (kg)" />
-                        <label className={styles.label}>Max Weigth:</label>
+                        <label className={styles.label}>Max Weight:</label>
                         <input required className={styles.inputNumber} min={0} max={50} type="number" value={maxWeight} onChange={handleMaxWeight} placeholder="max weight (kg)" />
                     </div>
                 </div>

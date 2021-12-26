@@ -53,6 +53,10 @@
     font-weight: bold;
     margin: 10px
  }
+ .delete:active, .button:active{
+    background-color: white;
+    color: rgb(160, 3, 160);
+}
  .button{
     margin: -10px;
     margin-bottom: 10px

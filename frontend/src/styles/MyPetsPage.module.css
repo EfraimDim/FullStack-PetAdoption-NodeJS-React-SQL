@@ -9,6 +9,10 @@
     border-style: none;
     font-weight: bold;
 }
+.toggleButton:active{
+    background-color: white;
+    color: rgb(160, 3, 160);
+}
 .wrapper{
     display: flex;
     justify-content: space-around;
