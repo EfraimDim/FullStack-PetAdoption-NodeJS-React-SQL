@@ -4,9 +4,7 @@ const addFormats = require('ajv-formats');
 addFormats(ajv);
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const {query} = require('../lib/mysql')
-
-
+const middlewareQueries = require('../queries/middlewareQueries');
 
 
 exports.validateBody = (schema) => {
@@ -23,7 +21,7 @@ exports.validateBody = (schema) => {
 exports.checkEmailValidSignUp = async(req, res, next) => {
   try {
     const { email } = req.body;
-    const emailValidation = await query(`SELECT * FROM users WHERE email = '${email.toLowerCase()}'`)
+    const emailValidation = await middlewareQueries.emailValidationQuery(email)
     if (emailValidation.length === 0) {
       next()
     } else {
@@ -68,7 +66,7 @@ exports.encryptPwd = (req, res, next) => {
 exports.decryptPwd = async(req, res, next) => {
   try {
     const { email, password } = req.body;
-    const emailValidation = await query(`SELECT * FROM users WHERE email = '${email.toLowerCase()}'`)
+    const emailValidation = await middlewareQueries.emailValidationQuery(email)
     if(emailValidation.length === 0){
       res.status(400).send("Email not found!");
     }else{
@@ -123,7 +121,7 @@ exports.checkOldPasswordCorrect = async(req, res, next) => {
   try {
     const { oldPassword } = req.body;
     const {userID} = req.decoded
-    const userIDValidation = await query(`SELECT * FROM users WHERE user_ID = '${userID}'`)
+    const userIDValidation = await middlewareQueries.userIDValidationQuery(userID)
     if(userIDValidation.length === 0){
       res.status(400).send("user not found!");
     }else{
@@ -143,11 +141,11 @@ exports.checkEmailValidProfileUpdate = async(req, res, next) => {
   try {
     const { email } = req.body;
     const {userID} = req.decoded
-    const userIDValidation = await query(`SELECT * FROM users WHERE user_ID = '${userID}'`)
+    const userIDValidation = await middlewareQueries.userIDValidationQuery(userID)
     if(userIDValidation[0].email === email){
       next()
     }else{
-    const emailValidation = await query(`SELECT * FROM users WHERE email = '${email.toLowerCase()}'`)
+    const emailValidation = await middlewareQueries.emailValidationQuery(email)
     if (emailValidation.length === 0) {
       next()
     } else {
@@ -161,7 +159,7 @@ exports.checkEmailValidProfileUpdate = async(req, res, next) => {
 exports.checkIfStillAvailable = async(req, res, next) => {
   try {
     const { petID } = req.body;
-    const availabilityCheck = await query(`SELECT availability FROM pets WHERE pet_ID = '${petID}'`)
+    const availabilityCheck = await middlewareQueries.availabilityCheckQuery(petID)
     if(availabilityCheck[0].availability === 1){
       next()
     }else{
@@ -177,7 +175,6 @@ exports.checkAdminAccountCreated = (req, res, next) => {
     const { adminCode } = req.body;
     if(adminCode){
     if (adminCode === process.env.ADMIN_CODE) {
-  
       next();
     }else{
       res.status(400).send('admin code not correct');
@@ -185,7 +182,6 @@ exports.checkAdminAccountCreated = (req, res, next) => {
      }}else{
        next()
      }
-    
   } catch (e) {
     console.error(e);
   }
@@ -194,7 +190,7 @@ exports.checkAdminAccountCreated = (req, res, next) => {
 exports.checkAdminForAllReq = async(req, res, next) => {
   try {
     const { userID } = req.decoded;
-    const userIDValidation = await query(`SELECT * FROM users WHERE user_ID = '${userID}'`)
+    const userIDValidation = await middlewareQueries.userIDValidationQuery(userID)
     if (userIDValidation[0].admin_status === 1) {
       next();
     } else {

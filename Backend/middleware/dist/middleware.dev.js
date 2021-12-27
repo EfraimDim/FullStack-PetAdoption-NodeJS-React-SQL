@@ -12,8 +12,7 @@ var bcrypt = require('bcrypt');
 
 var jwt = require('jsonwebtoken');
 
-var _require = require('../lib/mysql'),
-    query = _require.query;
+var middlewareQueries = require('../queries/middlewareQueries');
 
 exports.validateBody = function (schema) {
   return function (req, res, next) {
@@ -37,7 +36,7 @@ exports.checkEmailValidSignUp = function _callee(req, res, next) {
           _context.prev = 0;
           email = req.body.email;
           _context.next = 4;
-          return regeneratorRuntime.awrap(query("SELECT * FROM users WHERE email = '".concat(email.toLowerCase(), "'")));
+          return regeneratorRuntime.awrap(middlewareQueries.emailValidationQuery(email));
 
         case 4:
           emailValidation = _context.sent;
@@ -108,7 +107,7 @@ exports.decryptPwd = function _callee2(req, res, next) {
           _context2.prev = 0;
           _req$body2 = req.body, email = _req$body2.email, password = _req$body2.password;
           _context2.next = 4;
-          return regeneratorRuntime.awrap(query("SELECT * FROM users WHERE email = '".concat(email.toLowerCase(), "'")));
+          return regeneratorRuntime.awrap(middlewareQueries.emailValidationQuery(email));
 
         case 4:
           emailValidation = _context2.sent;
@@ -191,7 +190,7 @@ exports.checkOldPasswordCorrect = function _callee3(req, res, next) {
           oldPassword = req.body.oldPassword;
           userID = req.decoded.userID;
           _context3.next = 5;
-          return regeneratorRuntime.awrap(query("SELECT * FROM users WHERE user_ID = '".concat(userID, "'")));
+          return regeneratorRuntime.awrap(middlewareQueries.userIDValidationQuery(userID));
 
         case 5:
           userIDValidation = _context3.sent;
@@ -234,7 +233,7 @@ exports.checkEmailValidProfileUpdate = function _callee4(req, res, next) {
           email = req.body.email;
           userID = req.decoded.userID;
           _context4.next = 5;
-          return regeneratorRuntime.awrap(query("SELECT * FROM users WHERE user_ID = '".concat(userID, "'")));
+          return regeneratorRuntime.awrap(middlewareQueries.userIDValidationQuery(userID));
 
         case 5:
           userIDValidation = _context4.sent;
@@ -250,7 +249,7 @@ exports.checkEmailValidProfileUpdate = function _callee4(req, res, next) {
 
         case 10:
           _context4.next = 12;
-          return regeneratorRuntime.awrap(query("SELECT * FROM users WHERE email = '".concat(email.toLowerCase(), "'")));
+          return regeneratorRuntime.awrap(middlewareQueries.emailValidationQuery(email));
 
         case 12:
           emailValidation = _context4.sent;
@@ -287,7 +286,7 @@ exports.checkIfStillAvailable = function _callee5(req, res, next) {
           _context5.prev = 0;
           petID = req.body.petID;
           _context5.next = 4;
-          return regeneratorRuntime.awrap(query("SELECT availability FROM pets WHERE pet_ID = '".concat(petID, "'")));
+          return regeneratorRuntime.awrap(middlewareQueries.availabilityCheckQuery(petID));
 
         case 4:
           availabilityCheck = _context5.sent;
@@ -342,7 +341,7 @@ exports.checkAdminForAllReq = function _callee6(req, res, next) {
           _context6.prev = 0;
           userID = req.decoded.userID;
           _context6.next = 4;
-          return regeneratorRuntime.awrap(query("SELECT * FROM users WHERE user_ID = '".concat(userID, "'")));
+          return regeneratorRuntime.awrap(middlewareQueries.userIDValidationQuery(userID));
 
         case 4:
           userIDValidation = _context6.sent;
