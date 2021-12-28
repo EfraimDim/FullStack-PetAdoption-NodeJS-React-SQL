@@ -1,1 +1,0 @@
-"use strict";var mysql=require("mysql"),pool=mysql.createPool({host:"127.0.0.1",user:"root",password:"sg35no4s",database:"pet-adoption"}),query=function(o){return new Promise(function(r,s){pool.query(o,function(o,e){o?s(o):r(e)})})};module.exports={query:query};

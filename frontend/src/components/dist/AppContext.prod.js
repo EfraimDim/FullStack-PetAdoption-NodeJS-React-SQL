@@ -1,1 +1,0 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.AppContext=void 0;var _react=require("react"),AppContext=(0,_react.createContext)({});exports.AppContext=AppContext;

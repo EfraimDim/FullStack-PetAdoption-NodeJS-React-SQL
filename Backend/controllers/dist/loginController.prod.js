@@ -1,1 +1,0 @@
-"use strict";var _require=require("../models/classes"),users=_require.users;exports.login=function(e,s){try{var r=e.token;s.send(r)}catch(e){console.log(e),s.status(400).send({error:e.message})}};
