@@ -119,6 +119,4 @@ router.put(
     usersController.lastSeenPets
 )
 
-
-
 module.exports = router;

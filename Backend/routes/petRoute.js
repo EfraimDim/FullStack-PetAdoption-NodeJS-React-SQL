@@ -13,10 +13,7 @@ const multer = require('multer');
 const {storage} = require('../models/multerModel');
 const upload = multer({ storage })
 
-
-
 const Schemas = require('../schemas/allSchemas');
-
 
 router.get(
     '/usersPetArrays',
@@ -108,7 +105,5 @@ router.delete(
     checkAdminForAllReq,
     petController.deletePet
 )
-
-
 
 module.exports = router;

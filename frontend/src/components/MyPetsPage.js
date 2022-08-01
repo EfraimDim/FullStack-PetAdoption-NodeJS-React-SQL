@@ -1,57 +1,66 @@
-import {useContext, useState, useEffect} from 'react'
-import {AppContext} from './AppContext'
-import styles from '../styles/MyPetsPage.module.css'
-import DisplayPet from './DisplayPet'
-
-
-
-
+import { useContext, useState, useEffect } from "react";
+import { AppContext } from "./AppContext";
+import styles from "../styles/MyPetsPage.module.css";
+import DisplayPet from "./DisplayPet";
 
 function MyPetsPage() {
-    const [viewYourPets, setViewYourPets] = useState(false)
-    const [viewSavedPets, setViewSavedPets] = useState(false)
+  const [viewYourPets, setViewYourPets] = useState(false);
+  const [viewSavedPets, setViewSavedPets] = useState(false);
 
-    const { savedPetsArray, myPetsArray } = useContext(AppContext);
+  const { savedPetsArray, myPetsArray } = useContext(AppContext);
 
-    useEffect(()=>{
-        setViewYourPets(false)
-        setViewSavedPets(false)
-    },[])
+  useEffect(() => {
+    setViewYourPets(false);
+    setViewSavedPets(false);
+  }, []);
 
-    const toggledYourPets = () => {
-        setViewYourPets(true)
-        setViewSavedPets(false)
-    }
-    const toggledSavedPets = () => {
-        setViewYourPets(false)
-        setViewSavedPets(true)
-    }
+  const toggledYourPets = () => {
+    setViewYourPets(true);
+    setViewSavedPets(false);
+  };
+  const toggledSavedPets = () => {
+    setViewYourPets(false);
+    setViewSavedPets(true);
+  };
 
-
-
-    return <div>
-        <h1 className={styles.header}>What would you like to see?</h1>
-        <div className={styles.wrapper}>
-        <button className={styles.toggleButton} onClick={toggledYourPets}>Your Pets</button>
-        <button className={styles.toggleButton} onClick={toggledSavedPets}>Saved Pets</button>
+  return (
+    <div>
+      <h1 className={styles.header}>What would you like to see?</h1>
+      <div className={styles.wrapper}>
+        <button className={styles.toggleButton} onClick={toggledYourPets}>
+          Your Pets
+        </button>
+        <button className={styles.toggleButton} onClick={toggledSavedPets}>
+          Saved Pets
+        </button>
+      </div>
+      {viewYourPets && myPetsArray.length === 0 && <div className={styles.noPets}>You don't have any pets!</div>}
+      {viewSavedPets && savedPetsArray.length === 0 && <div className={styles.noPets}>No pets saved!</div>}
+      {viewYourPets && myPetsArray.length !== 0 && (
+        <div>
+          {" "}
+          {myPetsArray.map((pet, index) => {
+            return (
+              <div className={styles.petHolder} key={index}>
+                <DisplayPet pet={pet} index={index} myPets={true} />
+              </div>
+            );
+          })}
         </div>
-        {viewYourPets && myPetsArray.length === 0 && <div className={styles.noPets}>You don't have any pets!</div>}
-        {viewSavedPets && savedPetsArray.length === 0 && <div className={styles.noPets}>No pets saved!</div>}
-        {viewYourPets && myPetsArray.length !== 0 && 
-        <div> {myPetsArray.map((pet, index) => {  
-                    return   (
-                            <div className={styles.petHolder} key={index}>
-                            <DisplayPet  pet= {pet} index={index} myPets={true}/>
-                            </div>
-                            )})}</div>}
-        {viewSavedPets && savedPetsArray.length !== 0 && 
-        <div> {savedPetsArray.map((pet, index) => {  
-                    return   (
-                            <div className={styles.petHolder} key={index}>
-                            <DisplayPet  pet= {pet} index={index} savedPets={true}/>
-                            </div>
-                            )})}</div>}
-        
-</div>
-    }
-    export default MyPetsPage
+      )}
+      {viewSavedPets && savedPetsArray.length !== 0 && (
+        <div>
+          {" "}
+          {savedPetsArray.map((pet, index) => {
+            return (
+              <div className={styles.petHolder} key={index}>
+                <DisplayPet pet={pet} index={index} savedPets={true} />
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+export default MyPetsPage;
